@@ -27,7 +27,7 @@ function RegisterForm() {
                 <input type="password" className="grow" placeholder='Nhập lại mật khẩu' />
             </label>
             <div className='w-full flex justify-center mt-4'>
-                <button className="btn btn-active">Đăng ký</button>
+                <button className="btn btn-neutral">Đăng ký</button>
             </div>
             <div className='flex justify-center mt-4'>
                 <Link href="/login">

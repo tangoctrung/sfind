@@ -22,7 +22,7 @@ function LoginForm() {
                 </Link>
             </div>
             <div className='w-full flex justify-center mt-4'>
-                <button className="btn btn-active">Đăng nhập</button>
+                <button className="btn btn-neutral">Đăng nhập</button>
             </div>
             <div className='flex items-center justify-center mt-5'>
                 <p className='w-24 h-[1px] bg-slate-300 mr-2'></p> 

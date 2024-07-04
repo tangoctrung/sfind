@@ -1,15 +1,12 @@
 import { SVGProps } from "react";
 
-export const IconPassword = (props: SVGProps<SVGSVGElement>) => (
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 16 16"
-        fill="currentColor"
-        className="h-4 w-4 opacity-70"
-        {...props}>
-        <path
-            fillRule="evenodd"
-            d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
-            clipRule="evenodd" />
-    </svg>
-);
+export function IconPassword(props: SVGProps<SVGSVGElement>) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="1em" height="1em" viewBox="0 0 24 24"
+            {...props}>
+            <path fill="currentColor" d="M12.02 8.846q.769 0 1.307-.538T13.866 7t-.539-1.308t-1.308-.538t-1.307.538T10.173 7t.539 1.308t1.307.538m.012 13.231l-2.646-2.596l1.384-1.712l-1.442-1.827l1.192-1.558v-2.85q-1.338-.509-2.284-1.684T7.289 7q0-2 1.365-3.365t3.365-1.366t3.366 1.366T16.75 7q0 1.698-.958 2.865q-.958 1.166-2.273 1.67v9.042z"></path>
+        </svg>
+    )
+}
