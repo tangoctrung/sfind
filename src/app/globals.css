@@ -17,32 +17,51 @@
 }
 
 @layer utilities {
-  .open-sans-light {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
+  .ubuntu-light {
+    font-family: "Ubuntu", sans-serif;
     font-weight: 300;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
   }
-  .open-sans-regular {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
+  
+  .ubuntu-regular {
+    font-family: "Ubuntu", sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
   }
-  .open-sans-medium {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
+  
+  .ubuntu-medium {
+    font-family: "Ubuntu", sans-serif;
     font-weight: 500;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
   }
-  .open-sans-bold {
-    font-family: "Open Sans", sans-serif;
-    font-optical-sizing: auto;
+  
+  .ubuntu-bold {
+    font-family: "Ubuntu", sans-serif;
     font-weight: 700;
     font-style: normal;
-    font-variation-settings: "wdth" 100;
+  }
+  
+  .ubuntu-light-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .ubuntu-regular-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .ubuntu-medium-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 500;
+    font-style: italic;
+  }
+  
+  .ubuntu-bold-italic {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+    font-style: italic;
   }
 }
