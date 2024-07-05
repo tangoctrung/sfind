@@ -7,7 +7,7 @@ import React from 'react'
 
 function LoginForm() {
     return (
-        <div className='mt-6'>
+        <div className='mt-10'>
             <label className="input input-bordered flex items-center gap-2">
                 <IconMail />
                 <input type="text" className="grow" placeholder="Email" />

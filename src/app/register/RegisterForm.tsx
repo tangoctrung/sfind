@@ -29,7 +29,7 @@ function RegisterForm() {
             <div className='w-full flex justify-center mt-4'>
                 <button className="btn btn-neutral">Đăng ký</button>
             </div>
-            <div className='flex justify-center mt-4'>
+            <div className='flex justify-center mt-2'>
                 <Link href="/login">
                     <button className="btn btn-active btn-link text-blue-600">Bạn đã có tài khoản? Đăng nhập</button>
                 </Link>
