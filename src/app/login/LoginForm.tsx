@@ -1,7 +1,7 @@
 'use client'
-import { IconGoogle } from '@/assets/icons/IconGoogle'
 import { IconMail } from '@/assets/icons/IconMail'
 import { IconPassword } from '@/assets/icons/IconPassword'
+import GoogleIcon from '@mui/icons-material/Google';
 import Link from 'next/link'
 import React from 'react'
 
@@ -25,13 +25,13 @@ function LoginForm() {
                 <button className="btn btn-neutral">Đăng nhập</button>
             </div>
             <div className='flex items-center justify-center mt-5'>
-                <p className='w-24 h-[1px] bg-slate-300 mr-2'></p> 
-                hoặc 
+                <p className='w-24 h-[1px] bg-slate-300 mr-2'></p>
+                hoặc
                 <p className='w-24 h-[1px] bg-slate-300 ml-2'></p>
             </div>
             <div className='w-full flex justify-center mt-4'>
                 <button className="btn w-[50%]">
-                    <IconGoogle />oogle
+                    <GoogleIcon />oogle
                 </button>
             </div>
             <div className='flex justify-center mt-4'>
