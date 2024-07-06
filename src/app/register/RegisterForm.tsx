@@ -1,6 +1,5 @@
 'use client'
 import { IconConfirmPassword } from '@/assets/icons/IconConfirmPassword'
-import { IconGoogle } from '@/assets/icons/IconGoogle'
 import { IconMail } from '@/assets/icons/IconMail'
 import { IconPassword } from '@/assets/icons/IconPassword'
 import { IconUsername } from '@/assets/icons/IconUsername'
