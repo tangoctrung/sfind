@@ -15,10 +15,10 @@ export default function SFindConvention() {
 
     return (
         <div className="w-svw h-svh bg-background flex justify-center items-center">
-            <div className="w-full h-full tablet:w-[80%] laptop:w-[60%]">
+            <div className="w-full h-full laptop:w-[80%] desktop:w-[60%]">
                 <div className="w-full h-[70px] flex items-center justify-between border-b-[1px] border-b-slate-300">
-                    <div className="w-[15%] tablet:w-52 h-full flex  items-center border-r-[1px] border-r-slate-300">
-                        <div className="flex p-2 justify-center rounded-lg hover:bg-slate-300 cursor-pointer">
+                    <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full flex  items-center border-r-[1px] border-r-slate-300">
+                        <div className="w-full flex p-2 rounded-lg hover:bg-slate-300 cursor-pointer">
                             <DropdownAccount />
                         </div>
                     </div>

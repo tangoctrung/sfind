@@ -41,11 +41,11 @@ function LeftBar() {
     }
 
     return (
-        <div className="w-[15%] h-full tablet:w-52 border-r-[1px] border-r-slate-300 tablet:p-3">
+        <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full border-r-[1px] border-r-slate-300">
             <div className="w-full h-10 flex justify-center items-center">
                 <ModalCreateSFind />
             </div>
-            <div className="scrollbar-none w-full overflow-y-scroll h-[calc(100%-2.5rem)]">
+            <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
                 {dataSFinds?.map((item: any, index: number) => (
                     <div
                         key={index}
