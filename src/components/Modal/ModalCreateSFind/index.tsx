@@ -4,6 +4,7 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import AvatarGroup from "@/assets/images/defaultgroup.png";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
+import KeyIcon from '@mui/icons-material/Key';
 import Image from 'next/image';
 
 function ModalCreateSFind() {
@@ -41,9 +42,13 @@ function ModalCreateSFind() {
                         </div>
                         <label className="input input-bordered input-secondary flex items-center gap-2 w-full">
                             <SupervisedUserCircleIcon />
-                            <input type="text" className="grow" placeholder="Tên SFind..." />
+                            <input type="text" className="grow" placeholder="Tên SFind (bắt buộc)..." />
                         </label>
-                        <textarea className="textarea textarea-bordered w-full mt-5" placeholder="Mô tả qua về SFind..."></textarea>
+                        <textarea className="textarea textarea-bordered w-full mt-5" placeholder="Mô tả qua về SFind (tùy chọn)..."></textarea>
+                        <label className="input input-bordered flex items-center gap-2 w-full mt-5">
+                            <KeyIcon />
+                            <input type="text" className="grow" placeholder="Mật khẩu (tùy chọn)..." />
+                        </label>
                         <button className="btn btn-neutral mt-5">Tạo SFind</button>
                     </div>
                 </div>

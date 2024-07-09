@@ -49,11 +49,10 @@ function ModalProfile() {
                                 <input type="text" className="grow" placeholder="Tạ Ngọc Trung" disabled={isDisabled} />
                             </label>
                             <div className='flex mt-4'>
-                                <select className="select select-bordered mr-2 flex-1" disabled={isDisabled}>
-                                    <option disabled selected>Giới tính</option>
-                                    <option>Nam</option>
-                                    <option>Nữ</option>
-                                    <option>Khác</option>
+                                <select className="select select-bordered mr-2 flex-1" disabled={isDisabled} defaultValue={"Nam"}>
+                                    <option value={"Nam"}>Nam</option>
+                                    <option value={"Nữ"}>Nữ</option>
+                                    <option value={"Khác"}>Khác</option>
                                 </select>
                                 <label className="input input-bordered flex items-center gap-2 flex-1">
                                     <input type="date" className="grow" placeholder="Tạ Ngọc Trung" disabled={isDisabled} />
