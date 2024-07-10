@@ -23,7 +23,7 @@ export default function Home() {
         </div>
         <div className="w-full h-[calc(100svh-70px)] flex">
           <LeftBar />
-          <div className="w-[calc(85%)] tablet:w-[calc(100%-13rem)] text-center pt-64 font-bold text-xl">
+          <div className="w-[calc(85%)] tablet:w-[calc(100%-13rem)] laptop:w-[calc(100%-18rem)] desktop:w-[calc(100%-28rem)] text-center pt-64 font-bold text-xl">
             Hãy chọn một SFind để bắt đầu
           </div>
         </div>

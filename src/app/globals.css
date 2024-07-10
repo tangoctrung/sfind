@@ -18,6 +18,28 @@
 }
 
 @layer utilities {
+  h1,h2,h3,h4, h5,h6 {
+    font-weight: 700;
+  }
+  h1{
+    font-size: xx-large;
+  }
+  h2{
+    font-size: x-large;
+  }
+  h3{
+    font-size: larger;
+  }
+  h4{
+    font-size: large;
+  }
+  h5{
+    font-size: medium;
+  }
+  h6{
+    font-size: small;
+  }
+
   .ubuntu-light {
     font-family: "Ubuntu", sans-serif;
     font-weight: 300;

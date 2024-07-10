@@ -6,7 +6,8 @@ function MessageImage({ images }: { images: string[] }) {
 
     if (images?.length <= 0) {
         return (
-            <div className='max-w-[90%] mt-10 flex justify-end relative cursor-pointer'>
+            <div className='max-w-[90%] mt-20 flex justify-end relative cursor-pointer'>
+                <p className='absolute w-full text-center top-[-40px] text-sm text-gray-400'>11:20 20/03/2022</p>
                 <div className=' h-72 w-56 overflow-hidden rounded-xl'>
                     <Image
                         src={NoImage}
@@ -22,7 +23,8 @@ function MessageImage({ images }: { images: string[] }) {
 
     if (images?.length === 1) {
         return (
-            <div className='h-72 max-w-[90%] mt-10 flex justify-end items-center relative cursor-pointer'>
+            <div className='h-72 max-w-[90%] mt-20 flex justify-end items-center relative cursor-pointer'>
+                <p className='absolute w-full text-center top-[-40px] text-sm text-gray-400'>11:20 20/03/2022</p>
                 <div className=' h-72 w-56 overflow-hidden rounded-xl'>
                     <Image
                         src={images[0]}
@@ -38,7 +40,8 @@ function MessageImage({ images }: { images: string[] }) {
 
     if (images?.length === 2) {
         return (
-            <div className='h-60 max-w-[80%] laptop:max-w-[90%] mt-10 flex justify-end items-center relative cursor-pointer'>
+            <div className='h-60 max-w-[90%] mt-20 flex justify-end items-center relative cursor-pointer'>
+                <p className='absolute w-full text-center top-[-2rem] text-sm text-gray-400'>11:20 20/03/2022</p>
                 <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px]  rotate-[5deg]'>
                     <Image
                         src={images[0]}
@@ -63,7 +66,8 @@ function MessageImage({ images }: { images: string[] }) {
 
     if (images?.length === 3) {
         return (
-            <div className='h-60 max-w-[80%] laptop:max-w-[90%] mt-10 flex justify-end items-center relative cursor-pointer'>
+            <div className='h-60 max-w-[90%] mt-28 flex justify-end items-center relative cursor-pointer'>
+                <p className='absolute w-full text-center top-[-3.5rem] text-sm text-gray-400'>11:20 20/03/2022</p>
                 <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-10px]  rotate-[5deg]'>
                     <Image
                         src={images[2]}
@@ -96,7 +100,8 @@ function MessageImage({ images }: { images: string[] }) {
     }
 
     return (
-        <div className='h-60 max-w-[80%] laptop:max-w-[90%] mt-10 flex justify-end items-center relative cursor-pointer'>
+        <div className='h-60 max-w-[90%] mt-24 flex justify-end items-center relative cursor-pointer'>
+            <p className='absolute w-full text-center top-[-4rem] text-sm text-gray-400'>11:20 20/03/2022</p>
             <div className='h-52 w-52 overflow-hidden rounded-xl absolute top-[-20px]'>
                 <Image
                     src={images[3]}
