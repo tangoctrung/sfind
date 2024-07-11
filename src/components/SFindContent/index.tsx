@@ -35,7 +35,7 @@ function SFindContent() {
         <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)] ">
             <div className="h-[calc(100%-3rem)] w-full bg-slate-200 overflow-scroll scrollbar-none">
                 <MessageText />
-                {/* <MessageFile /> */}
+                <MessageFile />
                 <MessageImage
                     images={images}
                 />

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
+import 'react-medium-image-zoom/dist/styles.css'
 
 const ubuntu = Ubuntu({ subsets: ["cyrillic"], weight: ["300", "700"] });
 

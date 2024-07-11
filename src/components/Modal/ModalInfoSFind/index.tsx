@@ -1,10 +1,6 @@
 'use client'
 import React from 'react'
 import InfoIcon from '@mui/icons-material/Info';
-import AvatarGroup from "@/assets/images/defaultgroup.png";
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
-import Image from 'next/image';
 
 function ModalInfoSFind() {
     function handleOpenModalInfoSFind() {
