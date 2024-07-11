@@ -3,34 +3,44 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import NoImage from '@/assets/images/noImage.jpg';
+import CloseIcon from '@mui/icons-material/Close';
+import { Box, Modal } from '@mui/material';
 import Zoom from 'react-medium-image-zoom'
 import Download from '@mui/icons-material/Download';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import Link from 'next/link';
 import { downloadFile } from '@/utils/handleFile';
 
-function MessageImage({ images }: { images: string[] }) {
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    height: "80%",
+    outline: "none",
+    p: 4,
+};
 
+function MessageImage({ images }: { images: string[] }) {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+        setCurrentIndexImage(1);
+    }
     const [currentIndexImage, setCurrentIndexImage] = useState<number>(1);
 
-    function handleOpenModalListImageSFind() {
-        setCurrentIndexImage(1);
-        let item: any = document.getElementById('modalListImageSFind');
-        item?.showModal();
-    }
-
-    function handleDownloadImage(e: any) {
-        e.preventDefault();
-        console.log(e.target.href);
-        downloadFile(e, "image.png");
+    function handleDownloadImage(url: string) {
+        downloadFile(url, "image.png");
     }
 
     function handlePreviousImage() {
         if (currentIndexImage === 1) {
             setCurrentIndexImage(images.length)
         } else {
-            setCurrentIndexImage(i => i - 1);
+            setCurrentIndexImage((i: number) => i - 1);
         }
     }
 
@@ -38,180 +48,172 @@ function MessageImage({ images }: { images: string[] }) {
         if (currentIndexImage === images.length) {
             setCurrentIndexImage(1)
         } else {
-            setCurrentIndexImage(i => i + 1);
+            setCurrentIndexImage((i: number) => i + 1);
         }
     }
 
-    if (images?.length <= 0) {
-        return (
-            <div className='max-w-[90%] mt-20 flex justify-end relative cursor-pointer'>
-                <p className='absolute w-full text-center top-[-40px] text-sm text-gray-400'>11:20 20/03/2022</p>
-                <div className=' h-72 w-56 overflow-hidden rounded-xl'>
-                    <Image
-                        src={NoImage}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-            </div>
-        )
-    }
-
-    if (images?.length === 1) {
-        return (
-            <div
-                className='h-72 max-w-[90%] mt-20 flex justify-end items-center relative cursor-pointer'
-                onClick={() => handleOpenModalListImageSFind()}
-            >
-                <p className='absolute w-full text-center top-[-40px] text-sm text-gray-400'>11:20 20/03/2022</p>
-                <div className=' h-72 w-56 overflow-hidden rounded-xl'>
-                    <Image
-                        src={images[0]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-            </div>
-        )
-    }
-
-    if (images?.length === 2) {
-        return (
-            <div
-                className='h-60 max-w-[90%] mt-20 flex justify-end items-center relative cursor-pointer'
-                onClick={() => handleOpenModalListImageSFind()}
-            >
-                <p className='absolute w-full text-center top-[-2rem] text-sm text-gray-400'>11:20 20/03/2022</p>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px]  rotate-[5deg]'>
-                    <Image
-                        src={images[0]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] rotate-[-5deg]'>
-                    <Image
-                        src={images[1]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-            </div>
-        )
-    }
-
-    if (images?.length === 3) {
-        return (
-            <div
-                className='h-60 max-w-[90%] mt-28 flex justify-end items-center relative cursor-pointer'
-                onClick={() => handleOpenModalListImageSFind()}
-            >
-                <p className='absolute w-full text-center top-[-3.5rem] text-sm text-gray-400'>11:20 20/03/2022</p>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-10px]  rotate-[5deg]'>
-                    <Image
-                        src={images[2]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-5deg]'>
-                    <Image
-                        src={images[1]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute'>
-                    <Image
-                        src={images[0]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-            </div>
-        )
-    }
+    let isPush = (images?.length <= 1) ? true : false;
 
     return (
         <>
             <div
-                className='h-60 max-w-[90%] mt-24 flex justify-end items-center relative cursor-pointer'
-                onClick={() => handleOpenModalListImageSFind()}
+                className={`h-${isPush ? "72" : "52"} max-w-[90%] mt-${isPush ? "20" : "24"} flex justify-end items-center relative`}
             >
-                <p className='absolute w-full text-center top-[-4rem] text-sm text-gray-400'>11:20 20/03/2022</p>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute top-[-20px]'>
-                    <Image
-                        src={images[3]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-12px] rotate-[3deg]'>
-                    <Image
-                        src={images[2]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-3deg]'>
-                    <Image
-                        src={images[1]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
-                <div className='h-52 w-52 overflow-hidden rounded-xl absolute'>
-                    <Image
-                        src={images[0]}
-                        width={600}
-                        height={600}
-                        className='w-full h-full object-cover'
-                        alt=''
-                    />
-                </div>
+                <p className={`absolute w-full text-center top-${isPush ? "[-2.5rem]" : "[-3.5rem]"} text-sm text-gray-400`}>11:20 20/03/2022</p>
+                {images?.length <= 0 &&
+                    <div className=' h-72 w-56 overflow-hidden rounded-xl'>
+                        <Image
+                            src={NoImage}
+                            width={600}
+                            height={600}
+                            className='w-full h-full object-cover'
+                            alt=''
+                        />
+                    </div>}
+                {images?.length === 1 &&
+                    <div
+                        className=' h-72 w-56 overflow-hidden rounded-xl cursor-pointer'
+                        onClick={handleOpen}>
+                        <Image
+                            src={images[0]}
+                            width={600}
+                            height={600}
+                            className='w-full h-full object-cover'
+                            alt=''
+                        />
+                    </div>}
+                {images?.length === 2 &&
+                    <>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px]  rotate-[5deg]'>
+                            <Image
+                                src={images[1]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div
+                            className='h-52 w-52 cursor-pointer overflow-hidden rounded-xl absolute right-[10px] rotate-[-5deg]'
+                            onClick={handleOpen}
+                        >
+                            <Image
+                                src={images[0]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                    </>}
+                {images?.length === 3 &&
+                    <>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-10px]  rotate-[5deg]'>
+                            <Image
+                                src={images[2]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-5deg]'>
+                            <Image
+                                src={images[1]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div
+                            className='h-52 w-52 cursor-pointer overflow-hidden rounded-xl absolute'
+                            onClick={handleOpen}
+                        >
+                            <Image
+                                src={images[0]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                    </>}
+                {images?.length >= 4 &&
+                    <>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute top-[-20px]'>
+                            <Image
+                                src={images[3]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-12px] rotate-[3deg]'>
+                            <Image
+                                src={images[2]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-3deg]'>
+                            <Image
+                                src={images[1]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                        <div
+                            className='h-52 w-52 cursor-pointer overflow-hidden rounded-xl absolute'
+                            onClick={handleOpen}
+                        >
+                            <Image
+                                src={images[0]}
+                                width={600}
+                                height={600}
+                                className='w-full h-full object-cover'
+                                alt=''
+                            />
+                        </div>
+                    </>
+                }
             </div>
-            <dialog id="modalListImageSFind" className="modal">
-                <div className="modal-box h-[100%] relative">
-                    <h3 className="font-bold text-lg">Danh sách ảnh</h3>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[90%] w-[90%] tablet:h-[90%] tablet:w-[450px] laptop:w-[500px]'>
+                    <div className='flex justify-between items-center'>
+                        <h3 className="font-bold text-lg">Danh sách ảnh</h3>
+                        <CloseIcon
+                            className='w-8 h-8 cursor-pointer'
+                            onClick={handleClose}
+                        />
+                    </div>
                     <div role="tablist" className="tabs tabs-boxed mt-5 h-[90%] flex justify-center items-center">
                         <div className='max-w-full relative'>
                             <Zoom>
                                 <Image
                                     src={images[currentIndexImage - 1]}
-                                    // src="https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
                                     width={3000}
                                     height={3000}
                                     alt=''
                                     className='w-full'
                                 />
                             </Zoom>
-                            <Link
-                                href={images[currentIndexImage - 1]}
+                            <div
                                 className='absolute top-2 right-2 p-2 rounded-lg bg-slate-300/40 hover:bg-slate-300'
-                                onClick={(e: any) => handleDownloadImage(e)}
+                                onClick={() => handleDownloadImage(images[currentIndexImage - 1])}
                             >
                                 <Download />
-                            </Link>
+                            </div>
                             <span className='absolute bottom-2 left-[50%] translate-x-[-50%] text-white/70 font-bold'>{currentIndexImage}/{images?.length}</span>
                         </div>
                     </div>
@@ -227,11 +229,8 @@ function MessageImage({ images }: { images: string[] }) {
                     >
                         <ArrowForwardIosIcon />
                     </div>
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog >
+                </Box>
+            </Modal>
         </>
     )
 }

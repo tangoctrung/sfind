@@ -3,14 +3,13 @@
 import React from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { useParams } from 'next/navigation';
 import MessageImage from '../SFindMessage/MessageImage';
 import MessageText from '../SFindMessage/MessageText';
 import MessageFile from '../SFindMessage/MessageFile';
+import MessageLink from '../SFindMessage/MessageLink';
 
 function SFindContent() {
 
-    const params = useParams()
     const images: string[] = []
     const images1: string[] = [
         "https://images.pexels.com/photos/19020136/pexels-photo-19020136/free-photo-of-bi-n-da-song-bi-n-d-ng.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
@@ -56,6 +55,7 @@ function SFindContent() {
                     images={images4}
                 />
 
+                <MessageLink />
 
                 <MessageImage
                     images={images3}
