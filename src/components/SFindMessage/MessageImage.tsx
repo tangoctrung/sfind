@@ -57,9 +57,13 @@ function MessageImage({ images }: { images: string[] }) {
     return (
         <>
             <div
-                className={`h-${isPush ? "72" : "52"} max-w-[90%] mt-${isPush ? "20" : "24"} flex justify-end items-center relative`}
+                className={`h-${isPush ? "72" : "52"} max-w-[90%] flex justify-end items-center relative`}
+                style={{ marginTop: isPush ? "80px" : "96px" }}
             >
-                <p className={`absolute w-full text-center top-${isPush ? "[-2.5rem]" : "[-3.5rem]"} text-sm text-gray-400`}>11:20 20/03/2022</p>
+                <p
+                    className={`absolute w-full text-center text-sm text-gray-400`}
+                    style={{ top: isPush ? "-40px" : "-56px" }}
+                >11:20 20/03/2022</p>
                 {images?.length <= 0 &&
                     <div className=' h-72 w-56 overflow-hidden rounded-xl'>
                         <Image

@@ -2,13 +2,35 @@
 
 import React from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import MessageImage from '../SFindMessage/MessageImage';
 import MessageText from '../SFindMessage/MessageText';
 import MessageFile from '../SFindMessage/MessageFile';
 import MessageLink from '../SFindMessage/MessageLink';
+import { Box, Modal } from '@mui/material';
+import ModalCreatePost from '../Modal/ModalCreatePost';
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    height: "80%",
+    outline: "none",
+    p: 4,
+};
 
 function SFindContent() {
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     const images: string[] = []
     const images1: string[] = [
@@ -69,10 +91,35 @@ function SFindContent() {
                         <AttachFileIcon />
                     </label>
                 </div>
-                <div className="p-2 cursor-pointer bg-slate-400 rounded-md ml-5">
+                <div
+                    className="p-2 cursor-pointer bg-slate-400 rounded-md ml-5"
+                    onClick={handleOpen}
+                >
                     <EditNoteIcon />
                 </div>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[98%] w-[95%] !py-5 !px-2'>
+                    <div className='flex justify-between items-center'>
+                        <button className="btn btn-neutral p-3">
+                            <SaveIcon />
+                            Lưu
+                        </button>
+                        <CloseIcon
+                            className='w-6 h-6 cursor-pointer'
+                            onClick={handleClose}
+                        />
+                    </div>
+                    <div className='mt-2'>
+                        <ModalCreatePost />
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }
