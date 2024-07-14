@@ -10,6 +10,7 @@ import Download from '@mui/icons-material/Download';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { downloadFile } from '@/utils/handleFile';
+import Link from 'next/link';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -33,7 +34,7 @@ function MessageImage({ images }: { images: string[] }) {
     const [currentIndexImage, setCurrentIndexImage] = useState<number>(1);
 
     function handleDownloadImage(url: string) {
-        downloadFile(url, "image.png");
+        downloadFile("https://firebasestorage.googleapis.com/v0/b/storagefile-8768a.appspot.com/o/floderTest%2Fadmin%20-%20so%20luot%20kham.png?alt=media&token=491b058f-4c7b-42fc-9acc-bd61315f2fb5", "image.png");
     }
 
     function handlePreviousImage() {

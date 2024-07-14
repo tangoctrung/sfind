@@ -3,12 +3,13 @@ import TopicIcon from '@mui/icons-material/Topic';
 import Download from '@mui/icons-material/Download';
 import FolderZipIcon from '@mui/icons-material/FolderZip';
 import { downloadFile } from '@/utils/handleFile';
+import Link from 'next/link';
 
 function MessageFile() {
 
-    function handleDownloadFile(url: string) {
-        downloadFile(url, "file.docx");
-    }
+    // function handleDownloadFile(url: string) {
+    //     downloadFile(url, "file.docx");
+    // }
 
     return (
         <div
@@ -24,9 +25,10 @@ function MessageFile() {
                     <p className='text-slate-500 text-sm'>1.35 mb</p>
                 </div>
             </div>
-            <div
+            <Link
+                href={"https://firebasestorage.googleapis.com/v0/b/storagefile-8768a.appspot.com/o/floderTest%2FB%C3%A1o%20c%C3%A1o%20OOAD.docx?alt=media&token=74b30bb1-06f1-4790-ac9b-b0a9c3a6cf8e"}
                 className='w-[80%] tablet:w-[70%] laptop:w-[50%] mb-1 relative overflow-hidden rounded-xl flex items-start bg-slate-300/70 py-2 px-3'
-                onClick={() => handleDownloadFile("https://firebasestorage.googleapis.com/v0/b/storagefile-8768a.appspot.com/o/Phi%E1%BA%BFu-cho-%C4%91i%E1%BB%83m-%C4%91%C3%A1nh-gi%C3%A1-KQRL.docx?alt=media&token=97e8dcb2-d032-4a83-ba5d-934108135dac")}
+            // onClick={() => handleDownloadFile("https://firebasestorage.googleapis.com/v0/b/storagefile-8768a.appspot.com/o/floderTest%2FB%C3%A1o%20c%C3%A1o%20OOAD.docx?alt=media&token=74b30bb1-06f1-4790-ac9b-b0a9c3a6cf8e")}
             >
                 <div className=''>
                     <FolderZipIcon className='w-10 h-10 mr-2 text-yellow-500' />
@@ -35,7 +37,7 @@ function MessageFile() {
                     <span className='text-base font-bold line-clamp-3 underline'>Danh sách điểm rèn luyện khóa K64-N.zip Danh sách điểm rèn luyện khóa K64-N.zip Danh sách điểm rèn luyện khóa K64-N.zip Danh sách điểm rèn luyện khóa K64-N.zip</span>
                     <p className='text-slate-500 text-sm'>2.35 mb</p>
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }

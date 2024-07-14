@@ -13,6 +13,9 @@ function ModalLogout() {
                         >
                             <Link href={"/login"}>Đăng xuất</Link>
                         </button>
+                        <form method="dialog">
+                            <button className='btn btn-neutral'>Quay lại</button>
+                        </form>
                     </div>
                 </div>
                 <form method="dialog" className="modal-backdrop">

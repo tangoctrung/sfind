@@ -11,6 +11,7 @@ import MessageFile from '../SFindMessage/MessageFile';
 import MessageLink from '../SFindMessage/MessageLink';
 import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
+import { uploadFileToStorage } from '@/utils/handleFile';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -30,6 +31,10 @@ function SFindContent() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
+    }
+
+    const handleChooseFile = (e: any) => {
+        uploadFileToStorage(e, "floderTest")
     }
 
     const images: string[] = []
@@ -86,7 +91,12 @@ function SFindContent() {
             </div>
             <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
                 <div className="p-2 cursor-pointer bg-slate-400 rounded-md mr-5">
-                    <input id="inputChooseFile" type="file" className="file-input w-full max-w-xs hidden" />
+                    <input
+                        id="inputChooseFile"
+                        type="file"
+                        className="file-input w-full max-w-xs hidden"
+                        onChange={e => handleChooseFile(e)}
+                    />
                     <label htmlFor="inputChooseFile" className="cursor-pointer">
                         <AttachFileIcon />
                     </label>

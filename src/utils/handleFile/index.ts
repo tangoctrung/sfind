@@ -1,25 +1,7 @@
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import {storage} from '@/firebase/index';
+
 export function downloadFile(url: any, nameFile: string) {
-
-    console.log({url: url}, {nameFile});
-    
-    // fetch(e.target.href, {
-    //     method: "GET",
-    //     headers: {}
-    // })
-    //     .then(response => {
-    //         response.arrayBuffer().then(function (buffer) {
-    //             const url = window.URL.createObjectURL(new Blob([buffer]));
-    //             const link = document.createElement("a");
-    //             link.href = url;
-    //             link.setAttribute("download", nameFile); //or any other extension
-    //             document.body.appendChild(link);
-    //             link.click();
-    //         });
-    //     })
-    //     .catch(err => {
-    //         console.log(err);
-    //     });
-
     fetch(url)
       .then((response) => response.blob())
       .then((blob) => {
@@ -37,4 +19,41 @@ export function downloadFile(url: any, nameFile: string) {
       .catch((error) => {
         console.error('Lỗi tải xuống:', error);
       });
+}
+
+export async function uploadFileToStorage(e: any, nameFloder: string) {
+  console.log(e);
+    let urlTool
+    let file = e.target?.files[0];
+    if (!file) {
+        alert("Please choose a file first!");
+    }
+    const storageRef = ref(storage, `/${nameFloder}/${file?.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+    await uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+        // Observe state change events such as progress, pause, and resume
+        // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+                case 'paused':
+                console.log('Upload is paused');
+                break;
+                case 'running':
+                console.log('Upload is running');
+                break;
+            }
+        }, 
+        (err) => console.log(err),
+        () => {
+            // download url
+            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                console.log(url);
+                urlTool = url;
+            });
+        }
+    );
+    return urlTool;
 }
