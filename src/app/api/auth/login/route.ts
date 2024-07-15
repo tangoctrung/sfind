@@ -3,6 +3,7 @@ import { connectToDB } from "@/servers/mongodb";
 import { convertDataResponse } from "@/servers/utils/convertDataResponse";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import { cookies } from 'next/headers'
 
 export const POST = async (req: Request) => {
     
@@ -30,6 +31,12 @@ export const POST = async (req: Request) => {
             ...userFind?._doc,
             password: ""
         }
+        cookies().set({
+            name: 'accessToken',
+            value: access_token,
+            httpOnly: true,
+            path: '/',
+          })
         return convertDataResponse(200, true, "Đăng nhập thành công", {user, token: {accessToken: access_token}})
 
     } catch (error: any) {
