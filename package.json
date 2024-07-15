@@ -17,6 +17,7 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/react-html-parser": "^2.0.6",
     "@vercel/speed-insights": "^1.0.12",
+    "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
     "firebase": "^10.12.3",
     "jsonwebtoken": "^9.0.2",

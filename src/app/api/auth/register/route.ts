@@ -23,12 +23,8 @@ export const POST = async (req: Request) => {
             email: email,
             password: hashedPass,
         });
-        const userSaved = await newUser.save();
-        const user = {
-            ...userSaved?._doc,
-            password: ""
-        }
-        return convertDataResponse(200, true, "Tạo tài khoản thành công", {user});
+        await newUser.save();
+        return convertDataResponse(200, true, "Tạo tài khoản thành công", null);
     } catch (error: any) {
         return convertDataResponse(500, false, error?.message || "Lỗi hệ thống", null);
     }
