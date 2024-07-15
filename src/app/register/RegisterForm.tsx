@@ -143,9 +143,12 @@ function RegisterForm() {
             </label>
             <div className='w-full flex justify-center mt-4'>
                 <button
-                    className="btn btn-neutral"
+                    className={`btn ${isLoading ? "btn-disabled" : "btn-neutral"}`}
                     onClick={handleRegister}
-                >Đăng ký</button>
+                >
+                    {isLoading && <span className="loading loading-spinner"></span>}
+                    Đăng ký
+                </button>
             </div>
             <div className='flex justify-center mt-2'>
                 <Link href="/login">
@@ -153,6 +156,7 @@ function RegisterForm() {
                 </Link>
             </div>
             <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={dataSnackBar.open}
                 autoHideDuration={6000}
                 onClose={handleCloseSnackBar}

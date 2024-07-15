@@ -7,11 +7,11 @@ export const registerUser = (dataRequest: REGISTER_DATA) => {
 
 
 export const loginUser = (dataRequest:any) => {
-    return AxiosInstance.post("auth/credential", {...dataRequest})
+    return AxiosInstance.post("/auth/login", {...dataRequest})
 }
 
 export const getInfoUser = () => {
-    return AxiosInstance.get("api/get-me")
+    return AxiosInstance.get("/profile/me")
 }
 
 export const updateInfoUser = (dataRequest:any) => {
