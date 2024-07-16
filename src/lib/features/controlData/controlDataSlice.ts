@@ -1,12 +1,14 @@
 import { createAppSlice } from "@/lib/createAppSlice";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export interface ControlDataSliceState {
   user: {
+    id: string;
     username: string;
     email: string;
     avatar: string;
     address: string;
-    dob: Date;
+    dob: number;
     gender: string;
     phone: string;
   },
@@ -18,10 +20,11 @@ export interface ControlDataSliceState {
 
 const initialState: ControlDataSliceState = {
   user: {
+    id: "",
     username: "",
     address: "",
     avatar: "",
-    dob: new Date(),
+    dob: 0,
     email: "",
     gender: "",
     phone: "",
@@ -37,6 +40,16 @@ export const controlDataSlice = createAppSlice({
   name: "controlData",
   initialState,
   reducers: (create) => ({
+    updateInfoUser: create.reducer((state, action: PayloadAction<any>) => {
+      state.user = {...action.payload, id: action.payload?._id};
+    }),
+    updateToken: create.reducer((state, action: PayloadAction<any>) => {
+      state.token = {...action.payload};
+    }),
+    updateUserToken: create.reducer((state, action: PayloadAction<any>) => {
+      state.user = {...action.payload?.user, id: action.payload?.user?._id};
+      state.token = {...action.payload?.token};
+    })
   }),
   selectors: {
     selectDataUser: (controlData) => controlData.user,
@@ -44,6 +57,6 @@ export const controlDataSlice = createAppSlice({
   },
 });
 
-export const {  } =
+export const { updateInfoUser, updateToken, updateUserToken } =
   controlDataSlice.actions;
 export const { selectDataUser, selectDataToken } = controlDataSlice.selectors;

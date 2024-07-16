@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
-  const accessToken = request.cookies.get('accessToken')?.value
+  const accessToken = request.cookies.get('accessToken')?.value || ""
   // Chưa đăng nhập thì không cho vào private paths
   // return NextResponse.next()
   if ((pathname !== "/login" && pathname !== "/register") && !accessToken) {

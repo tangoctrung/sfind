@@ -1,5 +1,6 @@
 'use client'
 import { logoutUser } from '@/endpoint/auth'
+import { KEY_LOCAL } from '@/types/keyLocal';
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -11,6 +12,7 @@ function ModalLogout() {
             .then(res => {
                 if (res.status === 200) {
                     router.push("/login");
+                    localStorage.removeItem(KEY_LOCAL.PROFILE_USER)
                 }
             })
             .catch((err) => {

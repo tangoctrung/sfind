@@ -11,6 +11,10 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { validateEmail } from '@/utils/validate';
 import { loginUser } from '@/endpoint/auth';
+import { useAppDispatch } from '@/lib/hooks';
+import { updateUserToken } from '@/lib/features/controlData/controlDataSlice';
+import { KEY_LOCAL } from '@/types/keyLocal';
+import { setInfoUserToLocalStorage } from '@/utils/handleLocal';
 
 function LoginForm() {
 
@@ -24,6 +28,7 @@ function LoginForm() {
         password: "",
     })
     const router = useRouter();
+    const dispatch = useAppDispatch();
 
     function handleChangeDataLogin(e: any) {
         setDataLogin({
@@ -59,6 +64,8 @@ function LoginForm() {
             .then((res) => {
                 if (res.status === 200) {
                     setIsLoading(false);
+                    dispatch(updateUserToken(res.data?.data))
+                    setInfoUserToLocalStorage(res.data?.data?.user);
                     router.push("/");
                 }
             })

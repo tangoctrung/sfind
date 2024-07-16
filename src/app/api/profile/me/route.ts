@@ -1,13 +1,12 @@
 import { convertDataResponse } from "@/servers/utils/convertDataResponse";
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import jwt from "jsonwebtoken";
 import User from "@/servers/models/User";
 
 export const GET = async (req: Request) => {
     
     try {
-        const authorization = headers().get('authorization')
-        const accessToken = authorization?.split("Bearer")[1].trim()
+        const accessToken = cookies().get("accessToken")?.value;
         if (!accessToken) {
             return convertDataResponse(401, false, "Yêu cầu xác thực", null);
         }
