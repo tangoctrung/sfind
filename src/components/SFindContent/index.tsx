@@ -34,7 +34,7 @@ function SFindContent() {
     }
 
     const handleChooseFile = (e: any) => {
-        uploadFileToStorage(e, "floderTest")
+        uploadFileToStorage(e.target.files[0], "floderTest")
     }
 
     const images: string[] = []

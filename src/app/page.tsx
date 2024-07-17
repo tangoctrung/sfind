@@ -30,7 +30,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <ModalProfile />
         <ModalLogout />
       </div>
     </AppMain>

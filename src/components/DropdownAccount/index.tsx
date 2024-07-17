@@ -6,13 +6,33 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector } from '@/lib/hooks';
 import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
+import { Box, Modal } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import ModalProfile from '../Modal/ModalProfile';
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    height: "80%",
+    outline: "none",
+    p: 4,
+};
 
 function DropdownAccount() {
 
     const user = useAppSelector(selectDataUser)
+    const [open, setOpen] = React.useState(false);
+
+    const handleClose = () => {
+        setOpen(false);
+    }
+
     function handleOpenModalProfile() {
-        let item: any = document.getElementById('modalProfile');
-        item?.showModal()
+        setOpen(true)
     }
     function handleOpenModalLogout() {
         let item: any = document.getElementById('modalLogout');
@@ -26,6 +46,7 @@ function DropdownAccount() {
                         <Image
                             src={user?.avatar || AvatarDefault}
                             width={50}
+                            height={50}
                             className="w-full h-full rounded-full object-cover"
                             alt=""
                         />
@@ -40,6 +61,18 @@ function DropdownAccount() {
                     <li><a onClick={() => handleOpenModalLogout()}> <LogoutIcon /> Đăng xuất</a></li>
                 </ul>
             </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
+                    <div className='mt-2'>
+                        <ModalProfile />
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }

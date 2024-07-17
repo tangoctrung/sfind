@@ -8,7 +8,7 @@ export interface ControlDataSliceState {
     email: string;
     avatar: string;
     address: string;
-    dob: number;
+    dob: string;
     gender: string;
     phone: string;
   },
@@ -24,7 +24,7 @@ const initialState: ControlDataSliceState = {
     username: "",
     address: "",
     avatar: "",
-    dob: 0,
+    dob: "",
     email: "",
     gender: "",
     phone: "",
@@ -41,7 +41,7 @@ export const controlDataSlice = createAppSlice({
   initialState,
   reducers: (create) => ({
     updateInfoUser: create.reducer((state, action: PayloadAction<any>) => {
-      state.user = {...action.payload, id: action.payload?._id};
+      state.user = {...action.payload};
     }),
     updateToken: create.reducer((state, action: PayloadAction<any>) => {
       state.token = {...action.payload};

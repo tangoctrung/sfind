@@ -28,6 +28,7 @@ function ModalCreateSFind() {
                                 <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring ring-offset-2">
                                     <Image
                                         width={96}
+                                        height={96}
                                         src={AvatarGroup}
                                         alt=''
                                     />
