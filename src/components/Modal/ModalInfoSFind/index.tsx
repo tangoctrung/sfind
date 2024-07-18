@@ -4,8 +4,8 @@ import InfoIcon from '@mui/icons-material/Info';
 
 function ModalInfoSFind() {
     function handleOpenModalInfoSFind() {
-        let item: any = document.getElementById('modalInfoSFind');
-        item?.showModal()
+        // let item: any = document.getElementById('modalInfoSFind');
+        // item?.showModal()
     }
     return (
         <>

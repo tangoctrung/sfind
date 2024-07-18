@@ -11,11 +11,7 @@ import { selectDataUser, updateInfoUser as updateInfoUserReudx } from '@/lib/fea
 import { Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
-import { uploadFileToStorage } from '@/utils/handleFile';
 import { updateInfoUser } from '@/endpoint/user';
-import Snackbar from '@mui/material/Snackbar';
-import CloseIcon from '@mui/icons-material/Close';
-import { IconButton } from '@mui/material';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '@/firebase/index';
 import { setInfoUserToLocalStorage } from '@/utils/handleLocal';
@@ -41,14 +37,12 @@ interface DataUpdateInfoUser {
     address: string;
 }
 
-function ModalProfile() {
+function ModalProfile({ setDataSnackBar }: {
+    setDataSnackBar: any;
+}) {
 
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [dataSnackBar, setDataSnackBar] = useState({
-        open: false,
-        message: ""
-    });
     const user = useAppSelector(selectDataUser)
 
     const [infoImageFile, setInfoImageFile] = useState({
@@ -117,6 +111,10 @@ function ModalProfile() {
                         dispatch(updateInfoUserReudx(dataUpdate))
                         setInfoUserToLocalStorage(dataUpdate);
                         setIsDisabled(true);
+                        setDataSnackBar({
+                            open: true,
+                            message: "Cập nhật thành công"
+                        })
                     }
                 })
                 .catch(err => {
@@ -128,28 +126,6 @@ function ModalProfile() {
                 })
         }
     }
-
-    const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setDataSnackBar({
-            open: false,
-            message: ""
-        });
-    };
-    const action = (
-        <React.Fragment>
-            <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={handleCloseSnackBar}
-            >
-                <CloseIcon fontSize="small" />
-            </IconButton>
-        </React.Fragment>
-    );
     return (
         <>
             <h3 className="font-bold text-lg">Thông tin cá nhân</h3>
@@ -235,14 +211,6 @@ function ModalProfile() {
                     {isDisabled ? "Chỉnh sửa" : "Cập nhật"}
                 </button>
             </div>
-            <Snackbar
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                open={dataSnackBar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackBar}
-                message={dataSnackBar.message}
-                action={action}
-            />
         </>
     )
 }

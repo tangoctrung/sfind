@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import DropdownAccount from "@/components/DropdownAccount";
-import ModalProfile from "@/components/Modal/ModalProfile";
 import ModalLogout from "@/components/Modal/ModalLogout";
 import LeftBar from "@/components/LeftBar";
 import { AppMain } from "./AppMain";

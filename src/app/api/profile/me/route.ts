@@ -1,7 +1,7 @@
 import { convertDataResponse } from "@/servers/utils/convertDataResponse";
-import { cookies, headers } from "next/headers";
 import jwt from "jsonwebtoken";
 import User from "@/servers/models/User";
+import { cookies } from "next/headers";
 
 export const GET = async (req: Request) => {
     

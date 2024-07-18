@@ -30,7 +30,7 @@ const Messagechema = new mongoose.Schema({
   deletedAt: {
     type: Date,
   }
-});
+}, {timestamps: true});
 
 const Message = mongoose.models.Message || mongoose.model("Message", Messagechema);
 

@@ -1,12 +1,12 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Image from "next/image";
 import AvatarDefault from "@/assets/images/avatarDefault.png";
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useAppSelector } from '@/lib/hooks';
 import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
-import { Box, Modal } from '@mui/material';
+import { Box, IconButton, Modal, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ModalProfile from '../Modal/ModalProfile';
 
@@ -25,8 +25,11 @@ const style = {
 function DropdownAccount() {
 
     const user = useAppSelector(selectDataUser)
-    const [open, setOpen] = React.useState(false);
-
+    const [open, setOpen] = useState(false);
+    const [dataSnackBar, setDataSnackBar] = useState({
+        open: false,
+        message: ""
+    });
     const handleClose = () => {
         setOpen(false);
     }
@@ -35,9 +38,30 @@ function DropdownAccount() {
         setOpen(true)
     }
     function handleOpenModalLogout() {
-        let item: any = document.getElementById('modalLogout');
-        item?.showModal()
+        // let item: any = document.getElementById('modalLogout');
+        // item?.showModal()
     }
+    const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setDataSnackBar({
+            open: false,
+            message: ""
+        });
+    };
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackBar}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
     return (
         <div>
             <div className="dropdown">
@@ -67,11 +91,21 @@ function DropdownAccount() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
-                    <div className='mt-2'>
-                        <ModalProfile />
-                    </div>
-                </Box>
+                <>
+                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
+                        <div className='mt-2'>
+                            <ModalProfile setDataSnackBar={setDataSnackBar} />
+                        </div>
+                    </Box>
+                    <Snackbar
+                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                        open={dataSnackBar.open}
+                        autoHideDuration={6000}
+                        onClose={handleCloseSnackBar}
+                        message={dataSnackBar.message}
+                        action={action}
+                    />
+                </>
             </Modal>
         </div>
     )

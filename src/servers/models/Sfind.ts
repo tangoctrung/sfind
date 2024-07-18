@@ -1,30 +1,32 @@
 import mongoose from "mongoose";
+const Schema = mongoose.Schema;
 
 const SfindSchema = new mongoose.Schema({
   nameSfind: {
     type: String,
     required: true,
   },
-  description: {
-    type: String,
-  },
   password: {
     type: String,
-    required: true,
+    default: "",
   },
   avatar: {
     type: String,
     default: "",
   },
   admin: {
-    ref: 'User', type: String  
+    ref: 'User', type: Schema.Types.ObjectId,
   },
   member: [
     {
-        ref: 'User', type: String  
+        ref: 'User', type: Schema.Types.ObjectId,  
     }
-  ]
-});
+  ],
+  lastAction: {
+    type: String,
+    default: "",
+  }
+}, {timestamps: true})
 
 const Sfind = mongoose.models.Sfind || mongoose.model("Sfind", SfindSchema);
 

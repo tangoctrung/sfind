@@ -9,7 +9,7 @@ function TopBarSFind() {
                 <input type="text" className="grow" placeholder="Search" />
                 <SearchIcon />
             </label>
-            <ModalInfoSFind />
+            {/* <ModalInfoSFind /> */}
         </div>
     )
 }

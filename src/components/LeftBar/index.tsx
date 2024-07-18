@@ -1,9 +1,24 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import ModalCreateSFind from '../Modal/ModalCreateSFind'
 import SFindItem from '../SFindItem'
 import { useParams, useRouter } from 'next/navigation'
+import { Box, IconButton, Modal, Snackbar } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
+
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    height: "80%",
+    outline: "none",
+    p: 4,
+};
 
 function LeftBar() {
 
@@ -35,31 +50,55 @@ function LeftBar() {
     ]
     const params = useParams();
     const router = useRouter();
-
+    const [open, setOpen] = useState(false);
+    const handleClose = () => {
+        setOpen(false);
+    }
+    function handleOpenModalCreateSFind() {
+        setOpen(true);
+    }
     function handleClickSFindItem(id: string) {
         router.push("/" + id);
     }
 
     return (
-        <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full border-r-[1px] border-r-slate-300">
-            <div className="w-full h-10 flex justify-center items-center">
-                <ModalCreateSFind />
+        <>
+            <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full border-r-[1px] border-r-slate-300">
+                <div className="w-full h-10 flex justify-center items-center">
+                    <div className="tooltip tooltip-bottom" data-tip="Tạo SFind">
+                        <GroupAddIcon className="w-8 h-8 cursor-pointer" onClick={() => handleOpenModalCreateSFind()} />
+                    </div>
+                </div>
+                <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
+                    {dataSFinds?.map((item: any, index: number) => (
+                        <div
+                            key={index}
+                            onClick={() => handleClickSFindItem(item?.id)}
+                        >
+                            <SFindItem
+                                avatarSfind={item?.avatarSfind}
+                                lastActionSfind={item?.lastActionSfind}
+                                nameSfind={item?.nameSfind}
+                                active={item?.id === params?.id}
+                            />
+                        </div>))}
+                </div>
             </div>
-            <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
-                {dataSFinds?.map((item: any, index: number) => (
-                    <div
-                        key={index}
-                        onClick={() => handleClickSFindItem(item?.id)}
-                    >
-                        <SFindItem
-                            avatarSfind={item?.avatarSfind}
-                            lastActionSfind={item?.lastActionSfind}
-                            nameSfind={item?.nameSfind}
-                            active={item?.id === params?.id}
-                        />
-                    </div>))}
-            </div>
-        </div>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <>
+                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
+                        <div className='mt-2'>
+                            <ModalCreateSFind />
+                        </div>
+                    </Box>
+                </>
+            </Modal>
+        </>
     )
 }
 
