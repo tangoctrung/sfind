@@ -91,7 +91,7 @@ function LeftBar() {
                 aria-describedby="modal-modal-description"
             >
                 <>
-                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
+                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl !h-auto w-[90%] tablet:w-[450px]'>
                         <div className='mt-2'>
                             <ModalCreateSFind />
                         </div>

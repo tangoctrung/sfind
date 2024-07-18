@@ -4,6 +4,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import 'react-medium-image-zoom/dist/styles.css'
 import { StoreProvider } from "./StoreProvider";
+import { AppMain } from "./AppMain";
 
 const ubuntu = Ubuntu({ subsets: ["cyrillic"], weight: ["300", "700"] });
 
@@ -34,7 +35,9 @@ export default function RootLayout({
           <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
         </head>
         <body className={ubuntu.className} suppressHydrationWarning={true}>
-          {children}
+          <AppMain>
+            {children}
+          </AppMain>
           <SpeedInsights />
         </body>
       </html>

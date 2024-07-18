@@ -38,8 +38,8 @@ function DropdownAccount() {
         setOpen(true)
     }
     function handleOpenModalLogout() {
-        // let item: any = document.getElementById('modalLogout');
-        // item?.showModal()
+        let item: any = document.getElementById('modalLogout');
+        item?.showModal()
     }
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -92,7 +92,7 @@ function DropdownAccount() {
                 aria-describedby="modal-modal-description"
             >
                 <>
-                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[90%] tablet:w-[450px]'>
+                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl !h-auto w-[90%] tablet:w-[450px]'>
                         <div className='mt-2'>
                             <ModalProfile setDataSnackBar={setDataSnackBar} />
                         </div>
