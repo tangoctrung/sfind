@@ -66,7 +66,7 @@ function DropdownAccount() {
         <div>
             <div className="dropdown">
                 <div tabIndex={0} role="button" className='flex' >
-                    <div className="w-9 h-9 tablet:w-12 tablet:h-12">
+                    <div className="w-10 h-10 tablet:w-12 tablet:h-12">
                         <Image
                             src={user?.avatar || AvatarDefault}
                             width={50}

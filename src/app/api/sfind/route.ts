@@ -41,8 +41,6 @@ export const POST = async (req: Request) => {
             admin: userID,
         });
 
-        console.log({newSfind});
-        
         const sfind = await newSfind.save();
 
         return convertDataResponse(200, true, "Tạo Sfind thành công", {sfind});

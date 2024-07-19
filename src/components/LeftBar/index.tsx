@@ -1,12 +1,17 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import ModalCreateSFind from '../Modal/ModalCreateSFind'
 import SFindItem from '../SFindItem'
 import { useParams, useRouter } from 'next/navigation'
 import { Box, IconButton, Modal, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import { getSfinds } from '@/endpoint/sfind'
+import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
+import CachedSharpIcon from '@mui/icons-material/CachedSharp';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks'
+import { selectDataSfind, updateSfinds } from '@/lib/features/controlData/controlDataSlice'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -20,39 +25,44 @@ const style = {
     p: 4,
 };
 
+
 function LeftBar() {
 
-    const dataSFinds = [
-        {
-            id: "sfind1",
-            avatarSfind: "https://www.computerhope.com/jargon/z/zip.png",
-            lastActionSfind: "Bạn đã gửi 1 file",
-            nameSfind: "Lưu trữ file",
-        },
-        {
-            id: "sfind2",
-            avatarSfind: "https://cdn-icons-png.flaticon.com/512/3460/3460831.png",
-            lastActionSfind: "Bạn đã gửi 1 ảnh",
-            nameSfind: "Lưu trữ ảnh",
-        },
-        {
-            id: "sfind3",
-            avatarSfind: "https://cdn-icons-png.flaticon.com/512/9889/9889012.png",
-            lastActionSfind: "Bạn đã gửi 1 văn bản",
-            nameSfind: "Lưu trữ văn bản",
-        },
-        {
-            id: "sfind4",
-            avatarSfind: "https://cdn-icons-png.flaticon.com/512/187/187326.png",
-            lastActionSfind: "Bạn đã gửi 1 video",
-            nameSfind: "Lưu trữ video",
-        },
-    ]
+    const sfinds = useAppSelector(selectDataSfind)
+    const [dataSfinds, setDataSfinds] = useState<any[]>([])
     const params = useParams();
+    const dispatch = useAppDispatch();
+
     const router = useRouter();
     const [open, setOpen] = useState(false);
+    const [dataSnackBar, setDataSnackBar] = useState({
+        open: false,
+        message: ""
+    });
+
+    useEffect(() => {
+        setDataSfinds(sfinds);
+
+    }, [sfinds])
+
+    useEffect(() => {
+        if (sfinds?.length <= 0) {
+            getSfinds()
+                .then(res => {
+                    setDataSfinds(res.data?.data?.sfinds)
+                    dispatch(updateSfinds(res.data?.data?.sfinds))
+                })
+                .catch(err => {
+                    console.log({ err });
+                })
+        }
+    }, [dataSfinds, dispatch, sfinds])
+
     const handleClose = () => {
         setOpen(false);
+    }
+    function handleRefreshSfinds() {
+
     }
     function handleOpenModalCreateSFind() {
         setOpen(true);
@@ -60,26 +70,53 @@ function LeftBar() {
     function handleClickSFindItem(id: string) {
         router.push("/" + id);
     }
+    const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setDataSnackBar({
+            open: false,
+            message: ""
+        });
+    };
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackBar}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
 
     return (
         <>
             <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full border-r-[1px] border-r-slate-300">
-                <div className="w-full h-10 flex justify-center items-center">
-                    <div className="tooltip tooltip-bottom" data-tip="Tạo SFind">
-                        <GroupAddIcon className="w-8 h-8 cursor-pointer" onClick={() => handleOpenModalCreateSFind()} />
+                <div className="w-full h-10 flex justify-center items-center pt-2">
+                    <div className="dropdown">
+                        <div tabIndex={0} role="button">
+                            <SettingsSharpIcon className="!w-9 !h-9 cursor-pointer" />
+                        </div>
+                        <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                            <li><a onClick={() => handleOpenModalCreateSFind()} > <GroupAddIcon /> Tạo Sfind</a></li>
+                            <li><a onClick={handleRefreshSfinds}> <CachedSharpIcon /> Làm mới Sfind</a></li>
+                        </ul>
                     </div>
                 </div>
                 <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
-                    {dataSFinds?.map((item: any, index: number) => (
+                    {dataSfinds && dataSfinds?.map((item: any, index: number) => (
                         <div
                             key={index}
-                            onClick={() => handleClickSFindItem(item?.id)}
+                            onClick={() => handleClickSFindItem(item?._id)}
                         >
                             <SFindItem
-                                avatarSfind={item?.avatarSfind}
-                                lastActionSfind={item?.lastActionSfind}
+                                avatarSfind={item?.avatar}
+                                lastActionSfind={item?.lastAction}
                                 nameSfind={item?.nameSfind}
-                                active={item?.id === params?.id}
+                                active={params?.id ? (item?._id === params?.id) : false}
                             />
                         </div>))}
                 </div>
@@ -93,13 +130,21 @@ function LeftBar() {
                 <>
                     <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl !h-auto w-[90%] tablet:w-[450px]'>
                         <div className='mt-2'>
-                            <ModalCreateSFind />
+                            <ModalCreateSFind setDataSnackBar={setDataSnackBar} />
                         </div>
                     </Box>
+                    <Snackbar
+                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                        open={dataSnackBar.open}
+                        autoHideDuration={6000}
+                        onClose={handleCloseSnackBar}
+                        message={dataSnackBar.message}
+                        action={action}
+                    />
                 </>
             </Modal>
         </>
     )
 }
 
-export default LeftBar
+export default memo(LeftBar)

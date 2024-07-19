@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const SfindSchema = new mongoose.Schema({
+const SfindSchema = new Schema({
   nameSfind: {
     type: String,
     required: true,
