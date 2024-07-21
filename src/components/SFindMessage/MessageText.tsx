@@ -7,6 +7,7 @@ import ReactHtmlParser from 'react-html-parser';
 function MessageText({ value }: { value: any }) {
 
     useEffect(() => {
+        if (!document) return;
         let itemReadMore = document.getElementById(`readMore${value?._id}`)
         let itemComment = document.getElementById(`contentComment${value?._id}`)
         if (!itemComment || !itemReadMore) return
