@@ -63,7 +63,7 @@ function LoginForm() {
         loginUser(dataLogin)
             .then((res) => {
                 if (res.status === 200) {
-                    router.push("/");
+                    window.location.reload()
                     setIsLoading(false);
                     dispatch(updateUserToken(res.data?.data))
                     setInfoUserToLocalStorage(res.data?.data?.user);
