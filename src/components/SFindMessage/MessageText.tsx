@@ -6,24 +6,24 @@ import ReactHtmlParser from 'react-html-parser';
 
 function MessageText({ value }: { value: any }) {
 
-    useEffect(() => {
-        if (!document) return;
-        let itemReadMore = document.getElementById(`readMore${value?._id}`)
-        let itemComment = document.getElementById(`contentComment${value?._id}`)
-        if (!itemComment || !itemReadMore) return
-        if (itemComment?.clientHeight >= 60) {
-            itemReadMore.classList.remove("hidden")
-            itemReadMore.addEventListener("click", () => {
-                if (itemComment.classList.contains("line-clamp-3")) {
-                    itemComment.classList.remove("line-clamp-3")
-                    itemReadMore.innerText = "Ẩn bớt"
-                } else {
-                    itemComment.classList.add("line-clamp-3")
-                    itemReadMore.innerText = "Xem thêm"
-                }
-            })
-        }
-    }, [value?._id])
+    // useEffect(() => {
+    //     if (!document) return;
+    //     let itemReadMore = document.getElementById(`readMore${value?._id}`)
+    //     let itemComment = document.getElementById(`contentComment${value?._id}`)
+    //     if (!itemComment || !itemReadMore) return
+    //     if (itemComment?.clientHeight >= 60) {
+    //         itemReadMore.classList.remove("hidden")
+    //         itemReadMore.addEventListener("click", () => {
+    //             if (itemComment.classList.contains("line-clamp-3")) {
+    //                 itemComment.classList.remove("line-clamp-3")
+    //                 itemReadMore.innerText = "Ẩn bớt"
+    //             } else {
+    //                 itemComment.classList.add("line-clamp-3")
+    //                 itemReadMore.innerText = "Xem thêm"
+    //             }
+    //         })
+    //     }
+    // }, [value?._id])
 
     return (
         <div className={`h-auto w-full py-5 flex flex-col justify-end items-center relative  transition-all duration-700 `}>
