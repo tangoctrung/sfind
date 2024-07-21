@@ -35,15 +35,15 @@ class EditorQuill extends Component<MyProps, MyState> {
             [{ align: [] }],
         ],
         // # 4 Add module and upload function
-        imageUploader: {
-            upload: (file: File) => {
-                return new Promise((resolve, reject) => {
-                    const formData = new FormData();
-                    formData.append("upload", file);
-                    // upload anh len server o day
-                });
-            }
-        }
+        // imageUploader: {
+        //     upload: (file: File) => {
+        //         return new Promise((resolve, reject) => {
+        //             const formData = new FormData();
+        //             formData.append("upload", file);
+        //             // upload anh len server o day
+        //         });
+        //     }
+        // }
     };
 
     formats = [
