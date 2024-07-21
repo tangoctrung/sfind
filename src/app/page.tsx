@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import DropdownAccount from "@/components/DropdownAccount";
 import ModalLogout from "@/components/Modal/ModalLogout";
 import LeftBar from "@/components/LeftBar";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: 'Trang chủ',
@@ -21,7 +22,9 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full h-[calc(100svh-70px)] flex">
-          <LeftBar />
+          <Suspense>
+            <LeftBar />
+          </Suspense>
           <div className="w-[calc(85%)] tablet:w-[calc(100%-13rem)] laptop:w-[calc(100%-18rem)] desktop:w-[calc(100%-28rem)] text-center pt-64 font-bold text-xl">
             Hãy chọn một SFind để bắt đầu
           </div>

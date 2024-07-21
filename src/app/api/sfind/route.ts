@@ -29,8 +29,8 @@ export const POST = async (req: Request) => {
             try {
                 const data: any = jwt.verify(accessToken, process.env.SECRET_TOKEN || "trungtn12345")
                 userID = data?.userID;
-            } catch (error) {
-                console.log({error});
+            } catch (err) {
+                console.log({err});
                 return convertDataResponse(401, false, "Lỗi token", null);
             }
         }

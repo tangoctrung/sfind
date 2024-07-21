@@ -4,6 +4,7 @@ import ModalLogout from "@/components/Modal/ModalLogout";
 import LeftBar from "@/components/LeftBar";
 import TopBarSFind from "@/components/TopBarSFind";
 import SFindContent from "@/components/SFindContent";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: 'Trang chủ',
@@ -24,8 +25,12 @@ export default function SFindConvention() {
                     <TopBarSFind />
                 </div>
                 <div className="w-full h-[calc(100svh-70px)] flex">
-                    <LeftBar />
-                    <SFindContent />
+                    <Suspense>
+                        <LeftBar />
+                    </Suspense>
+                    <Suspense>
+                        <SFindContent />
+                    </Suspense>
                 </div>
             </div>
             <ModalLogout />

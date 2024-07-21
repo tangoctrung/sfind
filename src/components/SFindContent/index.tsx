@@ -52,8 +52,6 @@ function SFindContent() {
         getMessage({ sfindId: sfindId, des: "" })
             .then(res => {
                 setMessages(res.data?.data?.messages);
-                console.log(res.data?.data);
-
             })
             .catch(err => {
                 console.log({ err });
