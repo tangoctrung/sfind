@@ -31,11 +31,15 @@ export const POST = async (req: Request) => {
             ...userFind?._doc,
             password: ""
         }
+
+        var expireTime = new Date().getTime() + parseInt(process.env.EXPIRED_ACCESS_TOKEN || "604800") * 1000;
         cookies().set({
             name: 'accessToken',
             value: access_token,
             httpOnly: true,
             path: '/',
+            expires: expireTime,
+            secure: true,
           })
         return convertDataResponse(200, true, "Đăng nhập thành công", {user, token: {accessToken: access_token}})
 

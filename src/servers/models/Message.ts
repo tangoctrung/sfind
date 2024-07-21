@@ -10,7 +10,6 @@ const Messagechema = new mongoose.Schema({
         urlFile: String,
         nameFile: String,
         sizeFile: Number,
-        required: true,
     },
   ],
   type: {
@@ -22,10 +21,10 @@ const Messagechema = new mongoose.Schema({
     default: "",
   },
   sender: {
-    ref: 'User', type: String  
+    ref: 'User', type: mongoose.Schema.Types.ObjectId,  
   },
   sfind: {
-    ref: "Sfind", type: String
+    ref: "Sfind", type: mongoose.Schema.Types.ObjectId,
   },
   deletedAt: {
     type: Date,

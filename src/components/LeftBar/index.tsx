@@ -3,7 +3,7 @@
 import React, { memo, useEffect, useState } from 'react'
 import ModalCreateSFind from '../Modal/ModalCreateSFind'
 import SFindItem from '../SFindItem'
-import { useParams, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { Box, IconButton, Modal, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
@@ -29,11 +29,13 @@ const style = {
 function LeftBar() {
 
     const sfinds = useAppSelector(selectDataSfind)
-    const [dataSfinds, setDataSfinds] = useState<any[]>([])
-    const params = useParams();
+    const [dataSfinds, setDataSfinds] = useState<any[]>(sfinds)
+    const searchParams = useSearchParams();
+    const sfindId = searchParams.get("id");
     const dispatch = useAppDispatch();
 
     const router = useRouter();
+
     const [open, setOpen] = useState(false);
     const [dataSnackBar, setDataSnackBar] = useState({
         open: false,
@@ -68,7 +70,7 @@ function LeftBar() {
         setOpen(true);
     }
     function handleClickSFindItem(id: string) {
-        router.push("/" + id);
+        router.push("/sfind?id=" + id);
     }
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -116,7 +118,7 @@ function LeftBar() {
                                 avatarSfind={item?.avatar}
                                 lastActionSfind={item?.lastAction}
                                 nameSfind={item?.nameSfind}
-                                active={params?.id ? (item?._id === params?.id) : false}
+                                active={item?._id === sfindId ? true : false}
                             />
                         </div>))}
                 </div>

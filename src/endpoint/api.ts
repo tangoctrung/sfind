@@ -14,7 +14,7 @@ AxiosInstance.interceptors.request.use(
     request.headers['Authorization'] = `Bearer ${accessToken}`;
     request.headers['UserId'] = `${userId}`;
     request.headers['Content-Type'] = 'application/json; charset=utf-8';
-    console.log(request);
+    // console.log(request);
     return request;
   },
   (error) => {

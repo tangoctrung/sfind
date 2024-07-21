@@ -100,6 +100,11 @@ function ModalCreateSFind({ setDataSnackBar }: {
                         open: true,
                         message: "Tạo Sfind thành công"
                     })
+                    setDataSfind({
+                        avatar: "",
+                        nameSfind: "",
+                        password: ""
+                    })
                     dispatch(updateSfind(res.data?.data?.sfind))
                 }
             })

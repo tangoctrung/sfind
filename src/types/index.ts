@@ -8,3 +8,8 @@ export interface REGISTER_DATA {
     email: string;
     password: string;
 }
+
+export interface QUERY_MESSAGE {
+    sfindId: string;
+    des: string;
+}

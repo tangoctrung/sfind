@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
@@ -12,6 +12,10 @@ import MessageLink from '../SFindMessage/MessageLink';
 import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
 import { uploadFileToStorage } from '@/utils/handleFile';
+import { useSearchParams } from 'next/navigation';
+import { createMessage, getMessage } from '@/endpoint/message';
+import NoData from "@/assets/images/nodata.png";
+import Image from 'next/image';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -28,13 +32,61 @@ const style = {
 function SFindContent() {
 
     const [open, setOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const containerMessage = useRef<HTMLDivElement>(null);
     const handleOpen = () => setOpen(true);
+    const searchParams = useSearchParams();
+    const sfindId = searchParams.get("id") || "";
+    const [messages, setMessages] = useState<any[]>([]);
+    const [textContent, setTextContent] = useState<string>("");
+
+    useEffect(() => {
+        containerMessage.current?.scrollIntoView({
+            behavior: "smooth",
+            block: "end"
+        });
+    }, [messages]);
+
+    useEffect(() => {
+        setMessages([]);
+        getMessage({ sfindId: sfindId, des: "" })
+            .then(res => {
+                setMessages(res.data?.data?.messages);
+                console.log(res.data?.data);
+
+            })
+            .catch(err => {
+                console.log({ err });
+            })
+    }, [sfindId])
+
     const handleClose = () => {
         setOpen(false);
     }
 
     const handleChooseFile = (e: any) => {
         uploadFileToStorage(e.target.files[0], "floderTest")
+    }
+
+    const handleSendMessageText = () => {
+        const dataMessageText = {
+            content: textContent,
+            type: "text",
+            sfind: sfindId
+        }
+
+        setIsLoading(true);
+        createMessage(dataMessageText)
+            .then(res => {
+                let dataMessage = [...messages];
+                dataMessage.push(res.data?.data?.message)
+                setMessages(dataMessage);
+                setTextContent("")
+                setOpen(false);
+            })
+            .catch(err => {
+                console.log({ err });
+            })
     }
 
     const images: string[] = []
@@ -58,10 +110,28 @@ function SFindContent() {
     ]
 
     return (
-        <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)] ">
-            <div className="h-[calc(100%-3rem)] w-full bg-slate-200 overflow-scroll scrollbar-none">
-                <MessageText />
-                <MessageFile />
+        <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
+            <div className="h-[calc(100%-3rem)] pb-5 w-full bg-slate-200 overflow-scroll scrollbar-none" >
+                {messages?.length > 0 && messages?.map((item, index) => {
+                    if (item?.type === "text") {
+                        return (
+                            <div key={index} ref={containerMessage}>
+                                <MessageText value={item} />
+                            </div>
+                        )
+                    }
+                })}
+                {messages?.length <= 0 &&
+                    <div className='w-full h-full flex flex-col justify-center items-center'>
+                        <Image
+                            width={200}
+                            height={200}
+                            src={NoData}
+                            alt='no data'
+                        />
+                        <p className='text-base mt-3 text-slate-400 font-semibold'>Không có dữ liệu</p>
+                    </div>}
+                {/* <MessageFile />
                 <MessageImage
                     images={images}
                 />
@@ -86,7 +156,7 @@ function SFindContent() {
 
                 <MessageImage
                     images={images3}
-                />
+                /> */}
 
             </div>
             <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
@@ -116,8 +186,10 @@ function SFindContent() {
             >
                 <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[98%] w-[95%] !py-5 !px-2'>
                     <div className='flex justify-between items-center'>
-                        <button className="btn btn-neutral p-3">
-                            <SaveIcon />
+                        <button className={`btn ${isLoading ? "btn-disabled" : "btn-neutral"} p-3`}
+                            onClick={handleSendMessageText}
+                        >
+                            {isLoading ? <span className="loading loading-spinner"></span> : <SaveIcon />}
                             Lưu
                         </button>
                         <CloseIcon
@@ -126,7 +198,7 @@ function SFindContent() {
                         />
                     </div>
                     <div className='mt-2'>
-                        <ModalCreatePost />
+                        <ModalCreatePost textContent={textContent} setTextContent={setTextContent} />
                     </div>
                 </Box>
             </Modal>

@@ -63,10 +63,10 @@ function LoginForm() {
         loginUser(dataLogin)
             .then((res) => {
                 if (res.status === 200) {
+                    router.push("/");
                     setIsLoading(false);
                     dispatch(updateUserToken(res.data?.data))
                     setInfoUserToLocalStorage(res.data?.data?.user);
-                    router.push("/");
                 }
             })
             .catch((err) => {

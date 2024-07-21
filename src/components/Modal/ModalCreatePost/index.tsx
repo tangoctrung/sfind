@@ -1,21 +1,21 @@
 'use client'
 
-import React, { useState } from 'react'
+import React from 'react'
 import EditorQuill from './EditorQuill'
 import ReactHtmlParser from 'react-html-parser';
 
-function ModalCreatePost() {
-    const [data, setData] = useState<string>("")
+function ModalCreatePost({ textContent, setTextContent }:
+    { textContent: string, setTextContent: any }) {
     const onChangeData = (value: string) => {
-        setData(value)
+        setTextContent(value)
     }
     return (
         <div className='tablet:flex'>
             <div className='tablet:flex-1 tablet:mr-2'>
-                <EditorQuill data={data} onChangeData={onChangeData} />
+                <EditorQuill data={textContent} onChangeData={onChangeData} />
             </div>
             <div className='tablet:flex-1'>
-                {ReactHtmlParser(data)}
+                {ReactHtmlParser(textContent)}
             </div>
         </div>
     )
