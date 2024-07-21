@@ -13,9 +13,12 @@ import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
 import { uploadFileToStorage } from '@/utils/handleFile';
 import { useSearchParams } from 'next/navigation';
-import { createMessage, getMessage } from '@/endpoint/message';
+import { createMessage, getMessage, getTokenSfind } from '@/endpoint/message';
 import NoData from "@/assets/images/nodata.png";
 import Image from 'next/image';
+import SfindContentSkeleton from '../Skeleton/SfindContentSkeleton';
+import TypePassword from './TypePassword';
+import { ERR_TOKEN_SFIND, ERR_TYPE_PASS_SFIND } from '@/types/errorMessage';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -32,7 +35,9 @@ const style = {
 function SFindContent() {
 
     const [open, setOpen] = React.useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
+    const [isLoadingGetMessage, setIsLoadingGetMessage] = useState(false);
+    const [isShowTypePassword, setIsShowTypePassword] = useState(false);
     const containerMessage = useRef<HTMLDivElement>(null);
     const handleOpen = () => setOpen(true);
     const searchParams = useSearchParams();
@@ -49,13 +54,9 @@ function SFindContent() {
 
     useEffect(() => {
         setMessages([]);
-        getMessage({ sfindId: sfindId, des: "" })
-            .then(res => {
-                setMessages(res.data?.data?.messages);
-            })
-            .catch(err => {
-                console.log({ err });
-            })
+        handleGetMessage();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sfindId])
 
     const handleClose = () => {
@@ -73,7 +74,7 @@ function SFindContent() {
             sfind: sfindId
         }
 
-        setIsLoading(true);
+        setIsLoadingSendMessage(true);
         createMessage(dataMessageText)
             .then(res => {
                 let dataMessage = [...messages];
@@ -81,6 +82,44 @@ function SFindContent() {
                 setMessages(dataMessage);
                 setTextContent("")
                 setOpen(false);
+            })
+            .catch(err => {
+                console.log({ err });
+            })
+    }
+
+    const handleGetMessage = () => {
+        setIsLoadingGetMessage(true)
+        getMessage({ sfindId: sfindId, des: "" })
+            .then(res => {
+                setMessages(res.data?.data?.messages);
+                setIsLoadingGetMessage(false);
+                setIsShowTypePassword(false);
+            })
+            .catch(err => {
+                console.log({ err });
+                setIsLoadingGetMessage(false);
+                const messageErr = err?.response?.data?.message || ""
+                if (messageErr === ERR_TYPE_PASS_SFIND || messageErr === ERR_TOKEN_SFIND) {
+                    setIsShowTypePassword(true);
+                }
+            })
+    }
+
+    const handleGetTokenSfind = (password: string) => {
+        getTokenSfind({ sfindId: sfindId, password: password })
+            .then(res => {
+                setIsShowTypePassword(false);
+                setIsLoadingGetMessage(true);
+                getMessage({ sfindId: sfindId, des: "" })
+                    .then(res => {
+                        setMessages(res.data?.data?.messages);
+                        setIsLoadingGetMessage(false);
+                    })
+                    .catch(err => {
+                        console.log({ err });
+                        setIsLoadingGetMessage(false);
+                    })
             })
             .catch(err => {
                 console.log({ err });
@@ -108,73 +147,83 @@ function SFindContent() {
     ]
 
     return (
-        <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
-            <div className="h-[calc(100%-3rem)] pb-5 w-full bg-slate-200 overflow-scroll scrollbar-none" >
-                {messages?.length > 0 && messages?.map((item, index) => {
-                    if (item?.type === "text") {
-                        return (
-                            <div key={index} ref={containerMessage}>
-                                <MessageText value={item} />
-                            </div>
-                        )
-                    }
-                })}
-                {messages?.length <= 0 &&
-                    <div className='w-full h-full flex flex-col justify-center items-center'>
-                        <Image
-                            width={200}
-                            height={200}
-                            src={NoData}
-                            alt='no data'
+        <>
+            <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
+                {!isShowTypePassword ?
+                    <>
+                        <div className="h-[calc(100%-3rem)] pb-5 w-full bg-slate-200 overflow-scroll scrollbar-none" >
+                            {!isLoadingGetMessage && messages?.length > 0 && messages?.map((item, index) => {
+                                if (item?.type === "text") {
+                                    return (
+                                        <div key={index} ref={containerMessage}>
+                                            <MessageText value={item} />
+                                        </div>
+                                    )
+                                }
+                            })}
+                            {!isLoadingGetMessage && messages?.length <= 0 &&
+                                <div className='w-full h-full flex flex-col justify-center items-center'>
+                                    <Image
+                                        width={200}
+                                        height={200}
+                                        src={NoData}
+                                        alt='no data'
+                                    />
+                                    <p className='text-base mt-3 text-slate-400 font-semibold'>Không có dữ liệu</p>
+                                </div>}
+                            {isLoadingGetMessage &&
+                                <SfindContentSkeleton />
+                            }
+
+                            {/* <MessageFile />
+                        <MessageImage
+                            images={images}
                         />
-                        <p className='text-base mt-3 text-slate-400 font-semibold'>Không có dữ liệu</p>
-                    </div>}
-                {/* <MessageFile />
-                <MessageImage
-                    images={images}
-                />
 
-                <MessageImage
-                    images={images1}
-                />
+                        <MessageImage
+                            images={images1}
+                        />
 
-                <MessageImage
-                    images={images2}
-                />
+                        <MessageImage
+                            images={images2}
+                        />
 
-                <MessageImage
-                    images={images3}
-                />
+                        <MessageImage
+                            images={images3}
+                        />
 
-                <MessageImage
-                    images={images4}
-                />
+                        <MessageImage
+                            images={images4}
+                        />
 
-                <MessageLink />
+                        <MessageLink />
 
-                <MessageImage
-                    images={images3}
-                /> */}
+                        <MessageImage
+                            images={images3}
+                        /> */}
 
-            </div>
-            <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
-                <div className="p-2 cursor-pointer bg-slate-400 rounded-md mr-5">
-                    <input
-                        id="inputChooseFile"
-                        type="file"
-                        className="file-input w-full max-w-xs hidden"
-                        onChange={e => handleChooseFile(e)}
-                    />
-                    <label htmlFor="inputChooseFile" className="cursor-pointer">
-                        <AttachFileIcon />
-                    </label>
-                </div>
-                <div
-                    className="p-2 cursor-pointer bg-slate-400 rounded-md ml-5"
-                    onClick={handleOpen}
-                >
-                    <EditNoteIcon />
-                </div>
+                        </div>
+                        <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
+                            <div className="p-2 cursor-pointer bg-slate-400 rounded-md mr-5">
+                                <input
+                                    id="inputChooseFile"
+                                    type="file"
+                                    className="file-input w-full max-w-xs hidden"
+                                    onChange={e => handleChooseFile(e)}
+                                />
+                                <label htmlFor="inputChooseFile" className="cursor-pointer">
+                                    <AttachFileIcon />
+                                </label>
+                            </div>
+                            <div
+                                className="p-2 cursor-pointer bg-slate-400 rounded-md ml-5"
+                                onClick={handleOpen}
+                            >
+                                <EditNoteIcon />
+                            </div>
+                        </div>
+                    </> :
+                    <TypePassword handleSubmitPasswordSfind={handleGetTokenSfind} />}
             </div>
             <Modal
                 open={open}
@@ -184,10 +233,10 @@ function SFindContent() {
             >
                 <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[98%] w-[95%] !py-5 !px-2'>
                     <div className='flex justify-between items-center'>
-                        <button className={`btn ${isLoading ? "btn-disabled" : "btn-neutral"} p-3`}
+                        <button className={`btn ${isLoadingSendMessage ? "btn-disabled" : "btn-neutral"} p-3`}
                             onClick={handleSendMessageText}
                         >
-                            {isLoading ? <span className="loading loading-spinner"></span> : <SaveIcon />}
+                            {isLoadingSendMessage ? <span className="loading loading-spinner"></span> : <SaveIcon />}
                             Lưu
                         </button>
                         <CloseIcon
@@ -200,7 +249,7 @@ function SFindContent() {
                     </div>
                 </Box>
             </Modal>
-        </div>
+        </>
     )
 }
 

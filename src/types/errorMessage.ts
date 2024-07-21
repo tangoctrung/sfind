@@ -1,0 +1,5 @@
+export const ERR_TYPE_PASS_SFIND = "Bạn cần nhập mật khẩu cho sfind"
+export const ERR_TOKEN_SFIND = "Lỗi token sfind"
+export const ERR_SYSTEM ="Lỗi hệ thống"
+export const ERR_DB = ""
+export const ERR_TOKEN = "Lỗi token"

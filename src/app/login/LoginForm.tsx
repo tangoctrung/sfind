@@ -13,7 +13,6 @@ import { validateEmail } from '@/utils/validate';
 import { loginUser } from '@/endpoint/auth';
 import { useAppDispatch } from '@/lib/hooks';
 import { updateUserToken } from '@/lib/features/controlData/controlDataSlice';
-import { KEY_LOCAL } from '@/types/keyLocal';
 import { setInfoUserToLocalStorage } from '@/utils/handleLocal';
 
 function LoginForm() {

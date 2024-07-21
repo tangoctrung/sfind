@@ -81,8 +81,8 @@ function DropdownAccount() {
                     </div>
                 </div>
                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                    <li><a onClick={() => handleOpenModalProfile()}> <AccountCircleIcon /> Thông tin cá nhân</a></li>
-                    <li><a onClick={() => handleOpenModalLogout()}> <LogoutIcon /> Đăng xuất</a></li>
+                    <li><div onClick={() => handleOpenModalProfile()} > <AccountCircleIcon /> Thông tin cá nhân</div></li>
+                    <li><div onClick={() => handleOpenModalLogout()} > <LogoutIcon /> Đăng xuất</div></li>
                 </ul>
             </div>
             <Modal

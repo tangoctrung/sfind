@@ -103,8 +103,8 @@ function LeftBar() {
                             <SettingsSharpIcon className="!w-9 !h-9 cursor-pointer" />
                         </div>
                         <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                            <li><a onClick={() => handleOpenModalCreateSFind()} > <GroupAddIcon /> Tạo Sfind</a></li>
-                            <li><a onClick={handleRefreshSfinds}> <CachedSharpIcon /> Làm mới Sfind</a></li>
+                            <li><div onClick={() => handleOpenModalCreateSFind()} > <GroupAddIcon /> Tạo Sfind</div></li>
+                            <li><div onClick={handleRefreshSfinds}> <CachedSharpIcon /> Làm mới Sfind</div></li>
                         </ul>
                     </div>
                 </div>
