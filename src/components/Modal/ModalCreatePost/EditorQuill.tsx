@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import ReactQuill, { Quill } from "react-quill";
+import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-
-// #1 import quill-image-uploader
 import ImageUploader from "quill-image-uploader";
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const Quill = dynamic(() => import('react-quill'), { ssr: false });
 
 // #2 register module
-Quill.register("modules/imageUploader", ImageUploader);
+// Quill.register("modules/imageUploader", ImageUploader);
 type MyProps = {
     data: string,
     onChangeData: any;
