@@ -53,6 +53,7 @@ export const GET = async (req: NextRequest) => {
     try {
         const params = req.nextUrl.searchParams
         const q = params.get("q") || ""
+        connectToDB();
         let sfinds = [];
         const accessToken = cookies().get("accessToken")?.value || "";
         let userID = "";
@@ -68,7 +69,7 @@ export const GET = async (req: NextRequest) => {
             return convertDataResponse(200, true, "Thành công", {sfinds});
         } else {
             
-            sfinds = await Sfind.find({admin: userID}).select("-password");
+            sfinds = await Sfind.find({admin: userID}).sort({ updatedAt: -1 }).select("-password");
             if (sfinds) {
                 return convertDataResponse(200, true, "Thành công", {sfinds});
             }

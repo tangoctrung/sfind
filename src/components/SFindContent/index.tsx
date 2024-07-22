@@ -13,7 +13,7 @@ import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
 import { uploadFileToStorage } from '@/utils/handleFile';
 import { useSearchParams } from 'next/navigation';
-import { createMessage, getMessage, getTokenSfind } from '@/endpoint/message';
+import { createMessage, deleteMessage, getMessage, getTokenSfind } from '@/endpoint/message';
 import NoData from "@/assets/images/nodata.png";
 import Image from 'next/image';
 import SfindContentSkeleton from '../Skeleton/SfindContentSkeleton';
@@ -42,6 +42,8 @@ function SFindContent() {
     const [open, setOpen] = React.useState(false);
     const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
     const [isLoadingGetMessage, setIsLoadingGetMessage] = useState(false);
+    const [isLoadingDeleteMessage, setIsLoadingDeleteMessage] = useState(false);
+
     const [isShowTypePassword, setIsShowTypePassword] = useState(false);
     const [isRefreshMessage, setIsRefreshMessage] = useState(false);
     const containerMessage = useRef<HTMLDivElement>(null);
@@ -60,14 +62,17 @@ function SFindContent() {
             behavior: "smooth",
             block: "end"
         });
-    }, [messages]);
+    }, [messages?.length]);
 
     useEffect(() => {
         setMessages([]);
         handleGetMessage();
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sfindId, isRefreshMessage])
+
+    useEffect(() => {
+        setIsShowTypePassword(false);
+    }, [])
 
     const handleClose = () => {
         setOpen(false);
@@ -156,6 +161,51 @@ function SFindContent() {
             })
     }
 
+    function stripHTMLTagsUsingDOM(htmlString: string) {
+        const temporaryElement = document.createElement('div');
+        temporaryElement.innerHTML = htmlString;
+        const plainText = temporaryElement.textContent;
+        return plainText;
+    }
+
+    const handleActionMessage = async (type: string, message: any) => {
+        if (type === "delete") {
+            const res = await deleteMessage(message?._id)
+            if (res.status === 200) {
+                let dataMessage = messages?.filter((item: any) => item?._id !== message?._id)
+                setMessages(dataMessage)
+                setDataSnackBar({
+                    open: true,
+                    message: "Xóa message thành công"
+                })
+                setIsLoadingDeleteMessage(false)
+            }
+        } else if (type === "copy") {
+            navigator.clipboard.writeText(stripHTMLTagsUsingDOM(message?.content) || "")
+                .then(() => {
+                    setDataSnackBar({
+                        open: true,
+                        message: "Đã copy message vào bộ nhớ"
+                    })
+                })
+                .catch(error => {
+                    console.error('Failed to copy text:', error);
+                });
+        } else if (type === "edit") {
+            let dataMessage = [...messages]
+            dataMessage?.map((item: any) => {
+                if (item?._id === message?._id) {
+                    item.content = message?.content
+                }
+            })
+            setMessages(dataMessage)
+            setDataSnackBar({
+                open: true,
+                message: "Cập nhật message thành công"
+            })
+        }
+    }
+
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -178,26 +228,6 @@ function SFindContent() {
         </React.Fragment>
     );
 
-    const images: string[] = []
-    const images1: string[] = [
-        "https://images.pexels.com/photos/19020136/pexels-photo-19020136/free-photo-of-bi-n-da-song-bi-n-d-ng.jpeg?auto=compress&cs=tinysrgb&w=600&lazy=load",
-    ]
-    const images2: string[] = [
-        "https://images.pexels.com/photos/1563356/pexels-photo-1563356.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ]
-    const images3: string[] = [
-        "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/1366630/pexels-photo-1366630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ]
-    const images4: string[] = [
-        "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/1366630/pexels-photo-1366630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-        "https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    ]
-
     return (
         <>
             <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
@@ -208,7 +238,11 @@ function SFindContent() {
                                 if (item?.type === "text") {
                                     return (
                                         <div key={index} ref={containerMessage}>
-                                            <MessageText value={item} />
+                                            <MessageText
+                                                value={item}
+                                                isLoadingDeleteMessage={isLoadingDeleteMessage}
+                                                handleActionMessage={handleActionMessage}
+                                            />
                                         </div>
                                     )
                                 }
@@ -226,33 +260,6 @@ function SFindContent() {
                             {isLoadingGetMessage &&
                                 <SfindContentSkeleton />
                             }
-
-                            {/* <MessageFile />
-                        <MessageImage
-                            images={images}
-                        />
-
-                        <MessageImage
-                            images={images1}
-                        />
-
-                        <MessageImage
-                            images={images2}
-                        />
-
-                        <MessageImage
-                            images={images3}
-                        />
-
-                        <MessageImage
-                            images={images4}
-                        />
-
-                        <MessageLink />
-
-                        <MessageImage
-                            images={images3}
-                        /> */}
 
                         </div>
                         <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
@@ -310,7 +317,7 @@ function SFindContent() {
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={dataSnackBar.open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleCloseSnackBar}
                 message={dataSnackBar.message}
                 action={action}

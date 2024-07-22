@@ -43,6 +43,7 @@ export const POST = async (req: Request) => {
 
 export const GET = async (req: NextRequest) => {
     try {
+        connectToDB();
         const params = req.nextUrl.searchParams
         const sfindId = params.get("sfindId") || ""
         const des = params.get("des") || ""
@@ -81,6 +82,59 @@ export const GET = async (req: NextRequest) => {
         } else {
             return convertDataResponse(404, false, "Không tìm thấy message", null);
         }
+    } catch (error: any) {
+        return convertDataResponse(500, false, error?.message || "Lỗi hệ thống", null);
+    }
+}
+
+export const DELETE = async (req: NextRequest) => {
+    try {
+        const accessToken = cookies().get("accessToken")?.value || "";
+        console.log({accessToken});
+        
+        let userID = "";
+        try {
+            const data: any = jwt.verify(accessToken, process.env.SECRET_TOKEN || "trungtn12345")
+            userID = data?.userID;
+        } catch (error) {
+            return convertDataResponse(401, false, "Lỗi token", null);
+        }
+        
+        connectToDB();
+        const params = req.nextUrl.searchParams
+        const messageId = params.get("messageId") || ""
+        if (messageId === "") {
+            return convertDataResponse(400, false, "Bạn chưa điền đầy đủ thông tin", null);
+        }
+        
+        await Message.findOneAndDelete({_id: messageId, sender: userID})
+
+        return convertDataResponse(200, true, "Xóa message thành công", null);
+    } catch (error: any) {
+        return convertDataResponse(500, false, error?.message || "Lỗi hệ thống", null);
+    }
+}
+
+export const PUT = async (req: NextRequest) => {
+    try {
+        const accessToken = cookies().get("accessToken")?.value || "";
+        console.log({accessToken});
+        
+        let userID = "";
+        try {
+            const data: any = jwt.verify(accessToken, process.env.SECRET_TOKEN || "trungtn12345")
+            userID = data?.userID;
+        } catch (error) {
+            return convertDataResponse(401, false, "Lỗi token", null);
+        }
+        
+        connectToDB();
+        const body = await req.json();
+        const params = req.nextUrl.searchParams
+        const messageId = params.get("messageId") || ""
+        await Message.findOneAndUpdate({_id: messageId, sender: userID}, {$set: body})
+
+        return convertDataResponse(200, true, "Xóa message thành công", null);
     } catch (error: any) {
         return convertDataResponse(500, false, error?.message || "Lỗi hệ thống", null);
     }

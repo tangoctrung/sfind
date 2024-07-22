@@ -2,10 +2,13 @@ import { convertDataResponse } from "@/servers/utils/convertDataResponse";
 import bcrypt from 'bcrypt';
 import { NextRequest } from "next/server";
 import Sfind from "@/servers/models/Sfind";
+import { connectToDB } from "@/servers/mongodb";
 
 export const POST = async (req: NextRequest) => {
     
     try {
+        connectToDB();
+
         const body = await req.json();
         const {sfindId, password} = body
         if (password === "" || sfindId === "") {

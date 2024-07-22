@@ -39,7 +39,6 @@ export const POST = async (req: Request) => {
             httpOnly: true,
             path: '/',
             expires: expireTime,
-            secure: true,
           })
         return convertDataResponse(200, true, "Đăng nhập thành công", {user, token: {accessToken: access_token}})
 

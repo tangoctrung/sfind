@@ -2,8 +2,10 @@ import { convertDataResponse } from "@/servers/utils/convertDataResponse";
 import jwt from "jsonwebtoken";
 import User from "@/servers/models/User";
 import { cookies } from "next/headers";
+import { connectToDB } from "@/servers/mongodb";
 
 export const GET = async (req: Request) => {
+    connectToDB();
     
     try {
         const accessToken = cookies().get("accessToken")?.value;
@@ -28,6 +30,7 @@ export const GET = async (req: Request) => {
 }
 
 export const PUT = async (req: Request) => {
+    connectToDB();
     
     try {
         const accessToken = cookies().get("accessToken")?.value;

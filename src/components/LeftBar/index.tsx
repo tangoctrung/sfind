@@ -63,7 +63,7 @@ function LeftBar() {
                     setIsLoading(false)
                 })
         }
-    }, [dispatch, sfinds])
+    }, [dispatch, sfinds?.length])
 
     const handleClose = () => {
         setOpen(false);
