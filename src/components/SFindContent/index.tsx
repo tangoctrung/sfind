@@ -19,6 +19,11 @@ import Image from 'next/image';
 import SfindContentSkeleton from '../Skeleton/SfindContentSkeleton';
 import TypePassword from './TypePassword';
 import { ERR_TOKEN_SFIND, ERR_TYPE_PASS_SFIND } from '@/types/errorMessage';
+import { IconButton } from '@mui/material';
+import Snackbar from '@mui/material/Snackbar';
+import { sendMessageTelegram } from '@/utils/handleBotTelegram';
+import CachedSharpIcon from '@mui/icons-material/CachedSharp';
+
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -38,12 +43,17 @@ function SFindContent() {
     const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
     const [isLoadingGetMessage, setIsLoadingGetMessage] = useState(false);
     const [isShowTypePassword, setIsShowTypePassword] = useState(false);
+    const [isRefreshMessage, setIsRefreshMessage] = useState(false);
     const containerMessage = useRef<HTMLDivElement>(null);
     const handleOpen = () => setOpen(true);
     const searchParams = useSearchParams();
     const sfindId = searchParams.get("id") || "";
     const [messages, setMessages] = useState<any[]>([]);
     const [textContent, setTextContent] = useState<string>("");
+    const [dataSnackBar, setDataSnackBar] = useState({
+        open: false,
+        message: ""
+    });
 
     useEffect(() => {
         containerMessage.current?.scrollIntoView({
@@ -57,7 +67,7 @@ function SFindContent() {
         handleGetMessage();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sfindId])
+    }, [sfindId, isRefreshMessage])
 
     const handleClose = () => {
         setOpen(false);
@@ -82,9 +92,11 @@ function SFindContent() {
                 setMessages(dataMessage);
                 setTextContent("")
                 setOpen(false);
+                setIsLoadingSendMessage(false);
             })
             .catch(err => {
                 console.log({ err });
+                setIsLoadingSendMessage(false);
             })
     }
 
@@ -98,6 +110,7 @@ function SFindContent() {
             })
             .catch(err => {
                 console.log({ err });
+                // sendMessageTelegram("")
                 setIsLoadingGetMessage(false);
                 const messageErr = err?.response?.data?.message || ""
                 if (messageErr === ERR_TYPE_PASS_SFIND || messageErr === ERR_TOKEN_SFIND) {
@@ -106,7 +119,11 @@ function SFindContent() {
             })
     }
 
-    const handleGetTokenSfind = (password: string) => {
+    const handleRefreshMessage = () => {
+        setIsRefreshMessage(i => !i)
+    }
+
+    const handleGetTokenSfind = (password: string, callbackSetLoading: any) => {
         getTokenSfind({ sfindId: sfindId, password: password })
             .then(res => {
                 setIsShowTypePassword(false);
@@ -115,16 +132,51 @@ function SFindContent() {
                     .then(res => {
                         setMessages(res.data?.data?.messages);
                         setIsLoadingGetMessage(false);
+                        callbackSetLoading()
                     })
                     .catch(err => {
                         console.log({ err });
                         setIsLoadingGetMessage(false);
+                        const messageErr = err?.response?.data?.message || ""
+                        if (messageErr === ERR_TYPE_PASS_SFIND || messageErr === ERR_TOKEN_SFIND) {
+                            setIsShowTypePassword(true);
+                        }
                     })
             })
             .catch(err => {
                 console.log({ err });
+                if (err?.response?.status === 400) {
+                    setDataSnackBar({
+                        open: true,
+                        message: err?.response?.data?.message || "Mật khẩu không đúng"
+                    })
+                }
+                callbackSetLoading()
+
             })
     }
+
+    const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setDataSnackBar({
+            open: false,
+            message: ""
+        });
+    };
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleCloseSnackBar}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
 
     const images: string[] = []
     const images1: string[] = [
@@ -204,7 +256,7 @@ function SFindContent() {
 
                         </div>
                         <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
-                            <div className="p-2 cursor-pointer bg-slate-400 rounded-md mr-5">
+                            <div className="p-2 cursor-pointer bg-slate-400 rounded-md">
                                 <input
                                     id="inputChooseFile"
                                     type="file"
@@ -216,10 +268,16 @@ function SFindContent() {
                                 </label>
                             </div>
                             <div
-                                className="p-2 cursor-pointer bg-slate-400 rounded-md ml-5"
+                                className="p-2 cursor-pointer bg-slate-400 rounded-md ml-8"
                                 onClick={handleOpen}
                             >
                                 <EditNoteIcon />
+                            </div>
+                            <div
+                                className="p-2 cursor-pointer bg-slate-400 rounded-md ml-8"
+                                onClick={handleRefreshMessage}
+                            >
+                                <CachedSharpIcon />
                             </div>
                         </div>
                     </> :
@@ -249,6 +307,14 @@ function SFindContent() {
                     </div>
                 </Box>
             </Modal>
+            <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                open={dataSnackBar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+                message={dataSnackBar.message}
+                action={action}
+            />
         </>
     )
 }

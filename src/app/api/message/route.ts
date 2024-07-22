@@ -48,7 +48,6 @@ export const GET = async (req: NextRequest) => {
         const des = params.get("des") || ""
         let messages = [];
         const accessToken = cookies().get("accessToken")?.value || "";
-        const sfindToken = cookies().get("sfindToken")?.value || "";
 
         let userID = "";
         // xac thuc accessToken
@@ -61,14 +60,13 @@ export const GET = async (req: NextRequest) => {
         }
         // xac thuc sfindToken
         const sfind = await Sfind.findById(sfindId)
-        if (sfind?.password && !sfindToken) {
+        const expireTime = sfind?.expireTime;
+
+        if (sfind?.password && !expireTime) {
             return convertDataResponse(400, false, "Bạn cần nhập mật khẩu cho sfind", null);
         }
-        if (sfind?.password && sfindToken) {
-            try {
-                jwt.verify(sfindToken, process.env.SECRET_TOKEN_SFIND || "trungtn12345")
-            } catch(error) {
-                cookies().delete("sfindToken");
+        if (sfind?.password && expireTime) {
+            if (expireTime <= new Date().getTime()) {
                 return convertDataResponse(400, false, "Lỗi token sfind", null);
             }
         }

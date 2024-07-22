@@ -25,6 +25,10 @@ const SfindSchema = new Schema({
   lastAction: {
     type: String,
     default: "",
+  },
+  expireTime: {
+    type: Number,
+    default: 0,
   }
 }, {timestamps: true})
 

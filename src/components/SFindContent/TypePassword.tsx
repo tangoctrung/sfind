@@ -6,13 +6,15 @@ function TypePassword({ handleSubmitPasswordSfind }: { handleSubmitPasswordSfind
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
 
+
     function handleTypePassword(e: any) {
         setPassword(e.target?.value);
     }
     function handleSubmitPassword() {
-        setIsLoading(true);
-        handleSubmitPasswordSfind(password)
+        setIsLoading(true)
+        handleSubmitPasswordSfind(password, () => setIsLoading(false))
     }
+
     return (
         <div className='h-full w-full flex flex-col justify-center items-center bg-base-300'>
             <h3>Bạn cần nhập mật khẩu để truy cập</h3>
@@ -30,6 +32,7 @@ function TypePassword({ handleSubmitPasswordSfind }: { handleSubmitPasswordSfind
                 {isLoading && <span className="loading loading-spinner"></span>}
                 Nhập
             </button>
+
         </div>
     )
 }

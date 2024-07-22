@@ -30,7 +30,7 @@ function MessageText({ value }: { value: any }) {
             <p className='w-full text-center text-sm text-gray-400'>{convertTimeToHHMMddmmYYYY(value?.createdAt)}</p>
             <div className='w-full flex justify-end'>
                 <div className="max-w-[80%] cursor-pointer mr-5 text-secondary1 text-sm font-normal mt-[6px] transition-all duration-700 rounded-xl bg-slate-300 p-2 box-border">
-                    <div id={`contentComment${value?._id}`} className="line-clamp-3">
+                    <div id={`contentComment${value?._id}`} className="line-clamp-3 max-w-full break-words">
                         {ReactHtmlParser(value?.content)}
                     </div>
                     <div id={`readMore${value?._id}`} className={`hidden text-sm font-semibold text-primary mt-[6px]`}>

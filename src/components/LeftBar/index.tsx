@@ -12,6 +12,7 @@ import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { selectDataSfind, updateSfinds } from '@/lib/features/controlData/controlDataSlice'
+import LeftBarSkeleton from '../Skeleton/LeftBarSkeleton'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -37,6 +38,7 @@ function LeftBar() {
     const router = useRouter();
 
     const [open, setOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [dataSnackBar, setDataSnackBar] = useState({
         open: false,
         message: ""
@@ -49,22 +51,26 @@ function LeftBar() {
 
     useEffect(() => {
         if (sfinds?.length <= 0) {
+            setIsLoading(true)
             getSfinds()
                 .then(res => {
                     setDataSfinds(res.data?.data?.sfinds)
                     dispatch(updateSfinds(res.data?.data?.sfinds))
+                    setIsLoading(false)
                 })
                 .catch(err => {
                     console.log({ err });
+                    setIsLoading(false)
                 })
         }
-    }, [dataSfinds, dispatch, sfinds])
+    }, [dispatch, sfinds])
 
     const handleClose = () => {
         setOpen(false);
     }
     function handleRefreshSfinds() {
-
+        let data: any = []
+        dispatch(updateSfinds(data))
     }
     function handleOpenModalCreateSFind() {
         setOpen(true);
@@ -109,7 +115,7 @@ function LeftBar() {
                     </div>
                 </div>
                 <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
-                    {dataSfinds && dataSfinds?.map((item: any, index: number) => (
+                    {!isLoading && dataSfinds && dataSfinds?.map((item: any, index: number) => (
                         <div
                             key={index}
                             onClick={() => handleClickSFindItem(item?._id)}
@@ -121,6 +127,7 @@ function LeftBar() {
                                 active={item?._id === sfindId ? true : false}
                             />
                         </div>))}
+                    {isLoading && <LeftBarSkeleton />}
                 </div>
             </div>
             <Modal
