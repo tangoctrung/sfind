@@ -5,12 +5,11 @@ import React, { useState } from 'react'
 import NoImage from '@/assets/images/noImage.jpg';
 import CloseIcon from '@mui/icons-material/Close';
 import { Box, Modal } from '@mui/material';
-import Zoom from 'react-medium-image-zoom'
 import Download from '@mui/icons-material/Download';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { downloadFile } from '@/utils/handleFile';
-import Link from 'next/link';
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -53,17 +52,14 @@ function MessageImage({ images }: { images: string[] }) {
         }
     }
 
-    let isPush = (images?.length <= 1) ? true : false;
-
     return (
         <>
             <div
-                className={`h-${isPush ? "72" : "52"} max-w-[90%] flex justify-end items-center relative`}
-                style={{ marginTop: isPush ? "80px" : "96px" }}
+                className={`h-auto w-full flex flex-col justify-center items-end p-5`}
+
             >
                 <p
-                    className={`absolute w-full text-center text-sm text-gray-400`}
-                    style={{ top: isPush ? "-40px" : "-56px" }}
+                    className={`w-full text-center text-sm text-gray-400 mb-8`}
                 >11:20 20/03/2022</p>
                 {images?.length <= 0 &&
                     <div className=' h-72 w-56 overflow-hidden rounded-xl'>
@@ -88,8 +84,8 @@ function MessageImage({ images }: { images: string[] }) {
                         />
                     </div>}
                 {images?.length === 2 &&
-                    <>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px]  rotate-[5deg]'>
+                    <div className='flex justify-end relative w-full h-52'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-5deg] top-[-10px] right-[10px] absolute'>
                             <Image
                                 src={images[1]}
                                 width={600}
@@ -99,7 +95,7 @@ function MessageImage({ images }: { images: string[] }) {
                             />
                         </div>
                         <div
-                            className='h-52 w-52 cursor-pointer overflow-hidden rounded-xl absolute right-[10px] rotate-[-5deg]'
+                            className='h-52 w-52 cursor-pointer overflow-hidden rounded-xl rotate-[5deg] absolute'
                             onClick={handleOpen}
                         >
                             <Image
@@ -110,10 +106,10 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                    </>}
+                    </div>}
                 {images?.length === 3 &&
-                    <>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-10px]  rotate-[5deg]'>
+                    <div className='flex justify-end relative w-full h-52'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[3deg] top-[-10px] right-[-10px] absolute'>
                             <Image
                                 src={images[2]}
                                 width={600}
@@ -122,7 +118,7 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-5deg]'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-3deg] top-[-10px] right-[10px] absolute'>
                             <Image
                                 src={images[1]}
                                 width={600}
@@ -143,10 +139,11 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                    </>}
+                    </div>
+                }
                 {images?.length >= 4 &&
-                    <>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute top-[-20px]'>
+                    <div className='flex justify-end relative w-full h-52'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl top-[-20px] absolute'>
                             <Image
                                 src={images[3]}
                                 width={600}
@@ -155,7 +152,7 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[-10px] top-[-12px] rotate-[3deg]'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[3deg] top-[-10px] right-[-10px] absolute'>
                             <Image
                                 src={images[2]}
                                 width={600}
@@ -164,7 +161,7 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                        <div className='h-52 w-52 overflow-hidden rounded-xl absolute right-[10px] top-[-10px] rotate-[-3deg]'>
+                        <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-3deg] top-[-10px] right-[10px] absolute'>
                             <Image
                                 src={images[1]}
                                 width={600}
@@ -185,7 +182,7 @@ function MessageImage({ images }: { images: string[] }) {
                                 alt=''
                             />
                         </div>
-                    </>
+                    </div>
                 }
             </div>
             <Modal
@@ -204,15 +201,17 @@ function MessageImage({ images }: { images: string[] }) {
                     </div>
                     <div role="tablist" className="tabs tabs-boxed mt-5 h-[90%] flex justify-center items-center">
                         <div className='max-w-full relative'>
-                            <Zoom>
-                                <Image
-                                    src={images[currentIndexImage - 1]}
-                                    width={3000}
-                                    height={3000}
-                                    alt=''
-                                    className='w-full'
-                                />
-                            </Zoom>
+                            <TransformWrapper>
+                                <TransformComponent>
+                                    <Image
+                                        src={images[currentIndexImage - 1]}
+                                        width={3000}
+                                        height={3000}
+                                        alt=''
+                                        className='max-w-full max-h-full w-full'
+                                    />
+                                </TransformComponent>
+                            </TransformWrapper>
                             <div
                                 className='absolute top-2 right-2 p-2 rounded-lg bg-slate-300/40 hover:bg-slate-300'
                                 onClick={() => handleDownloadImage(images[currentIndexImage - 1])}

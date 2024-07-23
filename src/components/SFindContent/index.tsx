@@ -5,10 +5,7 @@ import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import MessageImage from '../SFindMessage/MessageImage';
 import MessageText from '../SFindMessage/MessageText';
-import MessageFile from '../SFindMessage/MessageFile';
-import MessageLink from '../SFindMessage/MessageLink';
 import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
 import { uploadFileToStorage } from '@/utils/handleFile';
@@ -21,8 +18,9 @@ import TypePassword from './TypePassword';
 import { ERR_TOKEN_SFIND, ERR_TYPE_PASS_SFIND } from '@/types/errorMessage';
 import { IconButton } from '@mui/material';
 import Snackbar from '@mui/material/Snackbar';
-import { sendMessageTelegram } from '@/utils/handleBotTelegram';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
+import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
+import MessageImage from '../SFindMessage/MessageImage';
 
 
 const style = {
@@ -79,6 +77,9 @@ function SFindContent() {
     }
 
     const handleChooseFile = (e: any) => {
+        uploadFileToStorage(e.target.files[0], "floderTest")
+    }
+    const handleChooseImage = (e: any) => {
         uploadFileToStorage(e.target.files[0], "floderTest")
     }
 
@@ -227,7 +228,17 @@ function SFindContent() {
             </IconButton>
         </React.Fragment>
     );
+    const images4: string[] = [
 
+        "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+
+        // "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+
+        // "https://images.pexels.com/photos/1366630/pexels-photo-1366630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+
+        // "https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+
+    ]
     return (
         <>
             <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
@@ -261,9 +272,25 @@ function SFindContent() {
                                 <SfindContentSkeleton />
                             }
 
+                            <MessageImage
+                                images={images4}
+                            />
+
                         </div>
                         <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
                             <div className="p-2 cursor-pointer bg-slate-400 rounded-md">
+                                <input
+                                    id="inputChooseFile"
+                                    type="file"
+                                    className="file-input w-full max-w-xs hidden"
+                                    accept='image/*'
+                                    onChange={e => handleChooseImage(e)}
+                                />
+                                <label htmlFor="inputChooseFile" className="cursor-pointer">
+                                    <AddPhotoAlternateIcon />
+                                </label>
+                            </div>
+                            <div className="p-2 cursor-pointer bg-slate-400 rounded-md ml-8">
                                 <input
                                     id="inputChooseFile"
                                     type="file"

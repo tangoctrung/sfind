@@ -42,7 +42,7 @@ const config: Config = {
     require('tailwind-scrollbar'),
   ],
   daisyui: {
-    themes: ["light", "dark"],
+    themes: ["light"],
   },
 };
 export default config;

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
-import 'react-medium-image-zoom/dist/styles.css'
 import { StoreProvider } from "./StoreProvider";
 import { AppMain } from "./AppMain";
 
