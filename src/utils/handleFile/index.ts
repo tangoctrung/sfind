@@ -57,3 +57,20 @@ export async function uploadFileToStorage(file: any, nameFloder: string) {
     
     
 }
+
+export function formatShowSizeFile(sizeFile: number) {
+    let gb = sizeFile / 1024 / 1024 / 1024;
+    if (gb > 1) {
+        return gb.toFixed(2) + " gb"
+    }
+    let mb = sizeFile / 1024 / 1024;
+    if (mb > 1) {
+        return mb.toFixed(2) + " mb"
+    }
+    let kb = sizeFile / 1024;
+    if (kb > 1) {
+        return kb.toFixed(2) + " kB"
+    }
+
+    return sizeFile + " b"
+}

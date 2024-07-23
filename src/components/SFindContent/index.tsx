@@ -21,6 +21,7 @@ import Snackbar from '@mui/material/Snackbar';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
+import ModalSendFile from '../Modal/ModalSendFile';
 
 
 const style = {
@@ -35,9 +36,19 @@ const style = {
     p: 4,
 };
 
+interface DATA_FILE {
+    file: any;
+    urlFile: string;
+    nameFile: string;
+    sizeFile: number;
+    typeFile: string;
+}
+
 function SFindContent() {
 
     const [open, setOpen] = React.useState(false);
+    const [openModalFile, setOpenModalFile] = React.useState(true);
+
     const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
     const [isLoadingGetMessage, setIsLoadingGetMessage] = useState(false);
     const [isLoadingDeleteMessage, setIsLoadingDeleteMessage] = useState(false);
@@ -50,6 +61,7 @@ function SFindContent() {
     const sfindId = searchParams.get("id") || "";
     const [messages, setMessages] = useState<any[]>([]);
     const [textContent, setTextContent] = useState<string>("");
+    const [files, setFiles] = useState<DATA_FILE[]>([])
     const [dataSnackBar, setDataSnackBar] = useState({
         open: false,
         message: ""
@@ -77,10 +89,26 @@ function SFindContent() {
     }
 
     const handleChooseFile = (e: any) => {
-        uploadFileToStorage(e.target.files[0], "floderTest")
+        // uploadFileToStorage(e.target.files[0], "floderTest")
     }
     const handleChooseImage = (e: any) => {
-        uploadFileToStorage(e.target.files[0], "floderTest")
+        // uploadFileToStorage(e.target.files[0], "floderTest")
+        console.log(e.target.files);
+        const listFile: any[] = [...e.target.files];
+        const filesNew: DATA_FILE[] = [];
+        listFile.forEach((item: any) => {
+            console.log({ item });
+            let itemFile: DATA_FILE = {
+                file: item,
+                typeFile: item?.type,
+                nameFile: item?.name || "fileDefault.txt",
+                sizeFile: item?.size || 0,
+                urlFile: URL.createObjectURL(item) || "",
+            }
+            filesNew.push(itemFile);
+        })
+        setFiles(filesNew);
+        setOpenModalFile(true);
     }
 
     const handleSendMessageText = () => {
@@ -280,13 +308,14 @@ function SFindContent() {
                         <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
                             <div className="p-2 cursor-pointer bg-slate-400 rounded-md">
                                 <input
-                                    id="inputChooseFile"
+                                    id="inputChooseImage"
                                     type="file"
                                     className="file-input w-full max-w-xs hidden"
                                     accept='image/*'
+                                    multiple
                                     onChange={e => handleChooseImage(e)}
                                 />
-                                <label htmlFor="inputChooseFile" className="cursor-pointer">
+                                <label htmlFor="inputChooseImage" className="cursor-pointer">
                                     <AddPhotoAlternateIcon />
                                 </label>
                             </div>
@@ -294,8 +323,9 @@ function SFindContent() {
                                 <input
                                     id="inputChooseFile"
                                     type="file"
+                                    multiple
                                     className="file-input w-full max-w-xs hidden"
-                                    onChange={e => handleChooseFile(e)}
+                                    onChange={e => handleChooseImage(e)}
                                 />
                                 <label htmlFor="inputChooseFile" className="cursor-pointer">
                                     <AttachFileIcon />
@@ -339,6 +369,16 @@ function SFindContent() {
                     <div className='mt-2'>
                         <ModalCreatePost textContent={textContent} setTextContent={setTextContent} />
                     </div>
+                </Box>
+            </Modal>
+            <Modal
+                open={openModalFile}
+                onClose={() => setOpenModalFile(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[70%] w-[90%] tablet:w-[80%] laptop:w-[600px] !py-5 !px-2'>
+                    <ModalSendFile files={files} sfindId={sfindId} setOpenModalFile={setOpenModalFile} />
                 </Box>
             </Modal>
             <Snackbar
