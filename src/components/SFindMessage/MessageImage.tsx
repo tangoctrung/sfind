@@ -10,6 +10,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { downloadFile } from '@/utils/handleFile';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { convertTimeToHHMMddmmYYYY } from '@/utils/handleTime';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -23,7 +24,7 @@ const style = {
     p: 4,
 };
 
-function MessageImage({ images }: { images: string[] }) {
+function MessageImage({ message }: { message: any }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
@@ -32,20 +33,20 @@ function MessageImage({ images }: { images: string[] }) {
     }
     const [currentIndexImage, setCurrentIndexImage] = useState<number>(1);
 
-    function handleDownloadImage(url: string) {
-        downloadFile("https://firebasestorage.googleapis.com/v0/b/storagefile-8768a.appspot.com/o/floderTest%2Fadmin%20-%20so%20luot%20kham.png?alt=media&token=491b058f-4c7b-42fc-9acc-bd61315f2fb5", "image.png");
+    function handleDownloadImage(fileImage: any) {
+        downloadFile(fileImage?.urlFile, fileImage?.nameFile);
     }
 
     function handlePreviousImage() {
         if (currentIndexImage === 1) {
-            setCurrentIndexImage(images.length)
+            setCurrentIndexImage(message?.files?.length)
         } else {
             setCurrentIndexImage((i: number) => i - 1);
         }
     }
 
     function handleNextImage() {
-        if (currentIndexImage === images.length) {
+        if (currentIndexImage === message?.files?.length) {
             setCurrentIndexImage(1)
         } else {
             setCurrentIndexImage((i: number) => i + 1);
@@ -60,36 +61,36 @@ function MessageImage({ images }: { images: string[] }) {
             >
                 <p
                     className={`w-full text-center text-sm text-gray-400 mb-8`}
-                >11:20 20/03/2022</p>
-                {images?.length <= 0 &&
+                >{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
+                {message?.files?.length <= 0 &&
                     <div className=' h-72 w-56 overflow-hidden rounded-xl'>
                         <Image
                             src={NoImage}
-                            width={600}
-                            height={600}
+                            width={300}
+                            height={300}
                             className='w-full h-full object-cover'
                             alt=''
                         />
                     </div>}
-                {images?.length === 1 &&
+                {message?.files?.length === 1 &&
                     <div
                         className=' h-72 w-56 overflow-hidden rounded-xl cursor-pointer'
                         onClick={handleOpen}>
                         <Image
-                            src={images[0]}
-                            width={600}
-                            height={600}
+                            src={message?.files[0]?.urlFile}
+                            width={300}
+                            height={300}
                             className='w-full h-full object-cover'
                             alt=''
                         />
                     </div>}
-                {images?.length === 2 &&
+                {message?.files?.length === 2 &&
                     <div className='flex justify-end relative w-full h-52'>
                         <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-5deg] top-[-10px] right-[10px] absolute'>
                             <Image
-                                src={images[1]}
-                                width={600}
-                                height={600}
+                                src={message?.files[1]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
@@ -99,30 +100,30 @@ function MessageImage({ images }: { images: string[] }) {
                             onClick={handleOpen}
                         >
                             <Image
-                                src={images[0]}
-                                width={600}
-                                height={600}
+                                src={message?.files[0]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
                         </div>
                     </div>}
-                {images?.length === 3 &&
+                {message?.files?.length === 3 &&
                     <div className='flex justify-end relative w-full h-52'>
                         <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[3deg] top-[-10px] right-[-10px] absolute'>
                             <Image
-                                src={images[2]}
-                                width={600}
-                                height={600}
+                                src={message?.files[2]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
                         </div>
                         <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-3deg] top-[-10px] right-[10px] absolute'>
                             <Image
-                                src={images[1]}
-                                width={600}
-                                height={600}
+                                src={message?.files[1]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
@@ -132,40 +133,40 @@ function MessageImage({ images }: { images: string[] }) {
                             onClick={handleOpen}
                         >
                             <Image
-                                src={images[0]}
-                                width={600}
-                                height={600}
+                                src={message?.files[0]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
                         </div>
                     </div>
                 }
-                {images?.length >= 4 &&
+                {message?.files?.length >= 4 &&
                     <div className='flex justify-end relative w-full h-52'>
                         <div className='h-52 w-52 overflow-hidden rounded-xl top-[-20px] absolute'>
                             <Image
-                                src={images[3]}
-                                width={600}
-                                height={600}
+                                src={message?.files[3]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
                         </div>
                         <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[3deg] top-[-10px] right-[-10px] absolute'>
                             <Image
-                                src={images[2]}
-                                width={600}
-                                height={600}
+                                src={message?.files[2]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
                         </div>
                         <div className='h-52 w-52 overflow-hidden rounded-xl rotate-[-3deg] top-[-10px] right-[10px] absolute'>
                             <Image
-                                src={images[1]}
-                                width={600}
-                                height={600}
+                                src={message?.files[1]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
@@ -175,9 +176,9 @@ function MessageImage({ images }: { images: string[] }) {
                             onClick={handleOpen}
                         >
                             <Image
-                                src={images[0]}
-                                width={600}
-                                height={600}
+                                src={message?.files[0]?.urlFile}
+                                width={300}
+                                height={300}
                                 className='w-full h-full object-cover'
                                 alt=''
                             />
@@ -204,7 +205,7 @@ function MessageImage({ images }: { images: string[] }) {
                             <TransformWrapper>
                                 <TransformComponent>
                                     <Image
-                                        src={images[currentIndexImage - 1]}
+                                        src={message?.files[currentIndexImage - 1]?.urlFile}
                                         width={3000}
                                         height={3000}
                                         alt=''
@@ -214,11 +215,11 @@ function MessageImage({ images }: { images: string[] }) {
                             </TransformWrapper>
                             <div
                                 className='absolute top-2 right-2 p-2 rounded-lg bg-slate-300/40 hover:bg-slate-300'
-                                onClick={() => handleDownloadImage(images[currentIndexImage - 1])}
+                                onClick={() => handleDownloadImage(message?.files[currentIndexImage - 1])}
                             >
                                 <Download />
                             </div>
-                            <span className='absolute bottom-2 left-[50%] translate-x-[-50%] text-white/70 font-bold'>{currentIndexImage}/{images?.length}</span>
+                            <span className='absolute bottom-2 left-[50%] translate-x-[-50%] text-white/70 font-bold'>{currentIndexImage}/{message?.files?.length}</span>
                         </div>
                     </div>
                     <div

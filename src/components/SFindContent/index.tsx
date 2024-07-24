@@ -22,6 +22,7 @@ import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
 import ModalSendFile from '../Modal/ModalSendFile';
+import MessageFile from '../SFindMessage/MessageFile';
 
 
 const style = {
@@ -253,17 +254,7 @@ function SFindContent() {
             </IconButton>
         </React.Fragment>
     );
-    const images4: string[] = [
 
-        "https://images.pexels.com/photos/103123/pexels-photo-103123.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-
-        // "https://images.pexels.com/photos/1323550/pexels-photo-1323550.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-
-        // "https://images.pexels.com/photos/1366630/pexels-photo-1366630.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-
-        // "https://images.pexels.com/photos/1906658/pexels-photo-1906658.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-
-    ]
     return (
         <>
             <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
@@ -278,6 +269,22 @@ function SFindContent() {
                                                 value={item}
                                                 isLoadingDeleteMessage={isLoadingDeleteMessage}
                                                 handleActionMessage={handleActionMessage}
+                                            />
+                                        </div>
+                                    )
+                                } else if (item?.type === "image") {
+                                    return (
+                                        <div key={index} ref={containerMessage}>
+                                            <MessageImage
+                                                message={item}
+                                            />
+                                        </div>
+                                    )
+                                } else if (item?.type === "file") {
+                                    return (
+                                        <div key={index} ref={containerMessage}>
+                                            <MessageFile
+                                                message={item}
                                             />
                                         </div>
                                     )
@@ -296,10 +303,6 @@ function SFindContent() {
                             {isLoadingGetMessage &&
                                 <SfindContentSkeleton />
                             }
-
-                            <MessageImage
-                                images={images4}
-                            />
 
                         </div>
                         <div className="h-12 w-full bg-slate-300 flex items-center justify-center">
@@ -375,7 +378,7 @@ function SFindContent() {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[70%] w-[90%] tablet:w-[80%] laptop:w-[600px] !py-5 !px-2'>
-                    <ModalSendFile files={files} sfindId={sfindId} setOpenModalFile={setOpenModalFile} />
+                    <ModalSendFile files={files} sfindId={sfindId} setOpenModalFile={setOpenModalFile} messages={messages} setMessages={setMessages} />
                 </Box>
             </Modal>
             <Snackbar

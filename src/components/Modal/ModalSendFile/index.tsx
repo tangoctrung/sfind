@@ -12,19 +12,20 @@ import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '@/firebase/index';
 import { useAppSelector } from '@/lib/hooks';
 import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
+import { createMessage } from '@/endpoint/message';
 
-function ModalSendFile({ files, sfindId, setOpenModalFile }:
-    { files: any[], sfindId: any, setOpenModalFile: any }) {
+function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages }:
+    { files: any[], sfindId: any, setOpenModalFile: any, messages: any[], setMessages: any }) {
     const [isLoading, setIsLoading] = useState(false);
     const [listFile, setListFile] = useState(files)
     const [valueProgress, setValueProgress] = useState(10);
     const user = useAppSelector(selectDataUser)
 
     const typeFile = files[0]?.typeFile?.includes("image") ? "image" : "file";
-    const [dataFile, setDataFile] = useState({
+    const [dataFile, setDataFile] = useState<any>({
         type: typeFile,
         description: "",
-        sfindId: sfindId,
+        sfind: sfindId,
         files: []
     });
 
@@ -47,26 +48,46 @@ function ModalSendFile({ files, sfindId, setOpenModalFile }:
         setListFile(newListFile);
     }
 
-    function handleSendFile() {
-        console.log({ listFile });
-        setIsLoading(true)
-        listFile?.forEach(async (item: any) => {
-            let url = await uploadProcess(item);
-            console.log({ url });
-        })
-        setIsLoading(false);
+    async function handleSendFile() {
+        setIsLoading(true);
+        let totalSize = 0;
+        let totalSend = 0;
+        listFile?.forEach(item => totalSize += item?.sizeFile);
+
+        for (let i = 0; i < listFile?.length; i++) {
+            let url = await uploadProcess(listFile[i], totalSend, totalSize);
+            totalSend += listFile[i]?.sizeFile;
+            let newDataFile = {
+                urlFile: url,
+                nameFile: listFile[i]?.nameFile,
+                sizeFile: listFile[i]?.sizeFile,
+            }
+            dataFile?.files.push(newDataFile);
+        }
+        createMessage(dataFile)
+            .then(res => {
+                let dataMessage = [...messages];
+                dataMessage.push(res.data?.data?.message)
+                setMessages(dataMessage);
+            })
+            .catch(err => {
+                console.log({ err });
+            })
+            .finally(() => {
+                setIsLoading(false);
+                setOpenModalFile(false);
+                setValueProgress(0);
+            })
     }
 
-    function uploadProcess(itemFile: any) {
+    function uploadProcess(itemFile: any, totalSend: number, totalSize: number) {
         return new Promise((resolve: any, reject: any) => {
             const storageRef = ref(storage, `${typeFile}/${user?.id}-${user?.username}/${new Date().getTime()}/${itemFile?.nameFile}`);
             const uploadTask = uploadBytesResumable(storageRef, itemFile?.file);
             uploadTask.on(
                 "state_changed",
                 (snapshot) => {
-                    var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
-                    console.log({ snapshot });
-
+                    var percentage = (snapshot.bytesTransferred + totalSend) / totalSize * 100;
                     setValueProgress(percentage);
                 },
                 (err) => console.log(err),
