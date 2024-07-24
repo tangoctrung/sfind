@@ -2,16 +2,25 @@ import React, { useState } from 'react'
 import SendIcon from '@mui/icons-material/Send';
 import Image from 'next/image';
 import DeleteIcon from '@mui/icons-material/Delete';
-import TopicIcon from '@mui/icons-material/Topic';
-import FolderZipIcon from '@mui/icons-material/FolderZip';
 import { formatShowSizeFile } from '@/utils/handleFile';
+import IconFileZip from '@/assets/icons/IconFileZip';
+import IconFileDocx from '@/assets/icons/IconFileDocx';
+import IconFilePDF from '@/assets/icons/IconFilePdf';
+import IconFileExcel from '@/assets/icons/IconFileExcel';
+import IconFileText from '@/assets/icons/IconFileText';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { storage } from '@/firebase/index';
+import { useAppSelector } from '@/lib/hooks';
+import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
 
 function ModalSendFile({ files, sfindId, setOpenModalFile }:
     { files: any[], sfindId: any, setOpenModalFile: any }) {
     const [isLoading, setIsLoading] = useState(false);
     const [listFile, setListFile] = useState(files)
     const [valueProgress, setValueProgress] = useState(10);
-    const typeFile = files[0]?.typeFile?.includes("image") ? "image" : "file"
+    const user = useAppSelector(selectDataUser)
+
+    const typeFile = files[0]?.typeFile?.includes("image") ? "image" : "file";
     const [dataFile, setDataFile] = useState({
         type: typeFile,
         description: "",
@@ -39,11 +48,50 @@ function ModalSendFile({ files, sfindId, setOpenModalFile }:
     }
 
     function handleSendFile() {
-        console.log({ dataFile });
+        console.log({ listFile });
         setIsLoading(true)
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 3000)
+        listFile?.forEach(async (item: any) => {
+            let url = await uploadProcess(item);
+            console.log({ url });
+        })
+        setIsLoading(false);
+    }
+
+    function uploadProcess(itemFile: any) {
+        return new Promise((resolve: any, reject: any) => {
+            const storageRef = ref(storage, `${typeFile}/${user?.id}-${user?.username}/${new Date().getTime()}/${itemFile?.nameFile}`);
+            const uploadTask = uploadBytesResumable(storageRef, itemFile?.file);
+            uploadTask.on(
+                "state_changed",
+                (snapshot) => {
+                    var percentage = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+                    console.log({ snapshot });
+
+                    setValueProgress(percentage);
+                },
+                (err) => console.log(err),
+                () => {
+                    // download url
+                    getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                        resolve(url);
+                    });
+                }
+            );
+        })
+    }
+
+    function renderIconFile(type: string) {
+        if (type?.includes("zip")) {
+            return <IconFileZip className='w-10 h-10 mr-2' />
+        } else if (type?.includes("docx") || type?.includes("doc")) {
+            return <IconFileDocx className='w-10 h-10 mr-2' />
+        } else if (type?.includes("pdf")) {
+            return <IconFilePDF className='w-10 h-10 mr-2' />
+        } else if (type?.includes("xls") || type?.includes("xlsm") || type?.includes("xlsx") || type?.includes("xlt")) {
+            return <IconFileExcel className='w-10 h-10 mr-2' />
+        } else {
+            return <IconFileText className='w-10 h-10 mr-2' />
+        }
     }
     return (
         <div className='w-full h-full'>
@@ -65,7 +113,8 @@ function ModalSendFile({ files, sfindId, setOpenModalFile }:
                         </div> :
                         <div key={index} className='w-[80%] tablet:w-[70%] laptop:w-[50%] mb-1 mr-1 relative overflow-hidden rounded-xl flex items-start bg-slate-300/70 py-2 px-3'>
                             <div className=''>
-                                <TopicIcon className='w-10 h-10 mr-2 text-blue-500' />
+                                {renderIconFile(item?.typeFile)}
+                                {/* <TopicIcon className='w-10 h-10 mr-2 text-blue-500' /> */}
                             </div>
                             <div>
                                 <span className='text-base font-bold line-clamp-3 underline'>{item?.nameFile}</span>
@@ -87,8 +136,7 @@ function ModalSendFile({ files, sfindId, setOpenModalFile }:
                 />
             </div>
             <div className='flex flex-col items-center w-full justify-center mt-3'>
-                {valueProgress > 0 &&
-                    <progress className="progress w-full mb-3" value={valueProgress} max="100"></progress>}
+                <progress className="progress w-full mb-3" value={valueProgress} max="100"></progress>
                 <button
                     className={`btn ${isLoading ? "btn-disabled" : "btn-neutral"}`}
                     onClick={handleSendFile}

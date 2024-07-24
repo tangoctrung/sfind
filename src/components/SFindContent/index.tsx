@@ -47,7 +47,7 @@ interface DATA_FILE {
 function SFindContent() {
 
     const [open, setOpen] = React.useState(false);
-    const [openModalFile, setOpenModalFile] = React.useState(true);
+    const [openModalFile, setOpenModalFile] = React.useState(false);
 
     const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false);
     const [isLoadingGetMessage, setIsLoadingGetMessage] = useState(false);
@@ -88,13 +88,10 @@ function SFindContent() {
         setOpen(false);
     }
 
-    const handleChooseFile = (e: any) => {
-        // uploadFileToStorage(e.target.files[0], "floderTest")
-    }
     const handleChooseImage = (e: any) => {
-        // uploadFileToStorage(e.target.files[0], "floderTest")
         console.log(e.target.files);
         const listFile: any[] = [...e.target.files];
+        if (listFile?.length <= 0) return;
         const filesNew: DATA_FILE[] = [];
         listFile.forEach((item: any) => {
             console.log({ item });
