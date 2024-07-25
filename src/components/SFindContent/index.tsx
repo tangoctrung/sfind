@@ -8,7 +8,6 @@ import EditNoteIcon from '@mui/icons-material/EditNote';
 import MessageText from '../SFindMessage/MessageText';
 import { Box, Modal } from '@mui/material';
 import ModalCreatePost from '../Modal/ModalCreatePost';
-import { uploadFileToStorage } from '@/utils/handleFile';
 import { useSearchParams } from 'next/navigation';
 import { createMessage, deleteMessage, getMessage, getTokenSfind } from '@/endpoint/message';
 import NoData from "@/assets/images/nodata.png";
@@ -23,8 +22,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
 import ModalSendFile from '../Modal/ModalSendFile';
 import MessageFile from '../SFindMessage/MessageFile';
-import { selectTextSearch } from '@/lib/features/controlData/controlDataSlice';
-import { useAppSelector } from '@/lib/hooks';
+import { selectTextSearch, updateMessages, updateShowInfoSfind } from '@/lib/features/controlData/controlDataSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 
 
 const style = {
@@ -61,6 +60,8 @@ function SFindContent() {
     const textSearch = useAppSelector(selectTextSearch)
 
     const containerMessage = useRef<HTMLDivElement>(null);
+    const dispatch = useAppDispatch();
+
     const handleOpen = () => setOpen(true);
     const searchParams = useSearchParams();
     const sfindId = searchParams.get("id") || "";
@@ -141,6 +142,9 @@ function SFindContent() {
         getMessage({ sfindId: sfindId, des: textSearch || "" })
             .then(res => {
                 setMessages(res.data?.data?.messages);
+                if (textSearch === "") {
+                    dispatch(updateMessages(res.data?.data?.messages))
+                }
                 setIsLoadingGetMessage(false);
                 setIsShowTypePassword(false);
             })
@@ -164,9 +168,12 @@ function SFindContent() {
             .then(res => {
                 setIsShowTypePassword(false);
                 setIsLoadingGetMessage(true);
+                let show: any = true;
+                dispatch(updateShowInfoSfind(show))
                 getMessage({ sfindId: sfindId, des: "" })
                     .then(res => {
                         setMessages(res.data?.data?.messages);
+                        dispatch(updateMessages(res.data?.data?.messages))
                         setIsLoadingGetMessage(false);
                         callbackSetLoading()
                     })

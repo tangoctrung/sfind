@@ -3,16 +3,17 @@
 import React, { memo, useEffect, useState } from 'react'
 import ModalCreateSFind from '../Modal/ModalCreateSFind'
 import SFindItem from '../SFindItem'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Box, IconButton, Modal, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
-import { getSfinds } from '@/endpoint/sfind'
+import { deleteSfinds, getSfinds } from '@/endpoint/sfind'
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { selectDataSfind, updateSfinds, updateTextSearch } from '@/lib/features/controlData/controlDataSlice'
 import LeftBarSkeleton from '../Skeleton/LeftBarSkeleton'
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -39,6 +40,9 @@ function LeftBar() {
 
     const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [openModalDeleteSfind, setOpenModalDeleteSfind] = useState(false);
+    const [isLoadingDeleteSfind, setIsLoadingDeleteSfind] = useState(false)
+    const [sfindIdDelete, setSfindIdDelete] = useState("");
     const [dataSnackBar, setDataSnackBar] = useState({
         open: false,
         message: ""
@@ -52,7 +56,7 @@ function LeftBar() {
     useEffect(() => {
         if (sfinds?.length <= 0) {
             setIsLoading(true)
-            getSfinds()
+            getSfinds("")
                 .then(res => {
                     setDataSfinds(res.data?.data?.sfinds)
                     dispatch(updateSfinds(res.data?.data?.sfinds))
@@ -75,11 +79,40 @@ function LeftBar() {
     function handleOpenModalCreateSFind() {
         setOpen(true);
     }
+    function handleOpenModalDeleteSfind(sfindId: string) {
+        setOpenModalDeleteSfind(true);
+        setSfindIdDelete(sfindId);
+    }
     function handleClickSFindItem(id: string) {
         router.push("/sfind?id=" + id);
         let text: any = ""
         dispatch(updateTextSearch(text))
     }
+
+    function handleDeleteSfind() {
+        setIsLoadingDeleteSfind(true);
+        deleteSfinds(sfindIdDelete)
+            .then(() => {
+                let dataSfind: any = dataSfinds?.filter((item: any) => item?._id !== sfindIdDelete)
+                dispatch(updateSfinds(dataSfind))
+            })
+            .catch(err => {
+                console.log({ err });
+                setDataSnackBar({
+                    open: true,
+                    message: err?.response?.data?.message || "Xoá Sfind thất bại"
+                })
+            })
+            .finally(() => {
+                setIsLoadingDeleteSfind(false);
+                setOpenModalDeleteSfind(false);
+                setDataSnackBar({
+                    open: true,
+                    message: "Xoá Sfind thành công"
+                })
+            })
+    }
+
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -118,17 +151,24 @@ function LeftBar() {
                 </div>
                 <div className="scrollbar-none w-[98%] overflow-y-scroll h-[calc(100%-2.5rem)]">
                     {!isLoading && dataSfinds && dataSfinds?.map((item: any, index: number) => (
-                        <div
-                            key={index}
-                            onClick={() => handleClickSFindItem(item?._id)}
-                        >
-                            <SFindItem
-                                avatarSfind={item?.avatar}
-                                lastActionSfind={item?.lastAction}
-                                nameSfind={item?.nameSfind}
-                                active={item?._id === sfindId ? true : false}
-                            />
-                        </div>))}
+                        <div key={index} className='relative group'>
+                            <div
+                                onClick={() => handleClickSFindItem(item?._id)}
+                            >
+                                <SFindItem
+                                    avatarSfind={item?.avatar}
+                                    nameSfind={item?.nameSfind}
+                                    active={item?._id === sfindId ? true : false}
+                                />
+                            </div>
+                            <div
+                                className='absolute right-0 top-[50%] translate-y-[-50%] hidden group-hover:flex items-center justify-center cursor-pointer w-6 h-6 p-2 rounded-md bg-slate-400 mr-2'
+                                onClick={() => handleOpenModalDeleteSfind(item?._id)}
+                            >
+                                <DeleteIcon className='w-4 h-4' />
+                            </div>
+                        </div>
+                    ))}
                     {isLoading && <LeftBarSkeleton />}
                 </div>
             </div>
@@ -138,22 +178,44 @@ function LeftBar() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <>
-                    <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl !h-auto w-[90%] tablet:w-[450px]'>
-                        <div className='mt-2'>
-                            <ModalCreateSFind setDataSnackBar={setDataSnackBar} />
-                        </div>
-                    </Box>
-                    <Snackbar
-                        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                        open={dataSnackBar.open}
-                        autoHideDuration={6000}
-                        onClose={handleCloseSnackBar}
-                        message={dataSnackBar.message}
-                        action={action}
-                    />
-                </>
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl !h-auto w-[90%] tablet:w-[450px]'>
+                    <div className='mt-2'>
+                        <ModalCreateSFind setDataSnackBar={setDataSnackBar} />
+                    </div>
+                </Box>
             </Modal>
+            <Modal
+                open={openModalDeleteSfind}
+                onClose={() => setOpenModalDeleteSfind(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl w-[95%] tablet:w-[400px] h-auto !py-5 !px-5'>
+                    <h3>Bạn có chắc muốn xóa Sfind này không?</h3>
+                    <div className='mt-2 flex justify-center'>
+                        <button className={`btn ${isLoadingDeleteSfind ? "btn-disabled" : "btn-normal"} mr-5`}
+                            onClick={() => setOpenModalDeleteSfind(false)}
+                        >
+                            Quay lại
+                        </button>
+                        <button className={`btn ${isLoadingDeleteSfind ? "btn-disabled" : "btn-neutral"}`}
+                            onClick={handleDeleteSfind}
+                        >
+                            {isLoadingDeleteSfind ? <span className="loading loading-spinner"></span> : "Xóa"}
+
+                        </button>
+
+                    </div>
+                </Box>
+            </Modal>
+            <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                open={dataSnackBar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackBar}
+                message={dataSnackBar.message}
+                action={action}
+            />
         </>
     )
 }

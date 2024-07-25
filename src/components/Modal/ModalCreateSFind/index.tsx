@@ -100,6 +100,10 @@ function ModalCreateSFind({ setDataSnackBar }: {
                         open: true,
                         message: "Tạo Sfind thành công"
                     })
+                    setInfoImageFile({
+                        url: "",
+                        file: null
+                    })
                     setDataSfind({
                         avatar: "",
                         nameSfind: "",
@@ -147,14 +151,14 @@ function ModalCreateSFind({ setDataSnackBar }: {
                 <label className="input input-bordered input-secondary flex items-center gap-2 w-full">
                     <SupervisedUserCircleIcon />
                     <input
-                        type="text" className="grow" placeholder="Tên SFind (bắt buộc)..." name="nameSfind"
+                        type="text" className="grow" placeholder="Tên SFind (bắt buộc)..." name="nameSfind" value={dataSfind?.nameSfind}
                         onChange={handleChangeSfind}
                     />
                 </label>
                 <label className="input input-bordered flex items-center gap-2 w-full mt-5">
                     <KeyIcon />
                     <input
-                        type="text" className="grow" placeholder="Mật khẩu (tùy chọn)..." name="password"
+                        type="text" className="grow" placeholder="Mật khẩu (tùy chọn)..." name="password" value={dataSfind?.password}
                         onChange={handleChangeSfind}
                     />
                 </label>

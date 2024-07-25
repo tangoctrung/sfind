@@ -60,7 +60,7 @@ export const GET = async (req: NextRequest) => {
 
         }
         // xac thuc sfindToken
-        const sfind = await Sfind.findById(sfindId)
+        const sfind = await Sfind.findOne({_id: sfindId, admin: userID})
         const expireTime = sfind?.expireTime;
 
         if (sfind?.password && !expireTime) {
