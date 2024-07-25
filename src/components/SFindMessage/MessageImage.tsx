@@ -4,6 +4,7 @@ import Image from 'next/image'
 import React, { useState } from 'react'
 import NoImage from '@/assets/images/noImage.jpg';
 import CloseIcon from '@mui/icons-material/Close';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Modal } from '@mui/material';
 import Download from '@mui/icons-material/Download';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -24,8 +25,11 @@ const style = {
     p: 4,
 };
 
-function MessageImage({ message }: { message: any }) {
+function MessageImage({ message, handleActionMessage }:
+    { message: any, handleActionMessage: any }) {
     const [open, setOpen] = React.useState(false);
+    const [openModalDeleteMessage, setOpenModalDeleteMessage] = React.useState(false);
+    const [isLoadingDeleteMessage, setIsLoadingDeleteMessage] = useState(false)
     const handleOpen = () => setOpen(true);
     const handleClose = () => {
         setOpen(false);
@@ -53,14 +57,21 @@ function MessageImage({ message }: { message: any }) {
         }
     }
 
+    async function handleDeleteMessage() {
+        setIsLoadingDeleteMessage(true)
+        await handleActionMessage("delete", message)
+        setIsLoadingDeleteMessage(false)
+        setOpenModalDeleteMessage(false)
+    }
+
     return (
         <>
             <div
                 className={`h-auto w-full flex flex-col justify-center items-end p-5`}
-
             >
                 <p
-                    className={`w-full text-center text-sm text-gray-400 mb-8`}
+                    className={`w-full text-center text-sm text-gray-400 mb-8 cursor-cell tooltip`}
+                    data-tip={message?.content}
                 >{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
                 {message?.files?.length <= 0 &&
                     <div className=' h-72 w-56 overflow-hidden rounded-xl'>
@@ -143,7 +154,7 @@ function MessageImage({ message }: { message: any }) {
                     </div>
                 }
                 {message?.files?.length >= 4 &&
-                    <div className='flex justify-end relative w-full h-52'>
+                    <div className='flex justify-end relative w-full h-52' >
                         <div className='h-52 w-52 overflow-hidden rounded-xl top-[-20px] absolute'>
                             <Image
                                 src={message?.files[3]?.urlFile}
@@ -185,6 +196,12 @@ function MessageImage({ message }: { message: any }) {
                         </div>
                     </div>
                 }
+                <div className='mr-5 mt-2 flex justify-end'>
+                    <div
+                        className='cursor-pointer w-6 h-6 p-2 rounded-md bg-slate-300 mr-2 flex items-center justify-center'
+                        onClick={() => setOpenModalDeleteMessage(true)}
+                    ><DeleteIcon className='w-4 h-4' /></div>
+                </div>
             </div>
             <Modal
                 open={open}
@@ -233,6 +250,30 @@ function MessageImage({ message }: { message: any }) {
                         onClick={handleNextImage}
                     >
                         <ArrowForwardIosIcon />
+                    </div>
+                </Box>
+            </Modal>
+
+            <Modal
+                open={openModalDeleteMessage}
+                onClose={() => setOpenModalDeleteMessage(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl w-[95%] tablet:w-[400px] h-auto !py-5 !px-5'>
+                    <h3>Bạn có chắc muốn xóa message này không?</h3>
+                    <div className='mt-2 flex justify-center'>
+                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-normal"} mr-5`}
+                            onClick={handleDeleteMessage}
+                        >
+                            {isLoadingDeleteMessage ? <span className="loading loading-spinner"></span> : "Xóa"}
+
+                        </button>
+                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-neutral"}`}
+                            onClick={() => setOpen(false)}
+                        >
+                            Quay lại
+                        </button>
                     </div>
                 </Box>
             </Modal>

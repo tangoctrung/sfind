@@ -16,7 +16,8 @@ export interface ControlDataSliceState {
     accessToken: string;
     refreshToken: string;
   },
-  sfinds: any[]
+  sfinds: any[],
+  textSearch: string;
 }
 
 const initialState: ControlDataSliceState = {
@@ -34,7 +35,8 @@ const initialState: ControlDataSliceState = {
     accessToken: "",
     refreshToken: "",
   },
-  sfinds: []
+  sfinds: [],
+  textSearch: "",
 };
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -58,14 +60,18 @@ export const controlDataSlice = createAppSlice({
     updateSfind: create.reducer((state, action: PayloadAction<any>) => {
       state.sfinds.unshift(action.payload)
     }),
+    updateTextSearch: create.reducer((state, action: PayloadAction<any>) => {
+      state.textSearch = action.payload;
+    }),
   }),
   selectors: {
     selectDataUser: (controlData) => controlData.user,
     selectDataToken: (controlData) => controlData.token,
     selectDataSfind: (controlData) => controlData.sfinds,
+    selectTextSearch: (controlData) => controlData.textSearch,
   },
 });
 
-export const { updateInfoUser, updateToken, updateUserToken, updateSfinds, updateSfind } =
+export const { updateInfoUser, updateToken, updateUserToken, updateSfinds, updateSfind, updateTextSearch } =
   controlDataSlice.actions;
-export const { selectDataUser, selectDataToken, selectDataSfind } = controlDataSlice.selectors;
+export const { selectDataUser, selectDataToken, selectDataSfind, selectTextSearch } = controlDataSlice.selectors;

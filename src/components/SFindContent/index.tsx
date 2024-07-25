@@ -23,6 +23,8 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
 import ModalSendFile from '../Modal/ModalSendFile';
 import MessageFile from '../SFindMessage/MessageFile';
+import { selectTextSearch } from '@/lib/features/controlData/controlDataSlice';
+import { useAppSelector } from '@/lib/hooks';
 
 
 const style = {
@@ -56,6 +58,8 @@ function SFindContent() {
 
     const [isShowTypePassword, setIsShowTypePassword] = useState(false);
     const [isRefreshMessage, setIsRefreshMessage] = useState(false);
+    const textSearch = useAppSelector(selectTextSearch)
+
     const containerMessage = useRef<HTMLDivElement>(null);
     const handleOpen = () => setOpen(true);
     const searchParams = useSearchParams();
@@ -77,9 +81,9 @@ function SFindContent() {
 
     useEffect(() => {
         setMessages([]);
-        handleGetMessage();
+        handleGetMessage(textSearch);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sfindId, isRefreshMessage])
+    }, [sfindId, isRefreshMessage, textSearch])
 
     useEffect(() => {
         setIsShowTypePassword(false);
@@ -132,9 +136,9 @@ function SFindContent() {
             })
     }
 
-    const handleGetMessage = () => {
+    const handleGetMessage = (textSearch: string) => {
         setIsLoadingGetMessage(true)
-        getMessage({ sfindId: sfindId, des: "" })
+        getMessage({ sfindId: sfindId, des: textSearch || "" })
             .then(res => {
                 setMessages(res.data?.data?.messages);
                 setIsLoadingGetMessage(false);
@@ -277,6 +281,7 @@ function SFindContent() {
                                         <div key={index} ref={containerMessage}>
                                             <MessageImage
                                                 message={item}
+                                                handleActionMessage={handleActionMessage}
                                             />
                                         </div>
                                     )
@@ -285,6 +290,7 @@ function SFindContent() {
                                         <div key={index} ref={containerMessage}>
                                             <MessageFile
                                                 message={item}
+                                                handleActionMessage={handleActionMessage}
                                             />
                                         </div>
                                     )

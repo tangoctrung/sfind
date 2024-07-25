@@ -1,8 +1,6 @@
-import React from 'react'
-import Download from '@mui/icons-material/Download';
-import TopicIcon from '@mui/icons-material/Topic';
-import FolderZipIcon from '@mui/icons-material/FolderZip';
-import { downloadFile, formatShowSizeFile } from '@/utils/handleFile';
+import React, { useState } from 'react'
+import DeleteIcon from '@mui/icons-material/Delete';
+import { formatShowSizeFile } from '@/utils/handleFile';
 import Link from 'next/link';
 import { convertTimeToHHMMddmmYYYY } from '@/utils/handleTime';
 import IconFileZip from '@/assets/icons/IconFileZip';
@@ -10,12 +8,39 @@ import IconFileDocx from '@/assets/icons/IconFileDocx';
 import IconFilePDF from '@/assets/icons/IconFilePdf';
 import IconFileExcel from '@/assets/icons/IconFileExcel';
 import IconFileText from '@/assets/icons/IconFileText';
+import { Box, Modal } from '@mui/material';
 
-function MessageFile({ message }: { message: any }) {
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    height: "80%",
+    outline: "none",
+    p: 4,
+};
+
+function MessageFile({ message, handleActionMessage }: { message: any, handleActionMessage: any }) {
 
     // function handleDownloadFile(url: string) {
     //     downloadFile(url, "file.docx");
     // }
+    const [open, setOpen] = React.useState(false);
+    const [isLoadingDeleteMessage, setIsLoadingDeleteMessage] = useState(false)
+
+
+    function handleClickIconDelete() {
+        setOpen(true);
+    }
+
+    async function handleDeleteMessage() {
+        setIsLoadingDeleteMessage(true)
+        await handleActionMessage("delete", message)
+        setIsLoadingDeleteMessage(false)
+        setOpen(false)
+    }
 
     function renderIconFile(type: string) {
         if (type?.includes("zip")) {
@@ -35,7 +60,10 @@ function MessageFile({ message }: { message: any }) {
         <div
             className='max-w-[90%] mt-20 max-h-fit flex items-end flex-col relative cursor-pointer'
         >
-            <p className='absolute w-full text-center top-[-2.5rem] text-sm text-gray-400'>{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
+            <p
+                className='absolute w-full text-center top-[-2.5rem] text-sm text-gray-400 tooltip'
+                data-tip={message?.content}
+            >{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
             {message?.files?.length > 0 && message?.files?.map((item: any, index: number) => (
                 <Link
                     key={index}
@@ -51,6 +79,36 @@ function MessageFile({ message }: { message: any }) {
                     </div>
                 </Link>
             ))}
+            <div className='mr-5 flex justify-end'>
+                <div
+                    className='cursor-pointer w-6 h-6 p-2 rounded-md bg-slate-300 mr-2 flex items-center justify-center'
+                    onClick={handleClickIconDelete}
+                ><DeleteIcon className='w-4 h-4' /></div>
+            </div>
+
+            <Modal
+                open={open}
+                onClose={() => setOpen(false)}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl w-[95%] tablet:w-[400px] h-auto !py-5 !px-5'>
+                    <h3>Bạn có chắc muốn xóa message này không?</h3>
+                    <div className='mt-2 flex justify-center'>
+                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-normal"} mr-5`}
+                            onClick={handleDeleteMessage}
+                        >
+                            {isLoadingDeleteMessage ? <span className="loading loading-spinner"></span> : "Xóa"}
+
+                        </button>
+                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-neutral"}`}
+                            onClick={() => setOpen(false)}
+                        >
+                            Quay lại
+                        </button>
+                    </div>
+                </Box>
+            </Modal>
         </div>
     )
 }

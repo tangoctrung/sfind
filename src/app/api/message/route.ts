@@ -77,7 +77,9 @@ export const GET = async (req: NextRequest) => {
                 messages = await Message.find({sender: userID, sfind: sfindId});
                 return convertDataResponse(200, true, "Thành công", {messages});
             } else {
-
+                messages = await Message.find({sender: userID, sfind: sfindId, $text: {$search: des}});
+                
+                return convertDataResponse(200, true, "Thành công", {messages});
             }
         } else {
             return convertDataResponse(404, false, "Không tìm thấy message", null);

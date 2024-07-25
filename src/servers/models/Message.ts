@@ -19,6 +19,7 @@ const Messagechema = new mongoose.Schema({
   content: {
     type: String,
     default: "",
+    index: "text",
   },
   sender: {
     ref: 'User', type: mongoose.Schema.Types.ObjectId,  

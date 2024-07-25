@@ -11,7 +11,7 @@ import { getSfinds } from '@/endpoint/sfind'
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { selectDataSfind, updateSfinds } from '@/lib/features/controlData/controlDataSlice'
+import { selectDataSfind, updateSfinds, updateTextSearch } from '@/lib/features/controlData/controlDataSlice'
 import LeftBarSkeleton from '../Skeleton/LeftBarSkeleton'
 
 const style = {
@@ -77,6 +77,8 @@ function LeftBar() {
     }
     function handleClickSFindItem(id: string) {
         router.push("/sfind?id=" + id);
+        let text: any = ""
+        dispatch(updateTextSearch(text))
     }
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {

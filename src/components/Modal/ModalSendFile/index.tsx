@@ -18,13 +18,13 @@ function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages
     { files: any[], sfindId: any, setOpenModalFile: any, messages: any[], setMessages: any }) {
     const [isLoading, setIsLoading] = useState(false);
     const [listFile, setListFile] = useState(files)
-    const [valueProgress, setValueProgress] = useState(10);
+    const [valueProgress, setValueProgress] = useState(0);
     const user = useAppSelector(selectDataUser)
 
     const typeFile = files[0]?.typeFile?.includes("image") ? "image" : "file";
     const [dataFile, setDataFile] = useState<any>({
         type: typeFile,
-        description: "",
+        content: "",
         sfind: sfindId,
         files: []
     });
@@ -33,7 +33,7 @@ function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages
         if (isLoading) return;
         setDataFile({
             ...dataFile,
-            description: e.target.value
+            content: e.target.value
         })
     }
 
