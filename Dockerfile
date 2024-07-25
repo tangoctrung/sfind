@@ -8,18 +8,15 @@ WORKDIR /app
 COPY package*.json ./
 
 # Cài đặt dependencies
-RUN npm install
+RUN yarn install
 
 # Copy toàn bộ source code vào container
 COPY . .
 
 # Xây dựng ứng dụng Next.js
-RUN npm run build
+RUN yarn build
 
-# Tạo user không root để chạy ứng dụng
-USER node
+EXPOSE 3100
 
 # Chạy ứng dụng Next.js
-CMD ["npm", "start"]
-
-EXPOSE 5000
+CMD ["yarn", "dev"]
