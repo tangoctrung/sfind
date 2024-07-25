@@ -22,7 +22,9 @@ export default function SFindConvention() {
                             <DropdownAccount />
                         </div>
                     </div>
-                    <TopBarSFind />
+                    <Suspense>
+                        <TopBarSFind />
+                    </Suspense>
                 </div>
                 <div className="w-full h-[calc(100svh-70px)] flex">
                     <Suspense>
