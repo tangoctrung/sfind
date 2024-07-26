@@ -33,7 +33,17 @@ export const POST = async (req: Request) => {
 
             const userRegisted = await User.findOne({email: email});
             if (userRegisted) {
-                return convertDataResponse(400, false, "Email đã được sử dụng", null);
+                const access_token = jwt.sign({userID: userRegisted._id}, process.env.SECRET_TOKEN || "trungtn12345", { expiresIn: parseInt(process.env.EXPIRED_ACCESS_TOKEN || "604800") });
+                const {password, ...user} = userRegisted?._doc;
+                var expireTime = new Date().getTime() + parseInt(process.env.EXPIRED_ACCESS_TOKEN || "604800") * 1000;
+                cookies().set({
+                    name: 'accessToken',
+                    value: access_token,
+                    httpOnly: true,
+                    path: '/',
+                    expires: expireTime,
+                })
+                return convertDataResponse(200, true, "Đăng nhập thành công", {user, token: {accessToken: access_token}})
             }
             
             const newUser = await new User({
