@@ -2,12 +2,14 @@
 import { logoutUser } from '@/endpoint/auth'
 import { KEY_LOCAL } from '@/types/keyLocal';
 import { useRouter } from 'next/navigation'
-import React from 'react'
+import React, { useState } from 'react'
 
 function ModalLogout() {
 
+    const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     function handleLogout() {
+        setIsLoading(true);
         logoutUser()
             .then(res => {
                 if (res.status === 200) {
@@ -18,6 +20,9 @@ function ModalLogout() {
             .catch((err) => {
                 console.log({ err })
             })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
     return (
         <>
@@ -26,9 +31,10 @@ function ModalLogout() {
                     <h3 className="font-bold text-lg">Bạn có muốn đăng xuất không?</h3>
                     <div className='w-full flex justify-center mt-5 items-center'>
                         <button
-                            className="btn btn-outline mr-5"
+                            className={`btn ${isLoading ? "btn-disabled" : "btn-outline"} mr-5`}
                             onClick={handleLogout}
                         >
+                            {isLoading && <span className="loading loading-spinner"></span>}
                             Đăng xuất
                         </button>
                         <form method="dialog">
