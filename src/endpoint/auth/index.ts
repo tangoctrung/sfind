@@ -9,6 +9,10 @@ export const loginUser = (dataRequest: LOGIN_DATA) => {
     return AxiosInstance.post("/auth/login", {...dataRequest})
 }
 
+export const loginGoogleUser = (dataRequest: any) => {
+    return AxiosInstance.post("/auth/login/google", {...dataRequest})
+}
+
 export const logoutUser = () => {
     return AxiosInstance.post("/auth/logout")
 }

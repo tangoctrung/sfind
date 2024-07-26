@@ -14,6 +14,8 @@ import { useAppDispatch, useAppSelector } from '@/lib/hooks'
 import { selectDataSfind, updateSfinds, updateTextSearch } from '@/lib/features/controlData/controlDataSlice'
 import LeftBarSkeleton from '../Skeleton/LeftBarSkeleton'
 import DeleteIcon from '@mui/icons-material/Delete';
+import NoData from "@/assets/images/nodata.png";
+import Image from 'next/image'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -169,6 +171,23 @@ function LeftBar() {
                             </div>
                         </div>
                     ))}
+                    {!isLoading && dataSfinds?.length <= 0 &&
+
+                        <div className='hidden tablet:block  mt-20'>
+                            <div className='w-full flex flex-col items-center justify-center'>
+                                <Image
+                                    src={NoData}
+                                    width={100}
+                                    height={100}
+                                    alt=''
+                                />
+                                <p className="text-gray-400">Không có dữ liệu</p>
+                                <div className="text-gray-400 text-center mt-6">
+                                    Hãy tạo Sfind mới bằng cách click vào icon
+                                    <SettingsSharpIcon className="!w-6 !h-6 text-black ml-2" />
+                                </div>
+                            </div>
+                        </div>}
                     {isLoading && <LeftBarSkeleton />}
                 </div>
             </div>
@@ -211,7 +230,7 @@ function LeftBar() {
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={dataSnackBar.open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleCloseSnackBar}
                 message={dataSnackBar.message}
                 action={action}

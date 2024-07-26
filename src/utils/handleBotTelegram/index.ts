@@ -13,7 +13,4 @@ export function sendMessageTelegram(message: string) {
         .catch(err => {
             console.log(err);
         })
-    
-
-    console.log({token_bot, chat_id, message});
 }

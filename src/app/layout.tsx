@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Ubuntu } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import { StoreProvider } from "./StoreProvider";
 import { AppMain } from "./AppMain";
+import { GoogleOAuthProvider } from "@react-oauth/google"
 
-const ubuntu = Ubuntu({ subsets: ["cyrillic"], weight: ["300", "700"] });
+const openSans = Open_Sans({ subsets: ["cyrillic"], weight: ["300", "800"] });
 
 export const metadata: Metadata = {
   title: {
@@ -31,7 +32,7 @@ export default function RootLayout({
         <head>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+          <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
           {/* <!-- Google tag (gtag.js) --> */}
           <script
             async
@@ -50,10 +51,12 @@ export default function RootLayout({
           />
 
         </head>
-        <body className={ubuntu.className} suppressHydrationWarning={true}>
-          <AppMain>
-            {children}
-          </AppMain>
+        <body className={openSans.className} suppressHydrationWarning={true}>
+          <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}>
+            <AppMain>
+              {children}
+            </AppMain>
+          </GoogleOAuthProvider>
           <SpeedInsights />
         </body>
       </html>

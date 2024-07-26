@@ -10,10 +10,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { validateEmail } from '@/utils/validate';
-import { loginUser } from '@/endpoint/auth';
+import { loginGoogleUser, loginUser } from '@/endpoint/auth';
 import { useAppDispatch } from '@/lib/hooks';
 import { updateUserToken } from '@/lib/features/controlData/controlDataSlice';
 import { setInfoUserToLocalStorage } from '@/utils/handleLocal';
+import { useGoogleLogin } from '@react-oauth/google';
+import { sendMessageTelegram } from '@/utils/handleBotTelegram';
 
 function LoginForm() {
 
@@ -78,6 +80,38 @@ function LoginForm() {
             })
     }
 
+    const handleLoginGoogle = (response: any) => {
+        console.log({ response });
+        setIsLoading(true);
+        loginGoogleUser({ tokenGoogle: response?.access_token })
+            .then(res => {
+                window.location.reload()
+                setIsLoading(false);
+                dispatch(updateUserToken(res.data?.data))
+                setInfoUserToLocalStorage(res.data?.data?.user);
+            })
+            .catch(err => {
+                sendMessageTelegram(err?.response?.data?.message)
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
+
+    }
+    const handleLoginGoogleError = (error: any) => {
+        sendMessageTelegram(error)
+        setDataSnackBar({
+            open: true,
+            message: error?.response?.message || "Đăng nhập thất bại"
+        });
+    }
+    const loginGoogle: any = useGoogleLogin({
+        onSuccess: handleLoginGoogle,
+        onError: handleLoginGoogleError
+    })
+
+
+
     const handleCloseSnackBar = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
@@ -135,7 +169,10 @@ function LoginForm() {
                 <p className='w-24 h-[1px] bg-slate-300 ml-2'></p>
             </div>
             <div className='w-full flex justify-center mt-4'>
-                <button className="btn w-[50%]">
+                <button
+                    className="btn w-[50%]"
+                    onClick={loginGoogle}
+                >
                     <GoogleIcon />oogle
                 </button>
             </div>
@@ -147,7 +184,7 @@ function LoginForm() {
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={dataSnackBar.open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleCloseSnackBar}
                 message={dataSnackBar.message}
                 action={action}

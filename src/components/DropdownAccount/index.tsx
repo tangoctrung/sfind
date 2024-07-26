@@ -100,7 +100,7 @@ function DropdownAccount() {
                     <Snackbar
                         anchorOrigin={{ vertical: "top", horizontal: "right" }}
                         open={dataSnackBar.open}
-                        autoHideDuration={6000}
+                        autoHideDuration={3000}
                         onClose={handleCloseSnackBar}
                         message={dataSnackBar.message}
                         action={action}

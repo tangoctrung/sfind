@@ -120,16 +120,17 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
                     <h3>Bạn có chắc muốn xóa message này không?</h3>
                     <div className='mt-2 flex justify-center'>
                         <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-normal"} mr-5`}
+                            onClick={handleClose}
+                        >
+                            Quay lại
+                        </button>
+                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-neutral"}`}
                             onClick={handleDeleteMessage}
                         >
                             {isLoadingDeleteMessage ? <span className="loading loading-spinner"></span> : "Xóa"}
 
                         </button>
-                        <button className={`btn ${isLoadingDeleteMessage ? "btn-disabled" : "btn-neutral"}`}
-                            onClick={handleClose}
-                        >
-                            Quay lại
-                        </button>
+
                     </div>
                 </Box>
             </Modal>

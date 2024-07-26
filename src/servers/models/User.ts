@@ -14,13 +14,17 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: "",
   },
+  provider: {
+    type: String,
+    default: "",
+  },
   dob: {
     type: String,
     default: "",
   },
   password: {
     type: String,
-    required: true,
+    default: "",
   },
   avatar: {
     type: String,

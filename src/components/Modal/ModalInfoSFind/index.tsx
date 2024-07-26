@@ -192,7 +192,7 @@ function ModalInfoSFind({ sfind }: { sfind: any }) {
             <div role="tablist" className="tabs tabs-bordered mt-5">
                 <input
                     type="radio" name="my_tabs_2" role="tab"
-                    className="tab text-sm font-bold min-w-[100px]" aria-label="Thông tin"
+                    className="tab text-sm font-bold min-w-[120px]" aria-label="Thông tin"
                     defaultChecked
                 />
                 <div role="tabpanel" className="tab-content bg-base-100 p-3 overflow-scroll scrollbar-none">
@@ -261,7 +261,7 @@ function ModalInfoSFind({ sfind }: { sfind: any }) {
             <Snackbar
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
                 open={dataSnackBar.open}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={handleCloseSnackBar}
                 message={dataSnackBar.message}
                 action={action}

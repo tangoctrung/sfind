@@ -88,7 +88,7 @@ function TopBarSFind() {
                 <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-auto w-[95%] tablet:w-[450px] !py-2 !px-3'>
                     <div className='mt-2'>
                         {showInfoSfind ? <ModalInfoSFind sfind={sfind} /> :
-                            <div className='text-center mt-40 font-semibold text-gray-400'>
+                            <div className='text-center py-10 font-semibold text-gray-400'>
                                 Bạn cần nhập mật khẩu để xem thông tin Sfind
                             </div>}
                     </div>
