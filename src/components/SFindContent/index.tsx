@@ -268,10 +268,10 @@ function SFindContent() {
 
     return (
         <>
-            <div className="h-full w-[calc(85%)] tablet:w-[calc(100%-13rem)]">
+            <div className="h-full w-full overflow-hidden">
                 {!isShowTypePassword ?
                     <>
-                        <div className="h-[calc(100%-3rem)] pb-5 w-full bg-slate-200 overflow-scroll scrollbar-none" >
+                        <div className="h-[calc(100%-3rem)] pb-5 w-full overflow-scroll scrollbar-none" >
                             {!isLoadingGetMessage && messages?.length > 0 && messages?.map((item, index) => {
                                 if (item?.type === "text") {
                                     return (

@@ -16,7 +16,7 @@ function TypePassword({ handleSubmitPasswordSfind }: { handleSubmitPasswordSfind
     }
 
     return (
-        <div className='h-full w-full flex flex-col justify-center items-center bg-base-300'>
+        <div className='h-full w-full flex flex-col justify-center items-center'>
             <h3>Bạn cần nhập mật khẩu để truy cập</h3>
             <label className="input input-bordered flex items-center gap-2 mt-3">
                 <IconPassword />

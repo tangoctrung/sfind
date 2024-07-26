@@ -27,7 +27,7 @@ function SFindItem({
 
 
     return (
-        <div className={`flex p-2 mt-2 mb-2 items-center rounded-lg hover:bg-slate-300 cursor-pointer ${active ? "bg-slate-300" : ""}`}>
+        <div className={`flex p-2 mt-2 mb-2 items-center rounded-lg textTransition hover:bg-slate-300 cursor-pointer ${active ? "bg-slate-300" : ""}`}>
             <div className="w-10 h-10 tablet:w-12 tablet:h-12">
                 <Image
                     src={avatarSfind || AvatarGroup}

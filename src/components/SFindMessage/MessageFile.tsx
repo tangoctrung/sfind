@@ -74,7 +74,7 @@ function MessageFile({ message, handleActionMessage }: { message: any, handleAct
                     <Link
                         href={item?.urlFile}
                         target='blank'
-                        className=' no-underline mb-1 relative overflow-hidden rounded-xl flex items-start bg-slate-300/70 py-2 px-3'
+                        className=' no-underline mb-1 relative overflow-hidden rounded-xl flex items-start bg-slate-300 py-2 px-3'
                     >
                         <div className=''>
                             {renderIconFile(item?.nameFile)}
@@ -85,7 +85,7 @@ function MessageFile({ message, handleActionMessage }: { message: any, handleAct
                         </div>
                     </Link>
                     <div
-                        className='absolute top-[50%] translate-y-[-50%] hidden group-hover:block right-2 p-2 rounded-lg bg-slate-300/40 hover:bg-slate-300 text-black'
+                        className='absolute top-[50%] translate-y-[-50%] hidden group-hover:block right-2 p-2 rounded-lg bg-slate-200 text-black'
                         onClick={() => handleDownloadFile(item?.urlFile, item?.nameFile)}
                     >
                         <Download />

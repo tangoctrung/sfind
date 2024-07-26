@@ -66,7 +66,7 @@ function TopBarSFind() {
         setText(e.target.value);
     }
     return (
-        <div className="w-[85%] tablet:w-[calc(100%-13rem)] flex justify-center items-center">
+        <div className="h-full w-full flex justify-center items-center">
             <label className="input input-bordered flex items-center gap-2 h-10 w-auto tablet:min-w-64 laptop:min-w-80">
                 <input
                     type="text" className="grow" placeholder="Tìm kiếm message...."

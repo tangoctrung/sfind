@@ -209,15 +209,15 @@ function MessageImage({ message, handleActionMessage }:
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[90%] w-[90%] tablet:h-[90%] tablet:w-[450px] laptop:w-[500px]'>
-                    <div className='flex justify-between items-center'>
+                <Box sx={style} className='overflow-scroll bg-slate-400 scrollbar-none rounded-xl h-[90%] w-[90%] tablet:h-[96%] tablet:w-[400px] laptop:w-[450px]'>
+                    <div className='flex tablet:hidden justify-between items-center'>
                         <h3 className="font-bold text-lg">Danh sách ảnh</h3>
                         <CloseIcon
                             className='w-8 h-8 cursor-pointer'
                             onClick={handleClose}
                         />
                     </div>
-                    <div role="tablist" className="tabs tabs-boxed mt-5 h-[90%] flex justify-center items-center">
+                    <div role="tablist" className="tabs tabs-boxed mt-5 h-[96%] bg-slate-400 flex justify-center items-center ">
                         <div className='max-w-full relative'>
                             <TransformWrapper>
                                 <TransformComponent>
@@ -231,7 +231,7 @@ function MessageImage({ message, handleActionMessage }:
                                 </TransformComponent>
                             </TransformWrapper>
                             <div
-                                className='absolute top-2 right-2 p-2 rounded-lg bg-slate-300/40 hover:bg-slate-300'
+                                className='absolute top-2 right-2 p-1 rounded-lg bg-slate-300/40 hover:bg-slate-300 cursor-pointer'
                                 onClick={() => handleDownloadImage(message?.files[currentIndexImage - 1])}
                             >
                                 <Download />

@@ -71,15 +71,19 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
 
     function handleUpdateMessage() {
         const dataRequest = { content: textContent };
+        setIsLoadingUpdateMessage(true);
         updateMessage(dataRequest, value?._id)
             .then(res => {
                 if (res.status === 200) {
                     handleActionMessage("edit", { ...value, content: textContent })
-                    setOpenModalUpdate(false)
                 }
             })
             .catch(err => {
                 console.log({ err });
+            })
+            .finally(() => {
+                setIsLoadingUpdateMessage(false);
+                setOpenModalUpdate(false)
             })
     }
 
@@ -88,7 +92,7 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
             <p className='w-full text-center text-sm text-gray-400'>{convertTimeToHHMMddmmYYYY(value?.createdAt)}</p>
             <div className='w-full flex flex-col items-end justify-end'>
                 <div className="max-w-[80%] cursor-pointer mr-5 text-secondary1 text-sm font-normal mt-[6px] transition-all duration-700 rounded-xl bg-slate-300 p-2 box-border">
-                    <div id={`contentComment${value?._id}`} className="line-clamp-3 max-w-full break-words">
+                    <div id={`contentComment${value?._id}`} className="line-clamp-3 break-words">
                         {ReactHtmlParser(value?.content)}
                     </div>
                     <div id={`readMore${value?._id}`} className={`hidden text-sm font-semibold text-primary mt-[6px]`}>

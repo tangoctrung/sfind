@@ -139,7 +139,7 @@ function LeftBar() {
 
     return (
         <>
-            <div className="w-[15%] tablet:w-52 laptop:w-72 desktop:w-112 h-full border-r-[1px] border-r-slate-300">
+            <div className="w-full h-full border-r-[1px] border-r-slate-300">
                 <div className="w-full h-10 flex justify-center items-center pt-2">
                     <div className="dropdown">
                         <div tabIndex={0} role="button">
@@ -164,7 +164,7 @@ function LeftBar() {
                                 />
                             </div>
                             <div
-                                className='absolute right-0 top-[50%] translate-y-[-50%] hidden group-hover:flex items-center justify-center cursor-pointer w-6 h-6 p-2 rounded-md bg-slate-400 mr-2'
+                                className='absolute right-0 top-[50%] translate-y-[-50%] hidden group-hover:flex items-center justify-center cursor-pointer w-6 h-6 p-2 rounded-md bg-slate-200 mr-2'
                                 onClick={() => handleOpenModalDeleteSfind(item?._id)}
                             >
                                 <DeleteIcon className='w-4 h-4' />

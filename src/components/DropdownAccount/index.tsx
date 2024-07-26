@@ -77,7 +77,7 @@ function DropdownAccount() {
                     </div>
                     <div className="hidden tablet:block ml-2">
                         <h2 className="text-lg font-bold">{user?.username}</h2>
-                        <p className="text-sm text-slate-400">Người dùng hệ thống</p>
+                        <p className="text-sm text-slate-600">Người dùng hệ thống</p>
                     </div>
                 </div>
                 <ul tabIndex={0} className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
