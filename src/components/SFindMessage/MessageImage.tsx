@@ -210,14 +210,7 @@ function MessageImage({ message, handleActionMessage }:
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style} className='overflow-scroll bg-slate-400 scrollbar-none rounded-xl h-[90%] w-[90%] tablet:h-[96%] tablet:w-[400px] laptop:w-[450px]'>
-                    <div className='flex tablet:hidden justify-between items-center'>
-                        <h3 className="font-bold text-lg">Danh sách ảnh</h3>
-                        <CloseIcon
-                            className='w-8 h-8 cursor-pointer'
-                            onClick={handleClose}
-                        />
-                    </div>
-                    <div role="tablist" className="tabs tabs-boxed mt-5 h-[96%] bg-slate-400 flex justify-center items-center ">
+                    <div role="tablist" className="tabs tabs-boxed mt-1 h-[96%] bg-slate-400 flex justify-center items-center ">
                         <div className='max-w-full relative'>
                             <TransformWrapper>
                                 <TransformComponent>
