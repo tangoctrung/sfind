@@ -64,11 +64,6 @@ function ModalInfoSFind({ sfind }: { sfind: any }) {
         }]
     });
 
-
-
-    console.log({ messages });
-
-
     const [isDisabled, setIsDisabled] = useState<boolean>(true);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [dataSfind, setDataSfind] = useState<any>({

@@ -34,7 +34,7 @@ export default function SFindConvention() {
                             <LeftBar />
                         </Suspense>
                     </div>
-                    <div className="h-full w-[85%] tablet:w-[calc(100%-13rem)]">
+                    <div className="h-full w-[85%] tablet:w-[calc(100%-13rem)] overflow-hidden">
                         <Suspense>
                             <SFindContent />
                         </Suspense>
