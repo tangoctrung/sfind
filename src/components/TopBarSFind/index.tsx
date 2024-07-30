@@ -45,7 +45,7 @@ function TopBarSFind() {
                     dispatch(updateShowInfoSfind(show))
                 }
             })
-    }, [sfindId])
+    }, [dispatch, sfindId, showInfoSfind])
 
     useEffect(() => {
         const timeOut = setTimeout(() => {
