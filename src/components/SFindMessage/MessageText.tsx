@@ -1,6 +1,6 @@
 'use client'
 
-import { convertTimeToHHMMddmmYYYY } from '@/utils/handleTime';
+import { convertTimeStringToHHMMddmmYYYY } from '@/utils/handleTime';
 import React, { useEffect, useState } from 'react'
 import ReactHtmlParser from 'react-html-parser';
 import EditIcon from '@mui/icons-material/Edit';
@@ -89,7 +89,7 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
 
     return (
         <div className={`h-auto w-full py-5 flex flex-col justify-end items-center relative  transition-all duration-700 `}>
-            <p className='w-full text-center text-sm text-gray-400'>{convertTimeToHHMMddmmYYYY(value?.createdAt)}</p>
+            <p className='w-full text-center text-sm text-gray-400'>{convertTimeStringToHHMMddmmYYYY(value?.createdAt)}</p>
             <div className='w-full flex flex-col items-end justify-end'>
                 <div className="max-w-[80%] cursor-pointer mr-5 text-secondary1 text-sm font-normal mt-[6px] transition-all duration-700 rounded-xl bg-slate-300 p-2 box-border">
                     <div id={`contentComment${value?._id}`} className="line-clamp-3 break-words">

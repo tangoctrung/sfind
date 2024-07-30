@@ -15,6 +15,7 @@ import { updateInfoUser } from '@/endpoint/user';
 import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { storage } from '@/firebase/index';
 import { setInfoUserToLocalStorage } from '@/utils/handleLocal';
+import { convertTimeNumberToHHMMddmmYYYY } from '@/utils/handleTime';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -78,7 +79,7 @@ function ModalProfile({ setDataSnackBar }: {
                 url: imgLink,
                 file: file
             })
-            const storageRef = ref(storage, `avatar/${user?.id}-${user?.username}/${new Date().getTime()}/${file?.name}`);
+            const storageRef = ref(storage, `avatar/${user?.id}-${user?.username}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${file?.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
             uploadTask.on(
                 "state_changed",

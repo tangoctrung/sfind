@@ -13,6 +13,7 @@ import { storage } from '@/firebase/index';
 import { selectDataUser, updateSfind } from '@/lib/features/controlData/controlDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
 import { createSfind } from '@/endpoint/sfind';
+import { convertTimeNumberToHHMMddmmYYYY } from '@/utils/handleTime';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -69,7 +70,7 @@ function ModalCreateSFind({ setDataSnackBar }: {
                 url: imgLink,
                 file: file
             })
-            const storageRef = ref(storage, `avatarSfind/${user?.id}-${user?.username}/${new Date().getTime()}/${file?.name}`);
+            const storageRef = ref(storage, `avatarSfind/${user?.id}-${user?.username}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${file?.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
             uploadTask.on(
                 "state_changed",

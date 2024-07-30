@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Pie } from 'react-chartjs-2';
 import { CategoryScale } from 'chart.js';
 import Chart from 'chart.js/auto';
+import { convertTimeNumberToHHMMddmmYYYY } from '@/utils/handleTime';
 Chart.register(CategoryScale);
 
 const VisuallyHiddenInput = styled('input')({
@@ -110,7 +111,7 @@ function ModalInfoSFind({ sfind }: { sfind: any }) {
                 url: imgLink,
                 file: file
             })
-            const storageRef = ref(storage, `avatarSfind/${user?.id}-${user?.username}/${new Date().getTime()}/${file?.name}`);
+            const storageRef = ref(storage, `avatarSfind/${user?.id}-${user?.username}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${file?.name}`);
             const uploadTask = uploadBytesResumable(storageRef, file);
             uploadTask.on(
                 "state_changed",

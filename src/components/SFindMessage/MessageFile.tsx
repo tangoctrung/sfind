@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { downloadFile, formatShowSizeFile } from '@/utils/handleFile';
 import Link from 'next/link';
-import { convertTimeToHHMMddmmYYYY } from '@/utils/handleTime';
+import { convertTimeStringToHHMMddmmYYYY } from '@/utils/handleTime';
 import IconFileZip from '@/assets/icons/IconFileZip';
 import IconFileDocx from '@/assets/icons/IconFileDocx';
 import IconFilePDF from '@/assets/icons/IconFilePdf';
@@ -68,7 +68,7 @@ function MessageFile({ message, handleActionMessage }: { message: any, handleAct
             <p
                 className='absolute w-full text-center top-[-2.5rem] text-sm text-gray-400 tooltip'
                 data-tip={message?.content}
-            >{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
+            >{convertTimeStringToHHMMddmmYYYY(message?.updatedAt)}</p>
             {message?.files?.length > 0 && message?.files?.map((item: any, index: number) => (
                 <div key={index} className='w-[80%] tablet:w-[70%] laptop:w-[50%] relative group'>
                     <Link

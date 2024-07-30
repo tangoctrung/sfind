@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import React, { useState } from 'react'
 import NoImage from '@/assets/images/noImage.jpg';
-import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Box, Modal } from '@mui/material';
 import Download from '@mui/icons-material/Download';
@@ -11,7 +10,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { downloadFile } from '@/utils/handleFile';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import { convertTimeToHHMMddmmYYYY } from '@/utils/handleTime';
+import { convertTimeStringToHHMMddmmYYYY } from '@/utils/handleTime';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -72,7 +71,7 @@ function MessageImage({ message, handleActionMessage }:
                 <p
                     className={`w-full text-center text-sm text-gray-400 mb-8 cursor-cell tooltip`}
                     data-tip={message?.content}
-                >{convertTimeToHHMMddmmYYYY(message?.updatedAt)}</p>
+                >{convertTimeStringToHHMMddmmYYYY(message?.updatedAt)}</p>
                 {message?.files?.length <= 0 &&
                     <div className=' h-72 w-56 overflow-hidden rounded-xl'>
                         <Image

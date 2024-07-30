@@ -1,5 +1,6 @@
 import { getDownloadURL, ref, uploadBytesResumable, UploadTask } from 'firebase/storage';
 import {storage} from '@/firebase/index';
+import { convertTimeNumberToHHMMddmmYYYY } from '../handleTime';
 
 export function downloadFile(url: any, nameFile: string) {
     fetch(url)
@@ -21,41 +22,26 @@ export function downloadFile(url: any, nameFile: string) {
       });
 }
 
-export async function uploadFileToStorage(file: any, nameFloder: string) {
-    let urlTool = ""
+export async function uploadFileToStorage(file: any, path: string, nameFile: string) {
     if (!file) {
         alert("Please choose a file first!");
     }
-    const storageRef = ref(storage, `/${nameFloder}/${file?.name}`);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-            // Observe state change events such as progress, pause, and resume
-            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-            console.log('Upload is ' + progress + '% done');
-            switch (snapshot.state) {
-                case 'paused':
-                    console.log('Upload is paused');
-                    break;
-                case 'running':
-                    console.log('Upload is running');
-                    break;
+    return new Promise((resolve: any, reject: any) => {
+        const storageRef = ref(storage, `${path}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${nameFile}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+        uploadTask.on(
+            "state_changed",
+            (snapshot) => {
+            },
+            (err) => console.log(err),
+            () => {
+                // download url
+                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
+                    resolve(url);
+                });
             }
-        },
-        (err) => console.log(err),
-        () => {
-            // download url
-            getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                console.log(url);
-                urlTool = url;
-                return urlTool;
-            });
-        }
-    );
-    
-    
+        );
+    })
 }
 
 export function formatShowSizeFile(sizeFile: number) {
