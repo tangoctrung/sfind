@@ -95,12 +95,10 @@ function SFindContent() {
     }
 
     const handleChooseImage = (e: any) => {
-        console.log(e.target.files);
         const listFile: any[] = [...e.target.files];
         if (listFile?.length <= 0) return;
         const filesNew: DATA_FILE[] = [];
         listFile.forEach((item: any) => {
-            console.log({ item });
             let itemFile: DATA_FILE = {
                 file: item,
                 typeFile: item?.type,

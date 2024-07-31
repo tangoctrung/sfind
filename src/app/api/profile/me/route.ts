@@ -8,7 +8,8 @@ export const GET = async (req: Request) => {
     connectToDB();
     
     try {
-        const accessToken = cookies().get("accessToken")?.value;
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
+        
         if (!accessToken) {
             return convertDataResponse(401, false, "Yêu cầu xác thực", null);
         }
@@ -33,7 +34,7 @@ export const PUT = async (req: Request) => {
     connectToDB();
     
     try {
-        const accessToken = cookies().get("accessToken")?.value;
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         if (!accessToken) {
             return convertDataResponse(401, false, "Yêu cầu xác thực", null);
         }

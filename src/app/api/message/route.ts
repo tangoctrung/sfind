@@ -15,7 +15,7 @@ export const POST = async (req: Request) => {
             return convertDataResponse(400, false, "Bạn chưa điền đầy đủ thông tin", null);
         }
         
-        const accessToken = cookies().get("accessToken")?.value || "";
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         let userID = "";
         try {
             const data: any = jwt.verify(accessToken, process.env.SECRET_TOKEN || "trungtn12345")
@@ -48,7 +48,7 @@ export const GET = async (req: NextRequest) => {
         const sfindId = params.get("sfindId") || ""
         const des = params.get("des") || ""
         let messages = [];
-        const accessToken = cookies().get("accessToken")?.value || "";
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
 
         let userID = "";
         // xac thuc accessToken
@@ -91,8 +91,7 @@ export const GET = async (req: NextRequest) => {
 
 export const DELETE = async (req: NextRequest) => {
     try {
-        const accessToken = cookies().get("accessToken")?.value || "";
-        console.log({accessToken});
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         
         let userID = "";
         try {
@@ -119,8 +118,7 @@ export const DELETE = async (req: NextRequest) => {
 
 export const PUT = async (req: NextRequest) => {
     try {
-        const accessToken = cookies().get("accessToken")?.value || "";
-        console.log({accessToken});
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         
         let userID = "";
         try {

@@ -19,7 +19,7 @@ export const POST = async (req: Request) => {
             const salt = await bcrypt.genSalt(10);
             hashedPass = await bcrypt.hash(password, salt);
         }
-        const accessToken = cookies().get("accessToken")?.value;
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         let userID = "";
         if (!accessToken) {
             if (!hashedPass) {
@@ -54,7 +54,7 @@ export const GET = async (req: NextRequest) => {
         const params = req.nextUrl.searchParams
         const q = params.get("q") || ""
         connectToDB();
-        const accessToken = cookies().get("accessToken")?.value || "";
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         let userID = "";
         try {
             const data: any = jwt.verify(accessToken, process.env.SECRET_TOKEN || "trungtn12345")
@@ -91,7 +91,7 @@ export const GET = async (req: NextRequest) => {
 
 export const PUT = async (req: NextRequest) => {
     try {
-        const accessToken = cookies().get("accessToken")?.value || "";
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         
         let userID = "";
         try {
@@ -128,7 +128,7 @@ export const PUT = async (req: NextRequest) => {
 
 export const DELETE = async (req: NextRequest) => {
     try {
-        const accessToken = cookies().get("accessToken")?.value || "";
+        const accessToken = cookies().get("accessToken")?.value || req.headers.get("Authorization")?.split("Bearer ")[1] || "";
         
         let userID = "";
         try {

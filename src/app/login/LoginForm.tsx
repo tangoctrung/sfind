@@ -81,7 +81,6 @@ function LoginForm() {
     }
 
     const handleLoginGoogle = (response: any) => {
-        console.log({ response });
         setIsLoading(true);
         loginGoogleUser({ tokenGoogle: response?.access_token })
             .then(res => {

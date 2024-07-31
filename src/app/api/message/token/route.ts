@@ -29,9 +29,6 @@ export const POST = async (req: NextRequest) => {
         sfind.expireTime = expireTime
         const sfindNew = await sfind.save()
 
-        console.log({sfind, sfindNew, expireTime});
-        
-
         return convertDataResponse(200, true, "Thành công", null)
 
     } catch (error: any) {
