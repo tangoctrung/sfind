@@ -64,7 +64,9 @@ function LoginForm() {
         loginUser(dataLogin)
             .then((res) => {
                 if (res.status === 200) {
-                    window.location.reload()
+                    // window.location.reload();
+                    router.refresh();
+                    router.push("/");
                     setIsLoading(false);
                     dispatch(updateUserToken(res.data?.data))
                     setInfoUserToLocalStorage(res.data?.data?.user);
@@ -85,10 +87,11 @@ function LoginForm() {
         loginGoogleUser({ tokenGoogle: response?.access_token })
             .then(res => {
                 // window.location.reload()
-                router.push("/");
                 setIsLoading(false);
                 dispatch(updateUserToken(res.data?.data))
                 setInfoUserToLocalStorage(res.data?.data?.user);
+                router.refresh();
+                router.push("/");
             })
             .catch(err => {
                 sendMessageTelegram(err?.response?.data?.message)
