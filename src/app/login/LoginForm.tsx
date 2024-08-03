@@ -84,7 +84,8 @@ function LoginForm() {
         setIsLoading(true);
         loginGoogleUser({ tokenGoogle: response?.access_token })
             .then(res => {
-                window.location.reload()
+                // window.location.reload()
+                router.push("/");
                 setIsLoading(false);
                 dispatch(updateUserToken(res.data?.data))
                 setInfoUserToLocalStorage(res.data?.data?.user);
