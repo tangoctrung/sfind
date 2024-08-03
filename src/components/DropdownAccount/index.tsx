@@ -1,14 +1,16 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from "next/image";
 import AvatarDefault from "@/assets/images/avatarDefault.png";
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useAppSelector } from '@/lib/hooks';
-import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { selectDataUser, updateInfoUser as updateInfoUserStore } from '@/lib/features/controlData/controlDataSlice';
 import { Box, IconButton, Modal, Snackbar } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ModalProfile from '../Modal/ModalProfile';
+import { getInfoUserFromLocalStorage, setInfoUserToLocalStorage } from '@/utils/handleLocal';
+import { getInfoUser } from '@/endpoint/user';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -30,6 +32,26 @@ function DropdownAccount() {
         open: false,
         message: ""
     });
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const user = getInfoUserFromLocalStorage();
+        if (user?.id) {
+            dispatch(updateInfoUserStore(user))
+        } else {
+            getInfoUser()
+                .then((res) => {
+                    dispatch(updateInfoUserStore(res.data?.data?.user))
+                    setInfoUserToLocalStorage(res.data?.data?.user);
+                })
+                .catch((err) => {
+                    console.log(err);
+
+                })
+        }
+    }, [dispatch]);
+
     const handleClose = () => {
         setOpen(false);
     }

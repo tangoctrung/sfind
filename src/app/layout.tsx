@@ -3,7 +3,6 @@ import { Open_Sans } from "next/font/google";
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import { StoreProvider } from "./StoreProvider";
-import { AppMain } from "./AppMain";
 import { GoogleOAuthProvider } from "@react-oauth/google"
 
 const openSans = Open_Sans({ subsets: ["cyrillic"], weight: ["300", "800"] });
@@ -53,9 +52,7 @@ export default function RootLayout({
         </head>
         <body className={openSans.className} suppressHydrationWarning={true}>
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}>
-            <AppMain>
-              {children}
-            </AppMain>
+            {children}
           </GoogleOAuthProvider>
           <SpeedInsights />
         </body>

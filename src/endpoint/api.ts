@@ -41,7 +41,7 @@ AxiosInstance.interceptors.response.use(
           });
           await logoutInstance.post(API_URL + '/auth/logout')
           localStorage.removeItem(KEY_LOCAL.PROFILE_USER)
-          window.location.href = "/login"  
+          window.location.href = "/login"
           return;
         }
         
