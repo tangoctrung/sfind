@@ -13,7 +13,7 @@ function ModalLogout() {
         logoutUser()
             .then(res => {
                 if (res.status === 200) {
-                    router.push("/login");
+                    window.location.href = "/login";
                     localStorage.removeItem(KEY_LOCAL.PROFILE_USER)
                 }
             })
