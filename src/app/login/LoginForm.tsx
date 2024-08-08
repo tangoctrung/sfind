@@ -65,8 +65,9 @@ function LoginForm() {
             .then((res) => {
                 if (res.status === 200) {
                     // window.location.reload();
-                    router.refresh();
-                    router.push("/");
+                    // router.refresh();
+                    // router.push("/");
+                    window.location.href = "/";
                     setIsLoading(false);
                     dispatch(updateUserToken(res.data?.data))
                     setInfoUserToLocalStorage(res.data?.data?.user);
@@ -90,8 +91,9 @@ function LoginForm() {
                 setIsLoading(false);
                 dispatch(updateUserToken(res.data?.data))
                 setInfoUserToLocalStorage(res.data?.data?.user);
-                router.refresh();
-                router.push("/");
+                // router.refresh();
+                // router.push("/");
+                window.location.href = "/";
             })
             .catch(err => {
                 sendMessageTelegram(err?.response?.data?.message)
