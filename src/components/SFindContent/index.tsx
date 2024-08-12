@@ -229,12 +229,13 @@ function SFindContent() {
                 });
         } else if (type === "edit") {
             let dataMessage = [...messages]
-            dataMessage?.map((item: any) => {
+            let listMessage: any[] = dataMessage?.map((item: any) => {
                 if (item?._id === message?._id) {
-                    item.content = message?.content
+                    item = { ...item, content: message?.content }
                 }
+                return item;
             })
-            setMessages(dataMessage)
+            setMessages(listMessage)
             setDataSnackBar({
                 open: true,
                 message: "Cập nhật message thành công"
