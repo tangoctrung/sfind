@@ -13,7 +13,7 @@ import { storage } from '@/firebase/index';
 import { useAppSelector } from '@/lib/hooks';
 import { selectDataUser } from '@/lib/features/controlData/controlDataSlice';
 import { createMessage } from '@/endpoint/message';
-import { convertTimeNumberToHHMMddmmYYYY } from '@/utils/handleTime';
+import { convertTimeNumberToHHMMddmmYYYYV2 } from '@/utils/handleTime';
 
 function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages }:
     { files: any[], sfindId: any, setOpenModalFile: any, messages: any[], setMessages: any }) {
@@ -83,7 +83,7 @@ function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages
 
     function uploadProcess(itemFile: any, totalSend: number, totalSize: number) {
         return new Promise((resolve: any, reject: any) => {
-            const storageRef = ref(storage, `${typeFile}/${user?.id}-${user?.username}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${itemFile?.nameFile}`);
+            const storageRef = ref(storage, `${typeFile}/${user?.id}-${user?.username}/${convertTimeNumberToHHMMddmmYYYYV2(new Date().getTime())}/${itemFile?.nameFile}`);
             const uploadTask = uploadBytesResumable(storageRef, itemFile?.file);
             uploadTask.on(
                 "state_changed",

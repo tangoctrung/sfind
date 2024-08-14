@@ -1,6 +1,6 @@
 import { getDownloadURL, ref, uploadBytesResumable, UploadTask } from 'firebase/storage';
 import {storage} from '@/firebase/index';
-import { convertTimeNumberToHHMMddmmYYYY } from '../handleTime';
+import { convertTimeNumberToHHMMddmmYYYYV2 } from '../handleTime';
 
 export function downloadFile(url: any, nameFile: string) {
     fetch(url)
@@ -27,7 +27,7 @@ export async function uploadFileToStorage(file: any, path: string, nameFile: str
         alert("Please choose a file first!");
     }
     return new Promise((resolve: any, reject: any) => {
-        const storageRef = ref(storage, `${path}/${convertTimeNumberToHHMMddmmYYYY(new Date().getTime())}/${nameFile}`);
+        const storageRef = ref(storage, `${path}/${convertTimeNumberToHHMMddmmYYYYV2(new Date().getTime())}/${nameFile}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
         uploadTask.on(
             "state_changed",
