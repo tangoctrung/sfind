@@ -65,7 +65,9 @@ function ModalSendFile({ files, sfindId, setOpenModalFile, messages, setMessages
             }
             dataFile?.files.push(newDataFile);
         }
-        createMessage(dataFile)
+
+        let newDataFile = { ...dataFile, files: JSON.stringify(dataFile?.files) };
+        createMessage(newDataFile)
             .then(res => {
                 let dataMessage = [...messages];
                 dataMessage.push(res.data?.data?.message)
