@@ -11,7 +11,10 @@ export const POST = async (req: Request) => {
         connectToDB();
         const body = await req.json();
         const {description, files, type, content, sfind} = body;
-        let newFiles = JSON.parse(files);
+        let newFiles: any[] = [];
+        if (files || type != "text") {
+            newFiles = JSON.parse(files);
+        }
         if ((newFiles?.length <= 0 && content === "") || sfind === "") {
             return convertDataResponse(400, false, "Bạn chưa điền đầy đủ thông tin", null);
         }
