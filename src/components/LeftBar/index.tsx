@@ -139,7 +139,7 @@ function LeftBar() {
 
     return (
         <>
-            <div className="w-full h-full border-r-[1px] border-r-slate-300">
+            <div className="w-full h-full border-r-[1px]">
                 <div className="w-full h-10 flex justify-center items-center pt-2">
                     <div className="dropdown">
                         <div tabIndex={0} role="button">

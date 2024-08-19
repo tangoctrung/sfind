@@ -10,12 +10,9 @@ function ModalCreatePost({ textContent, setTextContent }:
         setTextContent(value)
     }
     return (
-        <div className='tablet:flex'>
-            <div className='tablet:flex-1 tablet:mr-2'>
+        <div>
+            <div className='tablet:mr-2'>
                 <EditorQuill data={textContent} onChangeData={onChangeData} />
-            </div>
-            <div className='tablet:flex-1'>
-                {ReactHtmlParser(textContent)}
             </div>
         </div>
     )

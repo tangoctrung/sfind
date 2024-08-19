@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, useEffect, useRef, useState } from 'react'
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
@@ -22,8 +22,9 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
 import ModalSendFile from '../Modal/ModalSendFile';
 import MessageFile from '../SFindMessage/MessageFile';
-import { selectTextSearch, updateMessages, updateShowInfoSfind } from '@/lib/features/controlData/controlDataSlice';
+import { selectTextSearch, updateMessages } from '@/lib/features/controlData/controlDataSlice';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import TopBarSFind from '../TopBarSFind';
 
 
 const style = {
@@ -166,8 +167,6 @@ function SFindContent() {
             .then(res => {
                 setIsShowTypePassword(false);
                 setIsLoadingGetMessage(true);
-                let show: any = true;
-                dispatch(updateShowInfoSfind(show))
                 getMessage({ sfindId: sfindId, des: "" })
                     .then(res => {
                         setMessages(res.data?.data?.messages);
@@ -270,7 +269,12 @@ function SFindContent() {
             <div className="h-full w-full overflow-hidden">
                 {!isShowTypePassword ?
                     <>
-                        <div className="h-[calc(100%-3rem)] pb-5 w-full overflow-scroll scrollbar-none" >
+                        <div className="w-full h-[70px]">
+                            <Suspense>
+                                <TopBarSFind />
+                            </Suspense>
+                        </div>
+                        <div className="h-[calc(100%-3rem-70px)] pb-5 w-full overflow-scroll scrollbar-none" >
                             {!isLoadingGetMessage && messages?.length > 0 && messages?.map((item, index) => {
                                 if (item?.type === "text") {
                                     return (

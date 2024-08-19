@@ -19,7 +19,6 @@ export interface ControlDataSliceState {
   sfinds: any[],
   messages: any[],
   textSearch: string;
-  showInfoSfind: boolean;
 }
 
 const initialState: ControlDataSliceState = {
@@ -40,7 +39,6 @@ const initialState: ControlDataSliceState = {
   sfinds: [],
   messages: [],
   textSearch: "",
-  showInfoSfind: true,
 };
 
 // If you are not using async thunks you can use the standalone `createSlice`.
@@ -70,9 +68,6 @@ export const controlDataSlice = createAppSlice({
     updateTextSearch: create.reducer((state, action: PayloadAction<any>) => {
       state.textSearch = action.payload;
     }),
-    updateShowInfoSfind: create.reducer((state, action: PayloadAction<any>) => {
-      state.showInfoSfind = action.payload;
-    }),
   }),
   selectors: {
     selectDataUser: (controlData) => controlData.user,
@@ -80,11 +75,10 @@ export const controlDataSlice = createAppSlice({
     selectDataSfind: (controlData) => controlData.sfinds,
     selectDataMessage: (controlData) => controlData.messages,
     selectTextSearch: (controlData) => controlData.textSearch,
-    selectShowInfoSfind: (controlData) => controlData.showInfoSfind,
   },
 });
 
 export const { updateInfoUser, updateToken, updateUserToken, updateSfinds, updateSfind, 
-  updateTextSearch, updateShowInfoSfind, updateMessages } = controlDataSlice.actions;
-export const { selectDataUser, selectDataToken, selectDataSfind, selectTextSearch, selectShowInfoSfind, selectDataMessage } 
+  updateTextSearch, updateMessages } = controlDataSlice.actions;
+export const { selectDataUser, selectDataToken, selectDataSfind, selectTextSearch, selectDataMessage } 
 = controlDataSlice.selectors;

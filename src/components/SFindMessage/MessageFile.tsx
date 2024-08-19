@@ -63,7 +63,7 @@ function MessageFile({ message, handleActionMessage }: { message: any, handleAct
 
     return (
         <div
-            className='max-w-[90%] mt-20 max-h-fit flex items-end flex-col relative cursor-pointer'
+            className='p-5 mt-20 max-h-fit flex items-end flex-col relative cursor-pointer'
         >
             <p
                 className='absolute w-full text-center top-[-2.5rem] text-sm text-gray-400 tooltip'
