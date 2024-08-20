@@ -22,9 +22,10 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import MessageImage from '../SFindMessage/MessageImage';
 import ModalSendFile from '../Modal/ModalSendFile';
 import MessageFile from '../SFindMessage/MessageFile';
-import { selectTextSearch, updateMessages } from '@/lib/features/controlData/controlDataSlice';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { updateMessages } from '@/lib/features/controlData/controlDataSlice';
+import { useAppDispatch } from '@/lib/hooks';
 import TopBarSFind from '../TopBarSFind';
+import { KEY_LOCAL } from '@/types/keyLocal';
 
 
 const style = {
@@ -58,7 +59,6 @@ function SFindContent() {
 
     const [isShowTypePassword, setIsShowTypePassword] = useState(false);
     const [isRefreshMessage, setIsRefreshMessage] = useState(false);
-    const textSearch = useAppSelector(selectTextSearch)
 
     const containerMessage = useRef<HTMLDivElement>(null);
     const dispatch = useAppDispatch();
@@ -73,6 +73,8 @@ function SFindContent() {
         open: false,
         message: ""
     });
+    const [text, setText] = useState<any>("")
+    let nameSfind = sessionStorage.getItem(KEY_LOCAL.NAME_SFIND) || "";
 
     useEffect(() => {
         containerMessage.current?.scrollIntoView({
@@ -83,9 +85,9 @@ function SFindContent() {
 
     useEffect(() => {
         setMessages([]);
-        handleGetMessage(textSearch);
+        handleGetMessage(text);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sfindId, isRefreshMessage, textSearch])
+    }, [sfindId, isRefreshMessage, text])
 
     useEffect(() => {
         setIsShowTypePassword(false);
@@ -271,7 +273,7 @@ function SFindContent() {
                     <>
                         <div className="w-full h-[70px]">
                             <Suspense>
-                                <TopBarSFind />
+                                <TopBarSFind setText={setText} />
                             </Suspense>
                         </div>
                         <div className="h-[calc(100%-3rem-70px)] pb-5 w-full overflow-scroll scrollbar-none" >
@@ -361,7 +363,7 @@ function SFindContent() {
                             </div>
                         </div>
                     </> :
-                    <TypePassword handleSubmitPasswordSfind={handleGetTokenSfind} />}
+                    <TypePassword handleSubmitPasswordSfind={handleGetTokenSfind} nameSfind={nameSfind} />}
             </div>
             <Modal
                 open={open}

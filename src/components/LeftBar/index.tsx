@@ -11,11 +11,12 @@ import { deleteSfinds, getSfinds } from '@/endpoint/sfind'
 import SettingsSharpIcon from '@mui/icons-material/SettingsSharp';
 import CachedSharpIcon from '@mui/icons-material/CachedSharp';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks'
-import { selectDataSfind, updateSfinds, updateTextSearch } from '@/lib/features/controlData/controlDataSlice'
+import { selectDataSfind, updateSfinds } from '@/lib/features/controlData/controlDataSlice'
 import LeftBarSkeleton from '../Skeleton/LeftBarSkeleton'
 import DeleteIcon from '@mui/icons-material/Delete';
 import NoData from "@/assets/images/nodata.png";
 import Image from 'next/image'
+import { KEY_LOCAL } from '@/types/keyLocal'
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -85,10 +86,9 @@ function LeftBar() {
         setOpenModalDeleteSfind(true);
         setSfindIdDelete(sfindId);
     }
-    function handleClickSFindItem(id: string) {
+    function handleClickSFindItem(id: string, nameSfind: string) {
         router.push("/sfind?id=" + id);
-        let text: any = ""
-        dispatch(updateTextSearch(text))
+        sessionStorage.setItem(KEY_LOCAL.NAME_SFIND, nameSfind);
     }
 
     function handleDeleteSfind() {
@@ -155,7 +155,7 @@ function LeftBar() {
                     {!isLoading && dataSfinds && dataSfinds?.map((item: any, index: number) => (
                         <div key={index} className='relative group'>
                             <div
-                                onClick={() => handleClickSFindItem(item?._id)}
+                                onClick={() => handleClickSFindItem(item?._id, item?.nameSfind)}
                             >
                                 <SFindItem
                                     avatarSfind={item?.avatar}

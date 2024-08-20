@@ -1,7 +1,7 @@
 import { IconPassword } from '@/assets/icons/IconPassword'
 import React, { useState } from 'react'
 
-function TypePassword({ handleSubmitPasswordSfind }: { handleSubmitPasswordSfind: any }) {
+function TypePassword({ handleSubmitPasswordSfind, nameSfind }: { handleSubmitPasswordSfind: any, nameSfind: string }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [password, setPassword] = useState("");
@@ -17,7 +17,8 @@ function TypePassword({ handleSubmitPasswordSfind }: { handleSubmitPasswordSfind
 
     return (
         <div className='h-full w-full flex flex-col justify-center items-center'>
-            <h3>Bạn cần nhập mật khẩu để truy cập</h3>
+            <h3 className='text-base font-normal'>Bạn cần nhập mật khẩu để truy cập</h3>
+            <b className='text-lg'>{nameSfind}</b>
             <label className="input input-bordered flex items-center gap-2 mt-3">
                 <IconPassword />
                 <input

@@ -6,7 +6,6 @@ import { Box, Modal } from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import { useSearchParams } from 'next/navigation';
 import { useAppDispatch } from '@/lib/hooks';
-import { updateTextSearch } from '@/lib/features/controlData/controlDataSlice';
 import { getSfinds } from '@/endpoint/sfind';
 
 const style = {
@@ -21,16 +20,15 @@ const style = {
     p: 4,
 };
 
-function TopBarSFind() {
+function TopBarSFind({ setText }: { setText: any }) {
     const [open, setOpen] = useState(false);
     const dispatch = useAppDispatch();
     const searchParams = useSearchParams();
     const sfindId = searchParams.get("id");
-    const [text, setText] = useState<any>("")
     const [sfind, setSfind] = useState<any>("")
+    const [textSearch, setTextSearch] = useState("");
 
     useEffect(() => {
-        setText("");
         getSfinds(sfindId || "nosfind")
             .then(res => {
                 setSfind(res.data?.data?.sfind);
@@ -44,10 +42,10 @@ function TopBarSFind() {
 
     useEffect(() => {
         const timeOut = setTimeout(() => {
-            dispatch(updateTextSearch(text))
+            setText(textSearch);
         }, 500)
         return () => clearTimeout(timeOut);
-    }, [dispatch, text])
+    }, [dispatch, setText, textSearch])
 
     const handleClose = () => {
         setOpen(false);
@@ -58,14 +56,14 @@ function TopBarSFind() {
     }
 
     function handleChangeTextSearch(e: any) {
-        setText(e.target.value);
+        setTextSearch(e.target.value);
     }
     return (
         <div className="h-full w-full flex justify-center items-center">
             <label className="input input-bordered flex items-center gap-2 h-10 w-auto tablet:min-w-64 laptop:min-w-80">
                 <input
                     type="text" className="grow" placeholder="Tìm kiếm message...."
-                    value={text}
+                    value={textSearch}
                     onChange={handleChangeTextSearch}
                 />
                 <SearchIcon />
