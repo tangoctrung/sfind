@@ -218,16 +218,25 @@ function SFindContent() {
                 setIsLoadingDeleteMessage(false)
             }
         } else if (type === "copy") {
-            navigator.clipboard.writeText(stripHTMLTagsUsingDOM(message?.content) || "")
-                .then(() => {
-                    setDataSnackBar({
-                        open: true,
-                        message: "Đã copy message vào bộ nhớ"
-                    })
-                })
-                .catch(error => {
-                    console.error('Failed to copy text:', error);
-                });
+            // navigator.clipboard.writeText(stripHTMLTagsUsingDOM(message?.content) || "")
+            //     .then(() => {
+            //         setDataSnackBar({
+            //             open: true,
+            //             message: "Đã copy message vào bộ nhớ"
+            //         })
+            //     })
+            //     .catch(error => {
+            //         console.error('Failed to copy text:', error);
+            //     });
+            const type = "text/html";
+            const blob = new Blob([message?.content], { type });
+            const data = [new ClipboardItem({ [type]: blob })];
+            navigator.clipboard.write(data).then(
+                () => {
+                },
+                () => {
+                },
+            );
         } else if (type === "edit") {
             let dataMessage = [...messages]
             let listMessage: any[] = dataMessage?.map((item: any) => {
