@@ -74,7 +74,12 @@ function SFindContent() {
         message: ""
     });
     const [text, setText] = useState<any>("")
-    let nameSfind = sessionStorage.getItem(KEY_LOCAL.NAME_SFIND) || "";
+    const [nameSfind, setNameSfind] = useState("");
+
+    useEffect(() => {
+        let name = sessionStorage.getItem(KEY_LOCAL.NAME_SFIND) || "";
+        setNameSfind(name);
+    }, []);
 
     useEffect(() => {
         containerMessage.current?.scrollIntoView({
