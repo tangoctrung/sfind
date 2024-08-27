@@ -198,13 +198,6 @@ function SFindContent() {
             })
     }
 
-    function stripHTMLTagsUsingDOM(htmlString: string) {
-        const temporaryElement = document.createElement('div');
-        temporaryElement.innerHTML = htmlString;
-        const plainText = temporaryElement.textContent;
-        return plainText;
-    }
-
     const handleActionMessage = async (type: string, message: any) => {
         if (type === "delete") {
             const res = await deleteMessage(message?._id)
@@ -218,21 +211,15 @@ function SFindContent() {
                 setIsLoadingDeleteMessage(false)
             }
         } else if (type === "copy") {
-            // navigator.clipboard.writeText(stripHTMLTagsUsingDOM(message?.content) || "")
-            //     .then(() => {
-            //         setDataSnackBar({
-            //             open: true,
-            //             message: "Đã copy message vào bộ nhớ"
-            //         })
-            //     })
-            //     .catch(error => {
-            //         console.error('Failed to copy text:', error);
-            //     });
             const type = "text/html";
             const blob = new Blob([message?.content], { type });
             const data = [new ClipboardItem({ [type]: blob })];
             navigator.clipboard.write(data).then(
                 () => {
+                    setDataSnackBar({
+                        open: true,
+                        message: "Đã copy message vào bộ nhớ"
+                    })
                 },
                 () => {
                 },

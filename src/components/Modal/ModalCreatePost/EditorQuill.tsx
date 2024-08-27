@@ -28,7 +28,6 @@ class EditorQuill extends Component<MyProps, MyState> {
             ["blockquote", "code-block"],
 
             ["link"],
-            ["image", "video"], // custom button values
             [{ list: "ordered" }, { list: "bullet" }],
             [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
 
@@ -57,8 +56,6 @@ class EditorQuill extends Component<MyProps, MyState> {
         "bullet",
         "indent",
         "link",
-        "image",
-        "imageBlot" // #5 Optinal if using custom formats
     ];
 
     render() {
