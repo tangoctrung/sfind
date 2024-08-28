@@ -79,7 +79,7 @@ function SFindContent() {
     useEffect(() => {
         let name = sessionStorage.getItem(KEY_LOCAL.NAME_SFIND) || "";
         setNameSfind(name);
-    }, []);
+    }, [sfindId]);
 
     useEffect(() => {
         containerMessage.current?.scrollIntoView({
@@ -96,7 +96,7 @@ function SFindContent() {
 
     useEffect(() => {
         setIsShowTypePassword(false);
-    }, [])
+    }, [sfindId])
 
     const handleClose = () => {
         setOpen(false);
