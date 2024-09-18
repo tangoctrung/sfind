@@ -1,9 +1,10 @@
-import cron from "cron";
+import { sendMessageTelegram } from '@/utils/handleBotTelegram';
+import { CronJob } from 'cron';
 import https from "https";
 
 const URL = "https://sfind.onrender.com";
 
-const job = new cron.CronJob("*/10 * * * *", function () {
+const job = new CronJob("*/10 * * * *", function () {
 	https
 		.get(URL, (res) => {
 			if (res.statusCode === 200) {
