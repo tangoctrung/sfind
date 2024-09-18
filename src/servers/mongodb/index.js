@@ -6,14 +6,13 @@ let connection = {};
 export const connectToDB = async () => {
     mongoose.set("strictQuery", true);
 
-    job.start()
-
     if (connection?.isConnected) {
         console.log("MongoDB is already connected");
         return;
     }
 
     try {
+        job.start()
         const db = await mongoose.connect(process.env.MONGODB_URL || "", {
             dbName: "sfind",
         });
