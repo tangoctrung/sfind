@@ -1,9 +1,12 @@
 import mongoose from "mongoose";
+import job from "../cronjob/index";
 
 let connection = {};
 
 export const connectToDB = async () => {
     mongoose.set("strictQuery", true);
+
+    job.start()
 
     if (connection?.isConnected) {
         console.log("MongoDB is already connected");
