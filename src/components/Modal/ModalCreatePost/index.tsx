@@ -10,10 +10,11 @@ function ModalCreatePost({ textContent, setTextContent }:
         setTextContent(value)
     }
     return (
-        <div>
-            <div className='tablet:mr-2'>
+        <div className='flex'>
+            <div className='tablet:mr-2 w-[50%]'>
                 <EditorQuill data={textContent} onChangeData={onChangeData} />
             </div>
+            <div className='p-4 w-[50%] bg-gray-300 rounded-xl'>{textContent}</div>
         </div>
     )
 }
