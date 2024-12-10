@@ -165,9 +165,9 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[98%] w-[95%] !py-5 !px-2'>
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl sm:h-[80%] h-[90%] md:w-[70%] lg:w-[50%] sm:w-[80%] w-[96%] !py-5 !px-2'>
                     <div className='flex justify-between items-center'>
-                        <button className={`btn ${isLoadingUpdateMessage ? "btn-disabled" : "btn-neutral"} p-3`}
+                        <button className={`btn ${isLoadingUpdateMessage ? "btn-disabled" : "btn-neutral"} sm:p-3 p-2`}
                             onClick={handleUpdateMessage}
                         >
                             {isLoadingUpdateMessage ? <span className="loading loading-spinner"></span> : <SystemUpdateAltIcon />}

@@ -372,7 +372,7 @@ function SFindContent() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl h-[90%] w-[70%] !py-5 !px-2'>
+                <Box sx={style} className='overflow-scroll scrollbar-none rounded-xl sm:h-[80%] h-[90%] md:w-[70%] lg:w-[50%] sm:w-[80%] w-[96%] !py-5 !px-2'>
                     <div className='flex justify-between items-center'>
                         <button className={`btn ${isLoadingSendMessage ? "btn-disabled" : "btn-neutral"} p-3`}
                             onClick={handleSendMessageText}
