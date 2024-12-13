@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
-// import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import "./globals.css";
 import { StoreProvider } from "./StoreProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google"
@@ -54,7 +54,7 @@ export default function RootLayout({
           <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_CLIENT_ID || ""}>
             {children}
           </GoogleOAuthProvider>
-          {/* <SpeedInsights /> */}
+          <SpeedInsights />
         </body>
       </html>
     </StoreProvider>
