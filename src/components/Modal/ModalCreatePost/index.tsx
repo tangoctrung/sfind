@@ -2,7 +2,6 @@
 
 import React from 'react'
 import EditorQuill from './EditorQuill'
-import ReactHtmlParser from 'react-html-parser';
 
 function ModalCreatePost({ textContent, setTextContent }:
     { textContent: string, setTextContent: any }) {

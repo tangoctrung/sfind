@@ -2,7 +2,6 @@
 
 import { convertTimeStringToHHMMddmmYYYY } from '@/utils/handleTime';
 import React, { useEffect, useState } from 'react'
-import ReactHtmlParser from 'react-html-parser';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
@@ -112,8 +111,7 @@ function MessageText({ value, isLoadingDeleteMessage, handleActionMessage }:
                     className="max-w-[80%] cursor-pointer mr-5 text-secondary1 text-sm font-normal mt-[6px] transition-all duration-700 rounded-xl bg-slate-300 p-2 box-border"
                     onClick={handleClickToCopyMessage}
                 >
-                    <div id={`contentComment${value?._id}`} className="line-clamp-3 break-words">
-                        {ReactHtmlParser(value?.content)}
+                    <div id={`contentComment${value?._id}`} className="line-clamp-3 break-words" dangerouslySetInnerHTML={{ __html: value?.content }}>
                     </div>
                     <div id={`readMore${value?._id}`} className={`hidden text-sm font-semibold text-primary mt-[6px]`}>
                         Xem thêm
