@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # Cài đặt dependencies
-RUN yarn install
+RUN yarn install --network-timeout 1000000
 
 # Copy toàn bộ source code vào container
 COPY . .
