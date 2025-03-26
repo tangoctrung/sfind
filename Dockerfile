@@ -19,4 +19,4 @@ RUN yarn build
 EXPOSE 3100
 
 # Chạy ứng dụng Next.js
-CMD ["yarn", "dev"]
+CMD ["yarn", "start"]
